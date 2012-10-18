@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="initBuild" label="Pre-build" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+d=destructionSession.destructionSession()
+d.initBuilding(hou.node("obj/example_CGAShape_compatible"))
+'''
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession(); d.initBuilding(hou.node("obj/example_CGAShape_compatible"))', 'prof_pre_build.tmp')
+''']]></script>
+  </tool>
+
+  <tool name="searchPath0" label="Path" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA['''
+from ExternalClasses import destructionSession
+d=destructionSession.destructionSession()
+d.searchPath()
+'''
+
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession(); d.searchPath()', 'prof_search_path.tmp')]]></script>
+  </tool>
+
+  <tool name="resetPath" label="rPath" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA['''
+from ExternalClasses import destructionSession
+destructionSession.destructionSession().resetPath()
+'''
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession(); d.resetPath()', 'prof_reset_path.tmp')]]></script>
+  </tool>
+
+  <tool name="doCrack" label="Crack" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA['''
+from ExternalClasses import destructionSession
+destructionSession.destructionSession().doCrack()
+'''
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession();destructionSession.destructionSession().doCrack()', 'prof_crack.tmp')]]></script>
+  </tool>
+
+  <tool name="resetCrack" label="rCrack" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[]]></script>
+  </tool>
+
+  <tool name="onCrack" label="Crack on" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().showCrack()]]></script>
+  </tool>
+
+  <tool name="crackOff" label="Crack off" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().dontShowCrack()]]></script>
+  </tool>
+
+  <tool name="booleanIntersection" label="Wipe" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA['''
+from ExternalClasses import destructionSession
+destructionSession.destructionSession().doBoleanIntersection()
+'''
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession();destructionSession.destructionSession().doBoleanIntersection()', 'prof_boolean.tmp')
+]]></script>
+  </tool>
+
+  <tool name="restartWipe" label="rWipe" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA['''
+from ExternalClasses import destructionSession
+destructionSession.destructionSession().resetBooleanIntersection()
+'''
+
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession();destructionSession.destructionSession().resetBooleanIntersection()', 'prof_boolean_restart.tmp')
+]]></script>
+  </tool>
+
+  <tool name="addCrackNoise" label="Crack noise" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[import profile
+program="from ExternalClasses import destructionSession; \
+d=destructionSession.destructionSession(); \
+heigth=0.1; \
+frequency='medium'; \
+for_edge=False; \
+wavelength=0; \
+destructionSession.destructionSession().add_noise_to_crack(heigth, frequency, for_edge, wavelength);"
+profile.run(program, 'prof_add_noise.tmp')
+]]></script>
+  </tool>
+
+  <tool name="structure" label="Structure" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().createStructure()
+'''
+import profile
+profile.run('from ExternalClasses import destructionSession; d=destructionSession.destructionSession();destructionSession.destructionSession().createStructure()', 'prof_structure.tmp')
+'''
+]]></script>
+  </tool>
+
+  <tool name="restart" label="Restart" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().goToTheStart()]]></script>
+  </tool>
+
+  <tool name="newLogging" label="New logging" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+d=destructionSession.destructionSession()
+d.build_new_logging_file()]]></script>
+  </tool>
+
+  <tool name="textureOn" label="Texture on" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().showTextures()]]></script>
+  </tool>
+
+  <tool name="textureOff" label="Texture off" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[from ExternalClasses import destructionSession
+destructionSession.destructionSession().dontShowTextures()]]></script>
+  </tool>
+</shelfDocument>
