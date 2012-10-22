@@ -6,8 +6,8 @@ Created on Oct 27, 2011
 '''
 from DestructionDataAndFunctions import BoundingBox
 from DestructionDataAndFunctions import Errors
-from Structure import FloorStructure
-from Structure import MetallicStructure
+import FloorStructure
+import MetallicStructure
 import logging
 
 
