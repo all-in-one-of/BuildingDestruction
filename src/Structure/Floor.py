@@ -17,6 +17,7 @@ class Floor(object):
     def __init__(self, floor_params, position, structure_points):
         '''
         Constructor
+        
         '''
         self.floor_params = floor_params
         self.position = position
