@@ -12,17 +12,16 @@ import logging
 
 
 class BuildingStructure(object):
-    
+
     '''
     Manage all the building structure inside a building, like plants, metal structure, etc.
     We get the information based on the size of windows.
     '''
 
-
     def __init__(self, crack, inserts, geo, user_restriction_parms):
-        reload (FloorStructure)
-        reload (MetallicStructure)
-        reload (BoundingBox)
+        reload(FloorStructure)
+        reload(MetallicStructure)
+        reload(BoundingBox)
         '''
         Constructor
         user_restriction_parms:
@@ -47,13 +46,13 @@ class BuildingStructure(object):
         self.inserts = inserts
         self.floor_structure = None
         self.metal_structure = None
-        
+
     def do(self):
         logging.debug("START Class BuildingStructure, method do")
         self.extract_parms_and_do_automatically_from_building()
         logging.debug("END Class BuildingStructure, method do")
-        
-    
+
+
     def extract_parm_from_user_restrictions(self, parm, default=None):
         #TODO: define an get parms from building
         if(parm in self.get_user_restriction_parms()):
@@ -61,7 +60,7 @@ class BuildingStructure(object):
         return None
     def set_parm_user_restrictions(self, parm, value):
         self.user_restriction_parms[parm] = value
-            
+
     def extract_parms_and_do_automatically_from_building(self):
         #=======================================================================
         # Get information about size of where can be the floors or tubes
@@ -77,7 +76,7 @@ class BuildingStructure(object):
         except Errors.CantBeNoneError as e:
             Errors.Error.display_exception(e)
             exit()
-            
+
         #=======================================================================
         # Get the insert node with windows
         #=======================================================================
@@ -95,7 +94,7 @@ class BuildingStructure(object):
         except Errors.CantBeNoneError as e:
             Errors.Error.display_exception(e)
             exit()
-        
+
         #=======================================================================
         # Get the size of the geometry of own window primitive
         #=======================================================================
@@ -103,30 +102,35 @@ class BuildingStructure(object):
         prim_window_points = [list(p.point().position()) for p in prim_window.vertices()]
         prim_window_bounding_box = BoundingBox.BoundingBox2D(prim_window_points,
                                                              prim_window)
+        #TEMP:display bouding box
+        prim_window_bounding_box.display_bounding_box_tangent_space()
         windows_size = prim_window_bounding_box.get_vector_size_tangent_space()
-        
+
         if(not self.extract_parm_from_user_restrictions('window_size_x')):
             self.set_parm_user_restrictions('window_size_x', windows_size[0])
         if(not self.extract_parm_from_user_restrictions('window_size_y')):
             self.set_parm_user_restrictions('window_size_y', windows_size[1])
-        
+
         #=======================================================================
         # Create floor structure
         # Put plant each y-size of window - size of plant/2
         #=======================================================================
+        #TEMP: print params
+        print self.get_user_restriction_parms()['window_size_x']
+        print self.get_user_restriction_parms()['window_size_y']
         self.find_base_node()
 
         self.set_floor_structure(FloorStructure.FloorStructure(
             self.get_user_restriction_parms(), self.get_crack(),
              self.get_base_node(), self.get_geo()))
-        
+
         #=======================================================================
         # Create metal structure
         # Put a tube each x-size window and each y-size window to create a grid
         #=======================================================================
         self.set_metal_structure(MetallicStructure.MetallicStructure
                                  (self.get_user_restriction_parms()))
-        
+
     def find_base_node(self):
         geo = self.get_geo()
         all_childrens = geo.children()
@@ -141,7 +145,7 @@ class BuildingStructure(object):
             print 'Exception ocurred:', e.expr
             exit()
         self.set_base_node(nodes['CreateBase'])
-        
+
     def get_user_restriction_parms(self):
         return self.__user_restriction_parms
 

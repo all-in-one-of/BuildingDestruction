@@ -11,7 +11,7 @@ class HouInterface(object):
         self.curves = {}
         self.points = {}
         self.transforms = {}
-        
+
     def showPoint(self, point, name='', size=0.05, color=[1, 0, 0]):
         if(not self.geometry):
             obj = hou.node('/obj')
@@ -24,7 +24,7 @@ class HouInterface(object):
         sphere.parm('radx').set(size)
         sphere.parm('rady').set(size)
         sphere.parm('radz').set(size)
-        
+
         sphere.parm('tx').set(str(point[0]))
         sphere.parm('ty').set(str(point[1]))
         sphere.parm('tz').set(str(point[2]))
@@ -44,7 +44,7 @@ class HouInterface(object):
         colorNode.moveToGoodPosition()
         geo.moveToGoodPosition()
         self.points[name] = [sphere, colorNode]
-        
+
     def deletePoints(self):
         "POINTS!!!!!!!!!!"
         print self.points
@@ -52,7 +52,7 @@ class HouInterface(object):
             for node in point:
                 node.destroy()
         self.points.clear()
-        
+
     def showCurve(self, points, name='', close=False):
         if(not points):
             return
@@ -66,7 +66,7 @@ class HouInterface(object):
             geo.children()[0].destroy()
         else:
             geo = self.geometry
-            
+
         pointsString = ""
         if(name != ''):
             curveNode = geo.createNode('curve', name, True)
@@ -83,7 +83,7 @@ class HouInterface(object):
         curveNode.moveToGoodPosition()
         geo.moveToGoodPosition()
         self.curves[name] = [curveNode]
-        
+
     def deleteCurves(self):
         "Cruves!!!!!!!!!!"
         print self.curves
@@ -91,27 +91,27 @@ class HouInterface(object):
             for node in curve:
                 node.destroy()
         self.curves.clear()
-        
+
     def deleteCurve(self, tag):
         if(self.curves.has_key(tag)):
             for node in self.curves[tag]:
                 node.destroy()
             del self.curves[tag]
-            
+
     def transform(self, volume, translate=[0, 0, 0], scale=[0, 0, 0], rotate=[0, 0, 0]):
         node = volume.parent().createNode('xtrans')
         node.parm('tx').set(translate[0])
         node.parm('ty').set(translate[1])
         node.parm('tz').set(translate[2])
-        
+
         node.parm('sx').set(scale[0])
         node.parm('sy').set(scale[1])
         node.parm('sz').set(scale[2])
-        
+
         node.parm('rx').set(rotate[0])
         node.parm('ry').set(rotate[1])
         node.parm('rz').set(rotate[2])
-        
+
         return node
-        
-        
+
+

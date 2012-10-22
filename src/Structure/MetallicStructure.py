@@ -15,4 +15,4 @@ class MetallicStructure(object):
         '''
         Constructor
         '''
-        
+

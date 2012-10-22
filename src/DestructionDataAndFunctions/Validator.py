@@ -3,6 +3,9 @@ from ExternalClasses import GeoMath
 import BoundingBox
 import logging
 epsilon = 0.001
+DEBUG = False
+
+
 class Validator:
     '''
     Be careful with epsilon, change if it doesn't work fine
@@ -88,8 +91,8 @@ class Validator:
 
     @staticmethod
     def patternInsidePrim(pat, prim):
-        reload (GeoMath)
-        reload (BoundingBox)
+        reload(GeoMath)
+        reload(BoundingBox)
         logging.debug("Pat points" + str(pat.getPoints()))
         pat_bounding_box = BoundingBox.BoundingBox2D(pat.getPoints(), prim)
         prim_points = [list(p.point().position()) for p in prim.vertices()]
@@ -107,19 +110,21 @@ class Validator:
     '''
     @staticmethod
     def patternWithPatternsInPrim(pat, listOfPatterns, prim):
-        reload (GeoMath)
-        reload (BoundingBox)
+        reload(GeoMath)
+        reload(BoundingBox)
+        global DEBUG
         '''
         edgesPat = GeoMath.getEdgesFromPoints(pat.getPoints())
         '''
         pattern_bounding_box = BoundingBox.BoundingBox2D(pat.getPoints(), prim)
         for patInGr in listOfPatterns:
             param_pattern_bounding_box = BoundingBox.BoundingBox2D(patInGr.getPoints(), prim)
-            intersections = pattern_bounding_box.intersect_bounding_box_without_limits_3D(param_pattern_bounding_box, DISPLAY=True)
+            intersections = pattern_bounding_box.intersect_bounding_box_without_limits_3D(param_pattern_bounding_box)
             if (intersections):
-                pattern_bounding_box.display_bounding_box_object_space()
-                param_pattern_bounding_box.display_bounding_box_object_space()
-                pattern_bounding_box.display_intersections()
+                if(DEBUG):
+                    pattern_bounding_box.display_bounding_box_object_space()
+                    param_pattern_bounding_box.display_bounding_box_object_space()
+                    pattern_bounding_box.display_intersections()
                 return False
             '''
             matchPoints = GeoMath.getIntersectionBetweenEdgesWithoutLimits2D(GeoMath.getEdgesFromPoints(patInGr.getPoints()), edgesPat, 1)
@@ -138,8 +143,8 @@ class Validator:
     '''
     @staticmethod
     def patternPrimWithNeigborsPatternsPrims(pat, prim, groupOfPrims):
-        reload (GeoMath)
-        reload (BoundingBox)
+        reload(GeoMath)
+        reload(BoundingBox)
         prims = groupOfPrims.keys()
         primsConected = GeoMath.getConnectedPrims(prim, prims)
         pattern_bounding_box = BoundingBox.BoundingBox2D(pat.getPoints(), prim)

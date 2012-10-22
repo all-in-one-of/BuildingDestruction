@@ -16,36 +16,37 @@ HouInter = None
 epsilon = 0.001
 primnumber = 31
 NUMITER = 0
+
+
 #_Class to manage a crack_#
 class Crack(object):
 
     def __init__(self):
         global HouInter
-        reload (AutoPattern)
-        reload (Bresenham)
-        reload (Data)
-        reload (GeoMath)
-        reload (HouInterface)
-        reload (InfoPathPrim)
+        reload(AutoPattern)
+        reload(Bresenham)
+        reload(Data)
+        reload(GeoMath)
+        reload(HouInterface)
+        reload(InfoPathPrim)
         self.patternCrack = {}
         self.IPrimPoint = []
         self.linePerPrim = {}
         self.HI = None
         self.showCrackNodes = []
         self.intersectionPoints = []
-        
 
-    #===========================================================================
+    #==========================================================================
     # doCrack
-    #===========================================================================
+    #==========================================================================
     def doCrack(self, texture, infoPreviousPrim, infoPrim, infoNextPrim):
         logging.debug("Start method doCrack, class Crack")
-        reload (AutoPattern)
-        reload (Bresenham)
-        reload (Data)
-        reload (GeoMath)
-        reload (HouInterface)
-        reload (InfoPathPrim)
+        reload(AutoPattern)
+        reload(Bresenham)
+        reload(Data)
+        reload(GeoMath)
+        reload(HouInterface)
+        reload(InfoPathPrim)
         prim = infoPrim.getPrim()
         previousPrim = infoPreviousPrim.getPrim()
         nextPrim = infoNextPrim.getPrim()
@@ -63,12 +64,11 @@ class Crack(object):
         Ipoint = list(infoPrim.getiPoint())
         finalPoint = list(self.defFpoint(infoPrim, nextPrim))
         self.defCrack(prim, Ipoint, finalPoint, texture)
-        
+
         if(len(self.patternCrack.keys()) > 3):
             logging.debug("End method doCrack, class Crack. State: good")
         else:
             logging.debug("End method doCrack, class Crack. State: length of path < 4")
-
 
     #===========================================================================
     # defCrack
@@ -97,15 +97,15 @@ class Crack(object):
         angle = GeoMath.vecDotProduct(vec1, vec2) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vec2))
         angle = math.acos(angle)
         angle = math.degrees(angle)
-        
+
         #We put relative one arbitrary point to tangent space
         pointWhichIsRelative = vertices[1]
         #Determine x and y vectors, now we'll have suposed horizontal and vertical vectors acording to
         #prim and direction of the crack
-        print "Determine vec"
+
         vecH, vecV = DetermineVectors.DetermineVectors.detVec(prim, GeoMath.vecSub(Ipoint, Fpoint), [0, 0, 1])
         #CHAPUZA CON NUMEROS COMPLEJOS!!! Precision de python pésima, 1.000000001>1?? no! y math.acos error
-        print "end determine vec"
+
         cosAngle = GeoMath.vecDotProduct(vecH, vec1) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vecH))
         complexAngle = cmath.acos(cosAngle)
         if(complexAngle.imag == 0):
@@ -115,7 +115,7 @@ class Crack(object):
                 angleBetweenDetVecAndVecH = math.acos(-1)
             else:
                 angleBetweenDetVecAndVecH = math.acos(1)
-                
+
         #=======================================================================
         # Now we have to ensure that the vec1 has the same direction that the horizontal vector, if not, we
         # change and the horizontal vector will be vec2. Also we have to check if the prim is not a quad,
@@ -134,12 +134,12 @@ class Crack(object):
             y = GeoMath.rotateVecByVec(x, [0, 0, 1], angle)
             y = GeoMath.vecScalarProduct(GeoMath.vecNormalize(y), GeoMath.vecModul(vec1))
             tbn = GeoMath.createTBNmatrix(vertices[0], vertices[1], vertices[2], y, [0, 0], x)
-                     
+
         print "Edn create tbn"
         tbnInverse = GeoMath.Matrix(3, 3)
         tbnInverse.copy(tbn)
         tbnInverse.matrix3Inverse()
-        
+
         #Get the first material:
         print "texture get first layer"
         texture = texturePrim.getFirstLayer(Ipoint)
@@ -154,7 +154,7 @@ class Crack(object):
             dist = GeoMath.vecModul(GeoMath.vecSub(curPoint, Fpoint))
             ui_process_status.calculate_status(dist, inverse=True)
             ui_process_status.print_status()
-            
+
             genPattern = Data.GeneralPattern()
             for wavelength in nextMaterial.mat.keys():
                 singleMat = nextMaterial.mat[wavelength]
@@ -163,7 +163,7 @@ class Crack(object):
                     nextPoint = Bresenham.Bresenham.bresenham(Ipoint, curPoint, Fpoint, setOfTypeOfPattern.getSizex(), setOfTypeOfPattern.getSizey(), prim, [1, 0, 0])
                     pat = AutoPattern.AutoPattern(curPoint, nextPoint, setOfTypeOfPattern, prim, wavelength, self.patternCrack, tbn, tbnInverse, pointWhichIsRelative, texture, texturePrim).pattern
                 genPattern.applyPattern(pat, wavelength)
-            
+
             #Check texture
             previousTexture = texture
             pii, texture = self.checkTexture(texturePrim, previousTexture, genPattern, Fpoint, nextPoint)
@@ -219,22 +219,22 @@ class Crack(object):
                         crackNode.setTemplateFlag(True)
                         self.showCrackNodes.append(crackNode)
                         count += 1
-                    
+
     def deleteShowCrackNodes(self):
         for node in self.showCrackNodes:
             node.destroy()
         self.showCrackNodes = []
-        
+
     def showTextureIntersections(self, geo):
         if(not self.HI):
             self.HI = HouInterface.HouInterface(geo=geo)
         for point in self.intersectionPoints:
             self.HI.showPoint(point=point, name='inter_point')
-    
+
     def deleteShowTextureIntersectionNodes(self):
         if(self.HI):
             self.HI.deletePoints()
-    
+
     def doLineCrackPerPrim(self, groupOfInfoPrimsOrdered):
         groupOfPrimsOrdered = InfoPathPrim.convertListFromInfoPrimToPrim(groupOfInfoPrimsOrdered)
         for prim in groupOfPrimsOrdered:
@@ -243,7 +243,7 @@ class Crack(object):
                 for patt in self.patternCrack[prim]:
                     for point in patt.getPoints():
                             self.linePerPrim[prim].append(point)
-            
+
         #=======================================================================
         # 
         # for countPrim in range(len(groupOfPrimsOrdered)):
@@ -295,7 +295,7 @@ class Crack(object):
         #=======================================================================
 
     def checkTexture(self, texture, previousTexture, genPattern, Fpoint, nextPoint):
-      
+
         tex, nearestPointIntersect, minDistance = texture.findIntersectionWithNearestTexture(genPattern.getPoints())
         logging.debug("Start method checkTexture, class Crack")
         if(tex):
@@ -318,7 +318,7 @@ class Crack(object):
         #the crack in prim.
         #also, in the NORMAL case, maybe the pattern intersect with his texture, because are exiting
         #from it, so we have to do a point in polygon to search what texture is the next
-        
+
         #Check texture, for do that get the vector direction and do it little and do a point in
         #polygon with the texture
         nextDir = GeoMath.vecSub(Fpoint, nearestPointIntersect)
@@ -334,18 +334,18 @@ class Crack(object):
         else:
             nextTex = None
             #We get the final point, so we not have to ensure anything
-        
-        
+
+
         logging.debug("End method checkTexture, class Crack")
         if(nearestPointIntersect):
             self.intersectionPoints.append(nearestPointIntersect)
         return nearestPointIntersect, nextTex
-    
+
 ############CHANGE THIS METHOD TO GET THE PATH WELL, CHANGE THE EPSILON!!!!!!!!!!!!!#############
 
 
     def defFpoint(self, prim, nextPrim):
-        
+
         global HouInter
         '''
         This method can do more things to choose a good final point
@@ -357,7 +357,7 @@ class Crack(object):
 
     def recalculate(self):
         pass
-    
+
     def add_noise_to_crack(self, heigth, frequency, for_edge, wavelength):
         for patterns in self.patternCrack.values():
             for pattern in patterns:

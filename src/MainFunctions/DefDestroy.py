@@ -17,11 +17,11 @@ class DefDestroy(object):
         self.__labelWindow = "window"
         self.__labelWall = "facade"
         self.__labelDoor = "door"
-        
+
         #Nodes
         self.nodes = []
         self.patternControl = None
-        
+
     def initPattern(self, initDestroyedBuildingClass):
         # @type initDestroyedBuildingClass InitDestroyedBuilding
         conditionNodeGeneric = initDestroyedBuildingClass.__conditionNodeGeneric__
@@ -34,7 +34,7 @@ class DefDestroy(object):
         mergeNode = geo.createNode('merge')
         mergeNode.setNextInput(conditionNodeInserts)
         mergeNode.setNextInput(conditionNodeGeneric)
-        
+
         #Connect groupNode partDes shop to condition nodes
         combineGroupPartDes = geo.createNode('group')
         combineGroupPartDes.setNextInput(mergeNode)
@@ -45,12 +45,12 @@ class DefDestroy(object):
         combineGroupTotDes.setNextInput(combineGroupPartDes)
         #rename node
         combineGroupTotDes.setName('combinedGroupTotDes', True)
-        
+
         combineGroupNotDes = geo.createNode('group')
         combineGroupNotDes.setNextInput(combineGroupTotDes)
         #rename node
         combineGroupNotDes.setName('combinedGroupNotDes', True)
-        
+
         totDesInsertName = conditionNodeInserts.evalParm(listOfParmsGroup[0])
         partiDesInsertName = conditionNodeInserts.evalParm(listOfParmsGroup[1])
         notDesInsertName = conditionNodeInserts.evalParm(listOfParmsGroup[2])
@@ -71,24 +71,24 @@ class DefDestroy(object):
         combineGroupTotDes.parm('grp1').set(totDesInsertName)
         combineGroupTotDes.parm('grp2').set(totDesGenericName)
         combineGroupTotDes.parm('op1').set('or')
-        
+
         combineGroupNotDes.parm('crname').set('combinedNotDes')
         combineGroupNotDes.parm('grpequal').set('combinedNotDes')
         combineGroupNotDes.parm('grp1').set(notDesInsertName)
         combineGroupNotDes.parm('grp2').set(notDesGenericName)
         combineGroupNotDes.parm('op1').set('or')
-        
+
         primsCombinedTotDes = combineGroupNotDes.geometry().findPrimGroup('combinedTotDes')
         primsCombinedPartDes = combineGroupNotDes.geometry().findPrimGroup('combinedPartDes')
         primsCombinedNotDes = combineGroupNotDes.geometry().findPrimGroup('combinedNotDes')
-        
+
         if(primsCombinedTotDes != None):
             primsCombinedTotDesG = primsCombinedTotDes.prims()
         if(primsCombinedNotDes != None):
             primsCombinedNotDesG = primsCombinedNotDes.prims()
         if(primsCombinedPartDes != None):
             primsCombinedPartDesG = primsCombinedPartDes.prims()
-        
+
         '''
         primGroups=primsCombinedNotDes.geometry().primGroups()
         for group in primGroups:
@@ -138,7 +138,7 @@ class DefDestroy(object):
         self.nodes.append(primitivePath)
         self.nodes.append(self.patternControl.nodePath)
         primitivePath.setDisplayFlag(True)
-        
+
     def createStructure(self, initDestroyedBuildingClass):
         reload (BuildingStructure)
         logging.debug("Class DefDestroy, Method createStructure")
@@ -161,13 +161,13 @@ class DefDestroy(object):
         user_restriction_parms['label_window'] = 'finestra'
         user_restriction_parms['floor_default_size_y'] = 0.1
         user_restriction_parms['tube_default_radius'] = 0.08
-        
+
         building_structure = BuildingStructure.BuildingStructure(self.patternControl.crack,
                                             initDestroyedBuildingClass.__inserts__,
                                              initDestroyedBuildingClass.__geo__,
                                               user_restriction_parms)
         building_structure.do()
-        
+
     def deleteNodes(self):
         for node in self.nodes:
             node.destroy()

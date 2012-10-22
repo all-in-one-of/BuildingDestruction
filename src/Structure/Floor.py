@@ -17,7 +17,6 @@ class Floor(object):
     def __init__(self, floor_params, position, structure_points):
         '''
         Constructor
-        
         '''
         self.floor_params = floor_params
         self.position = position
@@ -25,7 +24,7 @@ class Floor(object):
         self.absolute_points = []
         self.calculate_absolute_points()
         self.intersections = []
-    
+
     def calculate_absolute_points(self):
         translation = GeoMath.vecSub(self.get_position(), [0, 0, 0])
         new_structure = []
@@ -64,8 +63,8 @@ class Floor(object):
                             prev_intersection = None
                             next_intersection = None
                             break
-    
-    
+
+
     def inside(self, geometry):
         boun = geometry.geometry().boundingBox()
         for point in self.get_absolute_points():
@@ -75,7 +74,7 @@ class Floor(object):
     def display(self, name):
         HI = HouInterface()
         HI.showCurve(self.get_absolute_points(), name, True)
-        
+
     def get_floor_params(self):
         return self.__floor_params
 
@@ -132,5 +131,5 @@ class Floor(object):
     position = property(get_position, set_position, del_position, "position's docstring")
     relative_points = property(get_relative_points, set_relative_points, del_relative_points, "relative_points's docstring")
     absolute_points = property(get_absolute_points, set_absolute_points, del_absolute_points, "absolute_points's docstring")
-    
-   
+
+

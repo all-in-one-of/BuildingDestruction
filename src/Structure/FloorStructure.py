@@ -8,14 +8,14 @@ from ExternalClasses import GeoMath
 from Structure import CreateFloors
 import Floor
 import logging
+
+
 class FloorStructure(object):
     '''
     classdocs
     '''
-
-
     def __init__(self, floor_params, crack, base_node, geo):
-        reload (Floor)
+        reload(Floor)
         '''
         Constructor
         user_restriction_parms:
@@ -28,18 +28,18 @@ class FloorStructure(object):
         self.put_floor_each_y = None
         self.base_node = base_node
         self.geo = geo
-        
+
     def extract_parm_from_user_restrictions(self, parm, default=None):
         #TODO: define an get parms from building
         if(parm in self.get_user_restriction_parms()):
             return self.set_label_window(self.get_user_restriction_parms()[parm])
         return None
-            
+
     def calculate_floors_position(self):
         logging.debug('START Class FloorStructure, method calculate_floors_position')
         points_base_node = [list(p.position()) for p in self.get_base_node().geometry().points()]
         lowest_point = list(self.get_base_node().geometry().boundingBox().minvec())
-        
+
         #Now we stract the points of the floor from the building
         structure_of_floor = []
         for point in points_base_node:
@@ -79,7 +79,7 @@ class FloorStructure(object):
         while(not connected_prims_with_crack and floor_inside):
             #TEMP: display floor
             virtual_floor.display('Not conneced and inside')
-            
+
             logging.debug("Position of floor" + str(position))
             logging.debug("Acumulated increment " + str(acumulated_increment))
             acumulated_increment = GeoMath.vecPlus(acumulated_increment, increment)
@@ -89,7 +89,7 @@ class FloorStructure(object):
             connected_prims_with_crack = (
             virtual_floor.connected_prims_with_floor(self.get_crack().patternCrack.keys()))
             floor_inside = virtual_floor.inside(self.get_base_node())
-        
+
             #If not inside, delete it
         if(not floor_inside):
             logging.debug("Floor outside")
@@ -109,7 +109,7 @@ class FloorStructure(object):
         #    if(not floor_inside):
         #        virtual_floor = None
         #=======================================================================
-        
+
         #=======================================================================
         # Now we have to create the other floors until we reached the first floor
         # outside building or not connected with crack prims
@@ -129,27 +129,27 @@ class FloorStructure(object):
                     virtual_floor.connected_prims_with_floor(
                                                 self.get_crack().patternCrack.keys()))
                 floor_inside_building = virtual_floor.inside(self.get_base_node())
-            
+
             #Now add the last floor if needed
             if(virtual_floor.inside(self.get_base_node())):
                 virtual_floor.display('Last floor inside')
                 destroyed_virtual_floors.append(virtual_floor)
-                
+
         else:
             #Only one floor, and its broken
             virtual_floor.display('Only one floor and broken')
             destroyed_virtual_floors.append(previous_virtual_floor)
-            
+
         CreateFloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
-    logging.debug('END Class FloorStructure, method calculate_floors_position')    
-            
+    logging.debug('END Class FloorStructure, method calculate_floors_position')
+
     def translate_structure_to_center(self, center_point_of_structure, structure_of_floor):
         translation = GeoMath.vecSub([0, 0, 0], center_point_of_structure)
         new_structure = []
         for point in structure_of_floor:
             new_structure.append(GeoMath.vecPlus(point, translation))
         return new_structure
-    
+
     def create_floors(self):
         pass
 
@@ -216,5 +216,5 @@ class FloorStructure(object):
         del self.__geo
 
     geo = property(get_geo, set_geo, del_geo, "geo's docstring")
-    
-    
+
+

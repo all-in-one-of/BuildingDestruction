@@ -9,7 +9,7 @@ buildingEngineNames = ["Comp", "Subdiv", "Repeat", "Insert", "Extrude", "CreateB
 class obtenirNodes:
     def __init__(self):
         self.nodesObtinguts = []
-        
+
 class obtenirNodesArrels(obtenirNodes):
     def obtenir(self):
         for m in hou.selectedNodes()[0].parent().children():
@@ -17,7 +17,7 @@ class obtenirNodesArrels(obtenirNodes):
                 if m not in self.nodesObtinguts:
                     self.nodesObtinguts.append(m)
         return self.nodesObtinguts
-    
+
 class obtenirNodesFulles(obtenirNodes):
     def obtenir(self):
         for m in hou.selectedNodes()[0].parent().children():
@@ -25,7 +25,7 @@ class obtenirNodesFulles(obtenirNodes):
                 if m not in self.nodesObtinguts:
                     self.nodesObtinguts.append(m)
         return self.nodesObtinguts
-    
+
 class obtenirNodesIndependents(obtenirNodes):
     def obtenir(self):
         for m in hou.selectedNodes()[0].parent().children():
@@ -33,20 +33,20 @@ class obtenirNodesIndependents(obtenirNodes):
                 if m not in self.nodesObtinguts:
                     self.nodesObtinguts.append(m)
         return self.nodesObtinguts
-    
+
 
 class selectorConnexions:
     pass
-        
+
 class connexioAscendent(selectorConnexions):
     def connected(self, node):
         return node.inputs()
-    
+
 class connexioDescendent(selectorConnexions):
     def connected(self, node):
         return node.outputs()
-        
-        
+
+
 class LoD:
     def __init__(self):
         self.nodesVisiatats = []
@@ -59,17 +59,17 @@ class LoD:
             self.tractar(node)
             for n in selectorConnexions.connected(node):
                 self.visitarNode(n, selectorConnexions)
-                
+
     def recorrer(self, selectorConnexions, llistnodes):
         node = self.ferRecorregut(selectorConnexions, llistnodes)
         return node
         self.finish()
-        
+
     def finish(self):
         pass
 
 class LoD_max(LoD):
-    
+
     def tractar(self, node):
         if node.type().name() in buildingEngineNames:
             counter = 1
@@ -99,7 +99,7 @@ class LoD_max(LoD):
             self.visitarNode(n, selectorConnexions)
         return self.merge
 
-class ImprimirProductsNoUtilitzats(LoD):                
+class ImprimirProductsNoUtilitzats(LoD):
     def tractar(self, node):
         if node.type().name() in buildingEngineNames:
             counter = 1
@@ -149,7 +149,7 @@ class LoD_user(LoD):
                         self.excloure.append(nProd)
         else:
             print " ~", node.type().name(), " not in buildingEngineNames"
-    
+
     def ferRecorregut(self, selectorConnexions, llistnodes):
         self.merge = self.parent.createNode('object_merge')
         self.merge.parm('numobj').set(0)
@@ -158,7 +158,7 @@ class LoD_user(LoD):
                 nProd = n.path() + ":" + n.parm('product' + str(0)).evalAsString()
                 if nProd not in self.afegir:
                     self.afegir.append(nProd)
-            
+
             self.visitarNode(n, selectorConnexions)
 
     def finish(self):

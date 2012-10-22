@@ -3,7 +3,7 @@ import hou #@UnresolvedImport
 def primBoundingBox(prim):
     tempListMin = prim.vertices()[0].point().position()
     tempListMax = prim.vertices()[0].point().position()
-    for index in prim.vertices():        
+    for index in prim.vertices():
         position = index.point().position()
         tempListMin[0] = min(tempListMin[0], position[0])
         tempListMin[1] = min(tempListMin[1], position[1])
@@ -19,7 +19,7 @@ def condition(referencedGeo, primReference):
     for position in [vertice.point().position() for vertice in primReference.vertices()]:
         counter = 0
         if hou.node(referencedGeo).geometry().boundingBox().contains(position):
-            for prim in hou.node(referencedGeo).geometry().prims():            
+            for prim in hou.node(referencedGeo).geometry().prims():
                 if rayIntersect(position, prim):
                     counter += 1
         #si intersecta con un numero impar de poligonos significa que el centro
@@ -58,7 +58,7 @@ def rayIntersect(pointIO, poly):
     #si el punto esta dentro del poligono. Proyectamos el punto del centro de la primitiva
     #de la geometria original
     pointIntersect[0] = pointIO[1]
-    pointIntersect[1] = pointIO[2]   
+    pointIntersect[1] = pointIO[2]
     numVert = len(listVert)
     counter = 0
     #Pasamos por todas las aristas de la primitiva de la geometria de referencia       
@@ -70,7 +70,7 @@ def rayIntersect(pointIO, poly):
     #si interseca un numero impar de veces, significa que el punto esta dentro
     #del poligono
     return counter % 2 != 0
-            
+
 def insideOutside(p1, p2, pIO):
     #Ahora el eje de las 'y' pasa a ser el de las 'x' y el eje 'z' el de las 'y'
     #"lanzamos" un rayo en el eje de las 'x'(que es el de las 'y' en realidad) y

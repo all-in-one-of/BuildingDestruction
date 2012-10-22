@@ -35,16 +35,16 @@ class XMLParser:
         openedFile = open(path).read()
         self.pT_File = self.clean(openedFile)
         self.pT_File = minidom.parseString(self.pT_File)
-                
+
     def read(self, tag):
         list = self.pT_File.getElementsByTagName(tag)
         nodes = self.keepNodesOnly(list)
         return nodes
-        
+
     def clean(self, fileToClean):
         foo = fileToClean
         without_n = foo.replace('\n', '')
-        without_t = without_n.replace('\t', '')  
+        without_t = without_n.replace('\t', '')
         return without_t
 
     def getNextNode(self, sibling, tagName):
@@ -59,20 +59,20 @@ class XMLParser:
         #print "      FINAL", tagName, childNode
         return childNode
 
-    def keepNodesOnly(self, nodes):        
+    def keepNodesOnly(self, nodes):
         for n in nodes:
             if n.nodeType == Node.TEXT_NODE:
                 nodes.remove(n)
         return nodes
-            
+
     def getAttrib(self, node, attrib):
         return (node.attributes.getNamedItem(attrib).nodeValue).encode('latin')
 
 class XMLParserTextures(XMLParser):
-    
+
     def getAllTextures(self):
         return self.read('texture')
-    
+
     def getDefaultTexture(self):
         objs = self.read('obj')
         defTex = None
@@ -92,12 +92,12 @@ class XMLParserTextures(XMLParser):
         obj = texture.getElementsByTagName('obj')[0]
         value = obj.childNodes[0].nodeValue.encode('latin')
         return value
-    
+
     def getMaterial(self, texture):
         mat = texture.getElementsByTagName('mat')[0]
         value = mat.childNodes[0].nodeValue.encode('latin')
         return value
-    
+
     def getPoints(self, texture):
         points = texture.getElementsByTagName('points')
         points = self.keepNodesOnly(points)[0]
@@ -108,16 +108,16 @@ class XMLParserTextures(XMLParser):
             y = float(self.getAttrib(p, 'y'))
             z = float(self.getAttrib(p, 'z'))
             parsedPoints.append([x, y, z])
-        return parsedPoints    
-    
+        return parsedPoints
+
 class XMLParserMaterials(XMLParser):
-    
+
     def getAllComplexMaterials(self):
         return self.read('complexMaterial')
-    
+
     def getMaterialsFromComplexMaterial(self, compMat):
         return compMat.getElementsByTagName('material')
-    
+
     def getAtomMaterialsFromMaterial(self, mat):
         return mat.getElementsByTagName('atomMaterial')
 
@@ -126,7 +126,7 @@ class XMLParserMaterials(XMLParser):
         name = self.keepNodesOnly(name)[0]
         name = name.childNodes[0].nodeValue.encode('latin')
         return name
-    
+
     def getMaterialWavelenght(self, mat):
         wave = mat.getElementsByTagName('wavelength')
         wave = self.keepNodesOnly(wave)[0]
@@ -142,17 +142,17 @@ class XMLParserMaterials(XMLParser):
         atomMatName = self.keepNodesOnly(atomMatName)[0]
         atomMatName = atomMatName.childNodes[0].nodeValue.encode('latin')
         return atomMatName
-    
+
     def getAtomMaterialClass(self, atomMat):
         atomMatClass = atomMat.getElementsByTagName('atomMatClass')
         atomMatClass = self.keepNodesOnly(atomMatClass)[0]
         atomMatClass = atomMatClass.childNodes[0].nodeValue.encode('latin')
         return atomMatClass
-        
+
     def getAtomMaterialPercent(self, atomMat):
         atomMatPercent = atomMat.getElementsByTagName('atomMatPercent')
         atomMatPercent = self.keepNodesOnly(atomMatPercent)[0]
         atomMatPercent = atomMatPercent.childNodes[0].nodeValue.encode('latin')
         return atomMatPercent
-        
-        
+
+

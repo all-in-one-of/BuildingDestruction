@@ -15,7 +15,7 @@ class CreateFloors(object):
         '''
         Constructor
         '''
-        
-    
+
+
     def do(self):
         pass

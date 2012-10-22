@@ -10,7 +10,7 @@ def condition(primGroup, primReference, geo, grow):
         for prim in primGroup:
             for vertice in prim.vertices():
                 if vertex.point().position() == vertice.point().position():
-                    primInGroup = True                
+                    primInGroup = True
     #Base case true            
     if primInGroup:
         return True
@@ -21,8 +21,8 @@ def condition(primGroup, primReference, geo, grow):
     for primGeo in geo.prims():
         if condition(primGroup, primGeo, geo, 1):
             tempGroup.append(primGeo)
-            
+
     #Check if the primitive is in this level of grow, recursive call
     if condition(tempGroup, primReference, geo, grow):
-        return True                            
+        return True
     return False
