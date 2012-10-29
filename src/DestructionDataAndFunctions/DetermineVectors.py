@@ -5,6 +5,8 @@ epsilon = 0.001
 
 
 class DetermineVectors:
+    #TODO: Refactoring without prim dependancy, allowing instead atributtes
+    #points and normal
     @staticmethod
     def detVec(prim, dirVec, exception):
         global epsilon

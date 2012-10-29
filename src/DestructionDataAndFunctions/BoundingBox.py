@@ -10,7 +10,6 @@ from ExternalClasses import HouInterface
 import logging
 littleEpsilon = 0.002
 
-
 class BoundingBox(object):
     def __init__(self, points):
         pass
@@ -22,111 +21,171 @@ class BoundingBox(object):
         pass
     '''
 
-
+#TODO: removing prim dependancy, allowing point and normal as parameters
 class BoundingBox2D(BoundingBox):
-    '''
-        #=======================================================================
-        # Simple containing 2D
-        #=======================================================================
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    """
+    #=======================================================================
+    # Create bounding box in same plane
+    #=======================================================================
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> b1=BoundingBox2D(points1)
+    
+    >>> b1.get_points_object_space()
+    [[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    
+    >>> b1.get_points_tangent_space()
+    [[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    
+    #=======================================================================
+    # Create bounding box same plane not normalized
+    #=======================================================================
+    >>> points1=[[0,0,0],[3,0,0],[3,2,0],[0,2,0]]
+    >>> b1=BoundingBox2D(points1)
+    
+    >>> b1.get_points_object_space()
+    [[0,0,0],[3,0,0],[3,2,0],[0,2,0]]
+    
+    >>> b1.get_points_tangent_space()
+    [[0,0,0],[3,0,0],[3,2,0],[0,2,0]]
+    
+    #=======================================================================
+    # Create bounding box different plane
+    #=======================================================================
+    >>> points1=[[0,0,0],[0,0,1],[0,1,1],[0,1,0]]
+    >>> b1=BoundingBox2D(points1)
+    
+    >>> b1.get_points_object_space()
+    [[0,0,0],[0,0,1],[0,1,1],[0,1,0]]
+    
+    >>> b1.get_points_tangent_space()
+    [[0,0,0],[0,0,1],[0,1,1],[0,1,0]]
+    
+    #=======================================================================
+    # Create bounding box different plane not normalized
+    #=======================================================================
+    >>> points1=[[0,0,0],[0,0,3],[0,2,3],[0,2,0]]
+    >>> b1=BoundingBox2D(points1)
+    
+    >>> b1.get_points_object_space()
+    [[0,0,0],[0,0,3],[0,2,3],[0,2,0]]
+    
+    >>> b1.get_points_tangent_space()
+    [[0,0,0],[3,0,0],[3,2,0],[0,2,0]]
+    
+    #=======================================================================
+    # Create bounding box different plane not normalized moved
+    #=======================================================================
+    >>> points1=[[10,0,0],[10,0,3],[10,2,3],[10,2,0]]
+    >>> b1=BoundingBox2D(points1)
+    
+    >>> b1.get_points_object_space()
+    [[10,0,0],[10,0,3],[10,2,3],[10,2,0]]
+    
+    >>> b1.get_points_tangent_space()
+    [[0,0,0],[3,0,0],[3,2,0],[0,2,0]]
+    
+    #=======================================================================
+    # Simple containing 2D
+    #=======================================================================
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.contain_bounding_box_2D(b2)
-        True
+    >>> b1.contain_bounding_box_2D(b2)
+    True
 
-        >>> b2.contain_bounding_box_2D(b1)
-        False
+    >>> b2.contain_bounding_box_2D(b1)
+    False
 
-        #=======================================================================
-        # Complex containing 2D
-        #=======================================================================
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[-0.1,-0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    #=======================================================================
+    # Complex containing 2D
+    #=======================================================================
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[-0.1,-0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.contain_bounding_box_2D(b2)
-        False
+    >>> b1.contain_bounding_box_2D(b2)
+    False
 
-        >>> b2.contain_bounding_box_2D(b1)
-        False
+    >>> b2.contain_bounding_box_2D(b1)
+    False
 
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.contain_bounding_box_2D(b2)
-        False
+    >>> b1.contain_bounding_box_2D(b2)
+    False
 
-        >>> b2.contain_bounding_box_2D(b1)
-        False
+    >>> b2.contain_bounding_box_2D(b1)
+    False
 
-        #=======================================================================
-        # Complex intersection 2D
-        #=======================================================================
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    #=======================================================================
+    # Complex intersection 2D
+    #=======================================================================
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.intersect_bounding_box_2D(b2)
-        False
+    >>> b1.intersect_bounding_box_2D(b2)
+    False
 
-        >>> b2.intersect_bounding_box_2D(b1)
-        False
+    >>> b2.intersect_bounding_box_2D(b1)
+    False
 
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[-0.1,-0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[-0.1,-0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.intersect_bounding_box_2D(b2)
-        False
+    >>> b1.intersect_bounding_box_2D(b2)
+    False
 
-        >>> b2.intersect_bounding_box_2D(b1)
-        False
+    >>> b2.intersect_bounding_box_2D(b1)
+    False
 
-        >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        >>> points2=[[0.1,0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
-        >>> b1=BoundingBox2D(points1)
-        >>> b2=BoundingBox2D(points2)
+    >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    >>> points2=[[0.1,0.1,0],[-0.9,-0.1,0],[-0.9,-0.9,0],[-0.1,-0.9,0]]
+    >>> b1=BoundingBox2D(points1)
+    >>> b2=BoundingBox2D(points2)
 
-        >>> b1.intersect_bounding_box_2D(b2)
-        True
+    >>> b1.intersect_bounding_box_2D(b2)
+    True
 
-        >>> b2.intersect_bounding_box_2D(b1)
-        True
+    >>> b2.intersect_bounding_box_2D(b1)
+    True
 
-        #=======================================================================
-        # Simple containing 3D
-        #=======================================================================
-        #=======================================================================
-        # >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
-        # >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
-        # >>> b1=BoundingBox2D(points1)
-        # >>> b2=BoundingBox2D(points2)
-        #
-        # >>> b1.contain_bounding_box_3D(b2)
-        # True
-        #
-        # >>> b2.contain_bounding_box_3D(b1)
-        # False
-        #
-        # >>> points1=[[1,1,0],[1,1,1],[1,2,1],[1,2,0]]
-        # >>> points2=[[1.1,1.1,0],[1.1,1.1,0.9],[1.1,1.9,0.9],[1,1.9,0]]
-        # >>> b1=BoundingBox2D(points1)
-        # >>> b2=BoundingBox2D(points2)
-        #
-        # >>> b1.contain_bounding_box_3D(b2)
-        # True
-        #
-        # >>> b2.contain_bounding_box_3D(b1)
-        # False
-        #=======================================================================
-    '''
+    #=======================================================================
+    # Simple containing 3D
+    #=======================================================================
+    #=======================================================================
+    # >>> points1=[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]
+    # >>> points2=[[0.1,0.1,0],[0.9,0.1,0],[0.9,0.9,0],[0.1,0.9,0]]
+    # >>> b1=BoundingBox2D(points1)
+    # >>> b2=BoundingBox2D(points2)
+    #
+    # >>> b1.contain_bounding_box_3D(b2)
+    # True
+    #
+    # >>> b2.contain_bounding_box_3D(b1)
+    # False
+    #
+    # >>> points1=[[1,1,0],[1,1,1],[1,2,1],[1,2,0]]
+    # >>> points2=[[1.1,1.1,0],[1.1,1.1,0.9],[1.1,1.9,0.9],[1,1.9,0]]
+    # >>> b1=BoundingBox2D(points1)
+    # >>> b2=BoundingBox2D(points2)
+    #
+    # >>> b1.contain_bounding_box_3D(b2)
+    # True
+    #
+    # >>> b2.contain_bounding_box_3D(b1)
+    # False
+    #=======================================================================
+    """
 
     def __init__(self, points, prim=None, dict_of_min_max={}):
         reload(GeoMath)
@@ -418,6 +477,9 @@ class BoundingBox2D(BoundingBox):
         self.set_edges_object_space(GeoMath.getEdgesFromPoints(rectangle_object_space))
         self.set_edges_tangent_space(GeoMath.getEdgesFromPoints(rectangle_tangent_space))
         self.tbn_class = tbn_class
+        
+        self.display_bounding_box_object_space()
+        self.display_bounding_box_tangent_space()
 
     def contain_point_2D(self, point):
         return GeoMath.pointInPoints(point, self.get_points_object_space())
@@ -658,10 +720,6 @@ class BoundingBox2D(BoundingBox):
         for intersection in self.get_display_intersections():
             hi.showPoint(point=intersection, name="intersection")
 
-    if __name__ == "__main__":
-        import doctest
-        doctest.testmod()
-
     x_min = property(get_x_min, set_x_min, del_x_min, "x_min's docstring")
     x_max = property(get_x_max, set_x_max, del_x_max, "x_max's docstring")
     y_min = property(get_y_min, set_y_min, del_y_min, "y_min's docstring")
@@ -682,7 +740,11 @@ class BoundingBox2D(BoundingBox):
     vector_size_tangent_space = property(get_vector_size_tangent_space, set_vector_size_tangent_space, del_vector_size_tangent_space, "vector_size_tangent_space's docstring")
     vector_size_object_space = property(get_vector_size_object_space, set_vector_size_object_space, del_vector_size_object_space, "vector_size_object_space's docstring")
 
-
+    
 def test():
     import doctest
-    doctest.testmod(verbose=True)
+    from DestructionDataAndFunctions import BoundingBox
+    doctest.testmod(BoundingBox)
+    
+if __name__ == "__main__":
+    test()

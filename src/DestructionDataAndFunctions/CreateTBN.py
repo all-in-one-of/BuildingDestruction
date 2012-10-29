@@ -27,7 +27,7 @@ class CreateTBN(object):
     to draw the texture.
     '''
 
-
+    #TODO: remove prim dependancy, allowing points and normal in parameters
     def __init__(self, prim):
         '''
         Constructor
