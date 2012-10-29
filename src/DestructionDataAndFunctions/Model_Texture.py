@@ -26,7 +26,8 @@ class Model_Texture(object):
         self.listOfInserts = listOfInserts
         self.defaultTexture = None
         self.defaultTextureXML = None
-        self.pathToDefinitionFile = '/home/carlos/Dropbox/Work/University/GGG/BuildingEngine/simpleBuilding/modelTexture.xml'
+        #FIXME: hardcoded path
+        self.pathToDefinitionFile = '/home/carlos/Work/University/Git_laptop/BuildingDestruction/resources/modelTexture.xml'
         #Initialize XML parsers
         self.XMLTextures = XMLParser.XMLParserTextures(self.pathToDefinitionFile)
         self.XMLMaterials = XMLParser.XMLParserMaterials(self.pathToDefinitionFile)

@@ -98,14 +98,9 @@ class BuildingStructure(object):
         #=======================================================================
         # Get the size of the geometry of own window primitive
         #=======================================================================
-        prim_window = insert_windows.geometry().prims()[0]
-        prim_window_points = [list(p.point().position()) for p in prim_window.vertices()]
-        prim_window_bounding_box = BoundingBox.BoundingBox2D(prim_window_points,
-                                                             prim_window)
-        #TEMP:display bouding box
-        prim_window_bounding_box.display_bounding_box_tangent_space()
-        windows_size = prim_window_bounding_box.get_vector_size_tangent_space()
-
+        insert_windows.geometry()
+        windows_size = list(insert_windows.geometry().boundingBox().maxvec())
+        print windows_size
         if(not self.extract_parm_from_user_restrictions('window_size_x')):
             self.set_parm_user_restrictions('window_size_x', windows_size[0])
         if(not self.extract_parm_from_user_restrictions('window_size_y')):
