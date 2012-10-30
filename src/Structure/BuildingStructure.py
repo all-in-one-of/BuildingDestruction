@@ -98,7 +98,11 @@ class BuildingStructure(object):
         #=======================================================================
         # Get the size of the geometry of own window primitive
         #=======================================================================
-        some_window = insert_windows.prims()[0].geometry()
+        #We use the parent node because the insertnode has a cooked geometry 
+        #with windows inserteds.
+        #FIXME: we have to add a delete node and separate "finestra" primitives
+        some_window = insert_windows.inputs()[0].geometry().prims()[0]
+        print some_window
         windows_size = list(some_window.geometry().boundingBox().maxvec())
         print windows_size
         if(not self.extract_parm_from_user_restrictions('window_size_x')):

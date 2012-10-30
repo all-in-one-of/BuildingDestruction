@@ -158,6 +158,7 @@ class DefDestroy(object):
                 tube_default_put_each_z
         '''
         user_restriction_parms = {}
+        #FIXME: hardcoded window label
         user_restriction_parms['label_window'] = 'finestra'
         user_restriction_parms['floor_default_size_y'] = 0.1
         user_restriction_parms['tube_default_radius'] = 0.08
