@@ -477,9 +477,6 @@ class BoundingBox2D(BoundingBox):
         self.set_edges_object_space(GeoMath.getEdgesFromPoints(rectangle_object_space))
         self.set_edges_tangent_space(GeoMath.getEdgesFromPoints(rectangle_tangent_space))
         self.tbn_class = tbn_class
-        
-        self.display_bounding_box_object_space()
-        self.display_bounding_box_tangent_space()
 
     def contain_point_2D(self, point):
         return GeoMath.pointInPoints(point, self.get_points_object_space())

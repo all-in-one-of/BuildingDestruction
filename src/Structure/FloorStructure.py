@@ -48,11 +48,12 @@ class FloorStructure(object):
             #We cant do that beacuse the points returned from geometry of houdini
             #node are ordered, and the points can be the structure of the floor
             #just as it is
-            if(point[1] == lowest_point):
+            if(point[1] == lowest_point[1]):
                 #Mapping to y=0
                 structure_of_floor.append([point[0], 0, point[2]])
         center_point_of_structure = GeoMath.centerOfPoints(structure_of_floor)
         logging.debug("Center of structure " + str(center_point_of_structure))
+        #FIXME: Translate why????? Maybe not need to translation
         structure_of_floor = self.translate_structure_to_center(
                                 center_point_of_structure, structure_of_floor)
         logging.debug("Structure of floor " + str(structure_of_floor))
@@ -63,10 +64,9 @@ class FloorStructure(object):
         #=======================================================================
         # Initialize position of the first virtual floor in the center point of the base
         position = center_point_of_structure
-        virtual_floor = Floor.Floor(self.get_floor_params(), position, structure_of_floor)
+        virtual_floor = Floor.Floor(self.get_floor_params(), structure_of_floor)
         previous_virtual_floor = virtual_floor
-        connected_prims_with_crack = (
-            virtual_floor.connected_prims_with_floor(self.get_crack().patternCrack.keys()))
+        connected_prims_with_crack = virtual_floor.connected_prims_with_floor(self.get_crack().patternCrack.keys())
         floor_inside = virtual_floor.inside(self.get_base_node())
         #TEMP: display floor
         virtual_floor.display('First floor')
@@ -78,7 +78,7 @@ class FloorStructure(object):
         acumulated_increment = [0, 0, 0]
         while(not connected_prims_with_crack and floor_inside):
             #TEMP: display floor
-            virtual_floor.display('Not conneced and inside')
+            virtual_floor.display('Not connected and inside')
 
             logging.debug("Position of floor" + str(position))
             logging.debug("Acumulated increment " + str(acumulated_increment))

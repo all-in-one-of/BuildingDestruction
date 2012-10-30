@@ -13,15 +13,15 @@ class Floor(object):
     classdocs
     '''
 
-
-    def __init__(self, floor_params, position, structure_points):
+    #FIXME: position needed? If we deleted relative points it is not long needed
+    
+    def __init__(self, floor_params, structure_points):
         '''
         Constructor
         '''
         self.floor_params = floor_params
-        self.position = position
-        self.relative_points = structure_points
-        self.absolute_points = []
+        #FIXME: why relative points??? Maybe not relative points need
+        self.absolute_points = structure_points
         self.calculate_absolute_points()
         self.intersections = []
 
@@ -41,7 +41,7 @@ class Floor(object):
         prev_intersection = None
         next_intersection = None
         #=======================================================================
-        # we group the intersections in doublets, because after we have a different
+        # we group the intersections in doublets, because after we'll have a different
         # destruction in the floor for each doublet of intersection
         #=======================================================================
         for prim in path_ordered:
@@ -71,6 +71,7 @@ class Floor(object):
             contains = boun.contains(point)
             if(not contains): break
         return contains
+    
     def display(self, name):
         HI = HouInterface()
         HI.showCurve(self.get_absolute_points(), name, True)

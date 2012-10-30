@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<textureModel>
+	
+	<complexMaterial>
+
+			<comMatName>wall</comMatName>
+			<material>
+				<matName>brick</matName>
+				<wavelength>0</wavelength>
+				<atomMaterial>
+					<atomMatName>brickNotBroken</atomMatName>
+					<atomMatClass>SetPatternWall</atomMatClass>
+					<atomMatPercent>50</atomMatPercent>
+				</atomMaterial>
+
+				<atomMaterial>
+					<atomMatName>brickBroken></atomMatName>
+					<atomMatClass>SetPatternWallBroken</atomMatClass>
+					<atomMatPercent>50</atomMatPercent>
+				</atomMaterial>
+			</material>
+
+	</complexMaterial>
+
+	<complexMaterial>
+
+			<comMatName>window</comMatName>
+			<material>
+				<matName>glass</matName>
+				<wavelength>0</wavelength>
+				<atomMaterial>
+					<atomMatName>normalGlass</atomMatName>
+					<atomMatClass>GlassDynamicPatternGenerator</atomMatClass>
+					<atomMatPercent>100</atomMatPercent>
+				</atomMaterial>
+
+			</material>
+
+	</complexMaterial>
+
+	<texture>
+		<obj>default</obj>
+		<mat>wall</mat>
+		<points>
+		</points>
+	</texture>
+
+	<texture>
+		<obj>door</obj>
+		<mat>wall</mat>
+		<points>
+			<point x="0.1" y="0.1" z="0"/>
+			<point x="0.9" y="0.1" z="0"/>
+			<point x="0.9" y="0.9" z="0"/>
+			<point x="0.1" y="0.9" z="0"/>
+		</points>		
+	</texture>
+
+	<texture>
+		<obj>modern_railing</obj>
+		<mat>window</mat>			
+		<points>
+			<point x="0.1" y="0.1" z="0"/>
+		    <point x="0.9" y="0.1" z="0"/>
+		    <point x="0.9" y="0.9" z="0"/>
+		    <point x="0.1" y="0.9" z="0"/>
+		</points>
+	</texture>
+
+	<texture>
+		<obj>openWindow</obj>
+		<mat>window</mat>
+		<points>
+			<point x="0.1" y="0.1" z="0"/>
+		    <point x="0.9" y="0.1" z="0"/>
+		    <point x="0.9" y="0.9" z="0"/>
+		    <point x="0.1" y="0.9" z="0"/>
+		</points>
+	</texture>
+
+</textureModel>
