@@ -10,6 +10,9 @@ from ExternalClasses import HouInterface
 import logging
 littleEpsilon = 0.002
 
+#FIXME: DEPRECATED CLASS. We should do a wraper against bounding box of houdini or use
+#CGAL
+
 class BoundingBox(object):
     def __init__(self, points):
         pass

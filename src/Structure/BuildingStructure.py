@@ -6,10 +6,11 @@ Created on Oct 27, 2011
 '''
 from DestructionDataAndFunctions import BoundingBox
 from DestructionDataAndFunctions import Errors
+from ExternalClasses import GeoMath
 import FloorStructure
 import MetallicStructure
 import logging
-
+epsilon = GeoMath.littleEpsilon
 
 class BuildingStructure(object):
 
@@ -103,6 +104,7 @@ class BuildingStructure(object):
         self.set_metal_structure(MetallicStructure.MetallicStructure
                                  (self.get_user_restriction_parms()))
     def calculate_windows_size(self):
+        global epsilon
         #=======================================================================
         # Get the insert node with windows
         #=======================================================================
@@ -132,8 +134,17 @@ class BuildingStructure(object):
         delete_node.parm('group').set(self.extract_parm_from_user_restrictions('label_window'))
         delete_node.parm('negate').set('keep')
         some_window = delete_node.geometry().prims()[0]
-        window_size = list(some_window.geometry().boundingBox().maxvec())
-        print window_size
+        #TODO: HACK since boundingBox from a polygon is not implemented in houdini
+        #window_size = list(some_window.boundingBox().maxvec())
+        window_points = [list(p.point().position()) for p in some_window.vertices()]
+        #FIXME: we're assuming windows are rectangles AND oriented to xy plane
+        if(abs(window_points[0][1] - window_points[1][1]) < epsilon):
+            height = abs(window_points[0][1] - window_points[3][1])
+            width = abs(window_points[0][0] - window_points[1][0])
+        else:
+            height = abs(window_points[0][1] - window_points[1][1])
+            width = abs(window_points[0][0] - window_points[3][0])
+        window_size = [height, width]
         return window_size
             
     def find_base_node(self):
