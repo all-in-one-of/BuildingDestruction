@@ -77,6 +77,32 @@ class BuildingStructure(object):
             Errors.Error.display_exception(e)
             exit()
 
+        window_size = self.calculate_windows_size()
+        
+        if(not self.extract_parm_from_user_restrictions('window_size_x')):
+            self.set_parm_user_restrictions('window_size_x', window_size[0])
+        if(not self.extract_parm_from_user_restrictions('window_size_y')):
+            self.set_parm_user_restrictions('window_size_y', window_size[1])
+        #=======================================================================
+        # Create floor structure
+        # Put plant each y-size of window - size of plant/2
+        #=======================================================================
+        #TEMP: print params
+        print self.get_user_restriction_parms()['window_size_x']
+        print self.get_user_restriction_parms()['window_size_y']
+        self.find_base_node()
+
+        self.set_floor_structure(FloorStructure.FloorStructure(
+            self.get_user_restriction_parms(), self.get_crack(),
+             self.get_base_node(), self.get_geo()))
+
+        #=======================================================================
+        # Create metal structure
+        # Put a tube each x-size window and each y-size window to create a grid
+        #=======================================================================
+        self.set_metal_structure(MetallicStructure.MetallicStructure
+                                 (self.get_user_restriction_parms()))
+    def calculate_windows_size(self):
         #=======================================================================
         # Get the insert node with windows
         #=======================================================================
@@ -100,36 +126,16 @@ class BuildingStructure(object):
         #=======================================================================
         #We use the parent node because the insertnode has a cooked geometry 
         #with windows inserteds.
-        #FIXME: we have to add a delete node and separate "finestra" primitives
-        some_window = insert_windows.inputs()[0].geometry().prims()[0]
-        print some_window
-        windows_size = list(some_window.geometry().boundingBox().maxvec())
-        print windows_size
-        if(not self.extract_parm_from_user_restrictions('window_size_x')):
-            self.set_parm_user_restrictions('window_size_x', windows_size[0])
-        if(not self.extract_parm_from_user_restrictions('window_size_y')):
-            self.set_parm_user_restrictions('window_size_y', windows_size[1])
-
-        #=======================================================================
-        # Create floor structure
-        # Put plant each y-size of window - size of plant/2
-        #=======================================================================
-        #TEMP: print params
-        print self.get_user_restriction_parms()['window_size_x']
-        print self.get_user_restriction_parms()['window_size_y']
-        self.find_base_node()
-
-        self.set_floor_structure(FloorStructure.FloorStructure(
-            self.get_user_restriction_parms(), self.get_crack(),
-             self.get_base_node(), self.get_geo()))
-
-        #=======================================================================
-        # Create metal structure
-        # Put a tube each x-size window and each y-size window to create a grid
-        #=======================================================================
-        self.set_metal_structure(MetallicStructure.MetallicStructure
-                                 (self.get_user_restriction_parms()))
-
+        
+        previous_node = insert_windows.inputs()[0]
+        delete_node = previous_node.createOutputNode('delete')
+        delete_node.parm('group').set(self.extract_parm_from_user_restrictions('label_window'))
+        delete_node.parm('negate').set('keep')
+        some_window = delete_node.geometry().prims()[0]
+        window_size = list(some_window.geometry().boundingBox().maxvec())
+        print window_size
+        return window_size
+            
     def find_base_node(self):
         geo = self.get_geo()
         all_childrens = geo.children()

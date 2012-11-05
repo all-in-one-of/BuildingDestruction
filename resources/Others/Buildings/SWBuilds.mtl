@@ -1,0 +1,1390 @@
+newmtl Building3Window1
+d 1
+Ns 0.943363
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.114286
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl u2SWBuild1
+d 1
+Ns 0.699164
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl Building3Window2
+d 1
+Ns 0.943363
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.114286
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl MetalDark
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl Concrete1
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl ConcreteBollard
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194565
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl MetalLight
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl RooftopProps
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl ACUnit2
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.282065
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit2B.jpg"
+
+newmtl DellCoText
+d 1
+Ns 0.734513
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.193728
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl SkylightGlass
+d 1
+Ns 0.916211
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.177061
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2glassR.jpg"
+map_refl "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl MetalGalvanized
+d 1
+Ns 0.975
+Ni 0
+Ka 0 0 0
+Kd 0.329412 0.329412 0.329412
+Ks 0.6 0.6 0.6
+Km 0.234983
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl Doors
+d 1
+Ns 0.86351
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.18913
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+
+newmtl AirCon3
+d 1
+Ns 0.81337
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1B.jpg"
+
+newmtl Concrete2
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0666666
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl YellowPaint
+d 1
+Ns 0.79646
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.394425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2red.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2red.jpg"
+
+newmtl Props2
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl Props1
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.195819
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl Vent1
+d 1
+Ns 0.883008
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290217
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2vent1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+
+newmtl MetalGrey
+d 1
+Ns 0.975
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.234983
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl BlackMetalPanels
+d 1
+Ns 0.869027
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.391638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanel.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl WindowGroundlevel1
+d 0.444248
+Ns 0.932743
+Ni 1.53
+Ka 0 0 0
+Kd 0.0627451 0.121569 0.0352941
+Ks 0.976471 0.976471 0.968627
+Km 0.001
+
+newmtl Paving1
+d 1
+Ns 0.810619
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.401429
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2B.jpg"
+
+newmtl LampsA
+d 1
+Ns 0.842478
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0191638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl Paving2
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Concrete
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.196739
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Building11
+d 1
+Ns 0.741593
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.288502
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+
+newmtl MetalLight_u2SWBuild6
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl WindowA
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.2
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11B.jpg"
+
+newmtl WindowsB
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.2
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11B.jpg"
+
+newmtl Concrete1_u2SWBuild6
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl RooftopProps_u2SWBuild6
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl GreenMetalPanel
+d 1
+Ns 0.623955
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.386957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2awning.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl Props1_u2SWBuild6
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.215401
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl MetalDark_u2SWBuild6
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl MetalGalvanized_u2SWBuild6
+d 1
+Ns 0.890265
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.188153
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl BlackMetalPanels_u2SWBuild6
+d 1
+Ns 0.869027
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.391638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanel.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl u2SWBuild1_u2SWBuild6
+d 1
+Ns 0.858407
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl Props2_u2SWBuild6
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl Grass
+d 1
+Ns 0.750443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.02
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2grass.jpg"
+
+newmtl Paving1_u2SWBuild6
+d 1
+Ns 0.810619
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.401429
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2B.jpg"
+
+newmtl Paving2_u2SWBuild6
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl WindowGroundlevel1_u2SWBuild6
+d 0.444248
+Ns 0.932743
+Ni 1.53
+Ka 0 0 0
+Kd 0.0627451 0.121569 0.0352941
+Ks 0.976471 0.976471 0.968627
+Km 0.001
+
+newmtl LampsA_u2SWBuild6
+d 1
+Ns 0.842478
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0191638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl Facade
+d 1
+Ns 0.674095
+Ni 0
+Ka 0 0 0
+Kd 0.792157 0.792157 0.792157
+Ks 0.6 0.6 0.6
+Km 0.38913
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBldg.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBldgB.jpg"
+
+newmtl Concrete1_u2SWBuild5
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl u2WBuild5WindowsB
+d 1
+Ns 0.896936
+Ni 0
+Ka 0 0 0
+Kd 0.188235 0.188235 0.188235
+Ks 0.6 0.6 0.6
+Km 0.183696
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2B.jpg"
+
+newmtl u2WBuild5Windows2
+d 1
+Ns 0.896936
+Ni 0
+Ka 0 0 0
+Kd 0.188235 0.188235 0.188235
+Ks 0.6 0.6 0.6
+Km 0.183696
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2B.jpg"
+
+newmtl WindowGroundlevel1_u2SWBuild5
+d 0.444248
+Ns 0.932743
+Ni 1.53
+Ka 0 0 0
+Kd 0.0627451 0.121569 0.0352941
+Ks 0.976471 0.976471 0.968627
+Km 0.001
+
+newmtl MetalGalvanized_u2SWBuild5
+d 1
+Ns 0.83844
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.167391
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl Concrete2_u2SWBuild5
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.521569 0.521569 0.521569
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl MetalLight_u2SWBuild5
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl Props2_u2SWBuild5
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl Props1_u2SWBuild5
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.206576
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl Vent1_u2SWBuild5
+d 1
+Ns 0.883008
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290217
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2vent1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+
+newmtl MetalGrey_u2SWBuild5
+d 1
+Ns 0.83844
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.167391
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl AirCon3_u2SWBuild5
+d 1
+Ns 0.81337
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1B.jpg"
+
+newmtl RoadTile
+d 1
+Ns 0.80212
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.445652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2road1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2road1D.jpg"
+
+newmtl Grass_u2SWBuild5
+d 1
+Ns 0.750443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.02
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2grass.jpg"
+
+newmtl Paving2_u2SWBuild5
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Brick4
+d 1
+Ns 0.844011
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.384783
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2brick4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2brick4.jpg"
+
+newmtl AwningC
+d 1
+Ns 0.623955
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.386957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2awning.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl RooftopProps_u2SWBuild5
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl u2SWBuild4
+d 1
+Ns 0.753982
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.291638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12.jpg"
+
+newmtl Props1_u2SWBuild4
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.215401
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl Concrete_u2SWBuild4
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl MetalDark_u2SWBuild4
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl LEDRed
+d 1
+Ns 0.95
+Ni 0
+Ka 0.956863 0.137255 0
+Kd 0.266667 0.266667 0.266667
+Ks 0.6 0.6 0.6
+Km 0.02
+
+newmtl Rooftop
+d 1
+Ns 0.495822
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.167391
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave3.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave3B.jpg"
+
+newmtl WindowsD
+d 1
+Ns 0.861947
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0369565
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12R.jpg"
+
+newmtl WindowsE
+d 1
+Ns 0.861947
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0369565
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2NWBuild12R.jpg"
+
+newmtl Building6
+d 1
+Ns 0.79292
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.301044
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2bldg3.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Concrete_u2SWBuild3
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0885018
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Building6Windows1
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.192334
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2bldg3.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2bldg3B.jpg"
+
+newmtl Building6Windows2
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.192334
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2bldg3.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2bldg3B.jpg"
+
+newmtl RooftopProps_u2SWBuild3
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl MetalGrey_u2SWBuild3
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl BlackMetalPanels_u2SWBuild3
+d 1
+Ns 0.869027
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.391638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanel.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl SkylightGlass_u2SWBuild3
+d 1
+Ns 0.916211
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.177061
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2glassR.jpg"
+map_refl "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl MetalDark_u2SWBuild3
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl MetalLight_u2SWBuild3
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl Props2_u2SWBuild3
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl Concrete_u2WBuild5
+d 1
+Ns 0.704735
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Rooftop_u2WBuild5
+d 1
+Ns 0.693593
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.397826
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl WindowA_u2WBuild5
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.2
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11B.jpg"
+
+newmtl Building11_u2WBuild5
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.180435
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+
+newmtl WindowsB_u2WBuild5
+d 1
+Ns 0.95
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.2
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2SEBuild11B.jpg"
+
+newmtl RooftopProps_u2WBuild5
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl MetalGalvanized_u2WBuild5
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl Doors_u2WBuild5
+d 1
+Ns 0.86351
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.18913
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+
+newmtl AirCon3_u2WBuild5
+d 1
+Ns 0.81337
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1B.jpg"
+
+newmtl Props1_u2WBuild5
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.190941
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl Props2_u2WBuild5
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl BlackMetalPanels_u2WBuild1
+d 1
+Ns 0.869027
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.391638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanel.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl Props2_u2WBuild1
+d 1
+Ns 0.75766
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.186957
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props2.jpg"
+
+newmtl Concrete2_u2WBuild1
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194565
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl Grass_u2WBuild1
+d 1
+Ns 0.750443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.02
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2grass.jpg"
+
+newmtl Paving1_u2WBuild1
+d 1
+Ns 0.771681
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.393031
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2B.jpg"
+
+newmtl Paving2_u2WBuild1
+d 1
+Ns 0.683186
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.397212
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave3B.jpg"
+
+newmtl MetalDark_u2WBuild1
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.835294 0.835294 0.835294
+Ks 0.6 0.6 0.6
+Km 0.378261
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metdark.jpg"
+
+newmtl WindowGroundlevel1_u2WBuild1
+d 0.444248
+Ns 0.932743
+Ni 1.53
+Ka 0 0 0
+Kd 0.0627451 0.121569 0.0352941
+Ks 0.976471 0.976471 0.968627
+Km 0.001
+
+newmtl Concrete1_u2WBuild1
+d 1
+Ns 0.635098
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.395652
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl MetalGalvanized_u2WBuild1
+d 1
+Ns 0.8
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.194425
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl Window1
+d 1
+Ns 0.943363
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.114286
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl Window2
+d 1
+Ns 0.943363
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.114286
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl ACUnit2_u2WBuild1
+d 1
+Ns 0.78273
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.282065
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit2B.jpg"
+
+newmtl SkylightGlass_u2WBuild1
+d 1
+Ns 0.916211
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.177061
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2glassR.jpg"
+map_refl "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl MetalLight_u2WBuild1
+d 1
+Ns 0.851327
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.299895
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2white.jpg"
+
+newmtl RooftopProps_u2WBuild1
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl RooftopPanel
+d 1
+Ns 0.858407
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg1B.jpg"
+
+newmtl Doors_u2WBuild1
+d 1
+Ns 0.86351
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.18913
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2doors1.jpg"
+
+newmtl AirCon3_u2WBuild1
+d 1
+Ns 0.81337
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2acunit1B.jpg"
+
+newmtl YellowPaint_u2WBuild1
+d 1
+Ns 0.747283
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.295819
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellow.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+
+newmtl Props1_u2WBuild1
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.190941
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl Vent1_u2WBuild1
+d 1
+Ns 0.883008
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290217
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2vent1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2yellowB.jpg"
+
+newmtl MetalGrey_u2WBuild1
+d 1
+Ns 0.975
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.200696
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl LampsA_u2WBuild1
+d 1
+Ns 0.842478
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.0191638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1.jpg"
+map_D "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2metal1B.jpg"
+
+newmtl BlackMetalPanels_u2SWBuild2
+d 1
+Ns 0.869027
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.391638
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanel.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2blackpanelB.jpg"
+
+newmtl WindowH
+d 1
+Ns 0.896936
+Ni 0
+Ka 0 0 0
+Kd 0.6 0.6 0.6
+Ks 0.6 0.6 0.6
+Km 0.183696
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2B.jpg"
+
+newmtl WindowI
+d 1
+Ns 0.896936
+Ni 0
+Ka 0 0 0
+Kd 0.6 0.6 0.6
+Ks 0.6 0.6 0.6
+Km 0.183696
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2swbldg2B.jpg"
+
+newmtl Concrete_u2SWBuild2
+d 1
+Ns 0.830601
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.380488
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2crete2B.jpg"
+
+newmtl RooftopProps_u2SWBuild2
+d 1
+Ns 0.909734
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.290592
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props4.jpg"
+
+newmtl Props1_u2SWBuild2
+d 1
+Ns 0.799443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.190941
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2props1.jpg"
+
+newmtl LEDred
+d 1
+Ns 0.95
+Ni 0
+Ka 0.984314 0.164706 0.027451
+Kd 1 0 0
+Ks 0.6 0.6 0.6
+Km 0.02
+
+newmtl Concrete3
+d 1
+Ns 0.897345
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.40418
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2B.jpg"
+
+newmtl Paving1_u2SWBuild2
+d 1
+Ns 0.810619
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.401429
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2.jpg"
+map_Bump "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2pave2B.jpg"
+
+newmtl Grass_u2SWBuild2
+d 1
+Ns 0.750443
+Ni 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 0.6 0.6 0.6
+Km 0.02
+map_Kd "/Users/dagush/3D/Urban Sprawl/Runtime/Textures/Stonemason/us2/u2grass.jpg"
+
