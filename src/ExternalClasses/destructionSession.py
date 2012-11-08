@@ -7,6 +7,7 @@ class destructionSession(object):
     PROJECT_DIR = os.path.dirname(__file__)
     PARENT_DIR = os.path.dirname(PROJECT_DIR)
     filename_dir = os.path.join(PARENT_DIR, 'destruction.log')
+    filename_dir = '/home/carlos/destruction.log'
     #L: %(levelname)-2s 
     logging.basicConfig(filename=filename_dir, format='T: %(asctime)-4s M:%(message)s ', datefmt='%d %M:%S', filemode='w', level=logging.DEBUG)
 

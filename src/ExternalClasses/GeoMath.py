@@ -384,7 +384,21 @@ def pointEqualPoint(point1, point2):
     global littleEpsilon
     return vecModul(vecSub(point1, point2)) < littleEpsilon
 
-def pointInSegmentDistance(p1, p2, pIO):
+
+def pointInSegmentDistance(p1, p2, pIO, epsilon = None):
+    '''
+    >>> p1 = [0,0,0]
+    >>> p2 = [0,1,0]
+    >>> p3 = [0, 0.5, 0]
+    >>> pointInSegmentDistance (p1, p2, p3)
+    True
+    
+    >>> p1 = [1,0,0]
+    >>> p2 = [0,1,0]
+    >>> p3 = [0.5, 0.5, 0]
+    >>> pointInSegmentDistance (p1, p2, p3)
+    True
+    '''
     try:
         if(type(p1) != type(list()) or type(p2) != type(list()) or type(pIO) != type(list())):
             raise TypeError
@@ -396,7 +410,8 @@ def pointInSegmentDistance(p1, p2, pIO):
         exit()
         return None
     global littleEpsilon
-    epsilon = littleEpsilon
+    if(not epsilon):
+        epsilon = littleEpsilon
 
     vec12 = vecSub(p2, p1)
     vec1IO = vecSub(pIO, p1)
@@ -628,8 +643,12 @@ def bolzanoIntersectionPoint2_5D(point1, point2, reference_point, axis):
     if(axis == 'x'): axis = 0
     if(axis == 'y'): axis = 1
     if(axis == 'z'): axis = 2
-    assert (type(axis) == type(int))
-
+    try:
+        if(type(axis) != type(int())):
+            raise TypeError
+    except TypeError:
+        print "Expected integer"
+    
     if(point1[axis] < reference_point[axis] and point2[axis] > reference_point[axis]):
         return True
     if(point1[axis] > reference_point[axis] and point2[axis] < reference_point[axis]):
@@ -638,14 +657,21 @@ def bolzanoIntersectionPoint2_5D(point1, point2, reference_point, axis):
     return False
 #Intersect the bounding box of the edge, not the edge.
 def bolzanoIntersectionEdges2_5D(edges1, edges2):
+    edge_1_inter = None
+    edge_2_inter = None
     for edge1 in edges1:
         for edge2 in edges2:
             inter = bolzanoIntersectionPoint2_5D(edge1[0], edge1[1], edge2[0], 'y')
             if(not inter):
                 inter = bolzanoIntersectionPoint2_5D(edge1[0], edge1[1], edge2[1], 'y')
-            if(inter): break
-        if(inter):break
-    return inter
+            if(inter):
+                edge_2_inter = edge2
+                break
+        if(inter):
+            edge_1_inter = edge1
+            break
+        
+    return inter, edge_1_inter, edge_2_inter
 
 def getFalseIntersectionBetweenTwoEdges3D(edge1, edge2, prim):
     vertices = [list(p.point().position()) for p in prim.vertices()]
@@ -700,12 +726,17 @@ def getFalseIntersectionsBetweenEdges3D(list_edges1, list_edges2, prim, num_max_
                     break
 
     return edgesIntersection
-def getIntersectionsBetweenEdges2D(edges1, edges2, maxEdges=None):
+def getIntersectionsBetweenEdges2D(edges1, edges2, maxEdges=None, epsilon = None):
+    #TEMP:
+    print "EDGES START"
+    print edges1
+    print edges2
     count = 0
     edgesIntersection = []
+    
     for edge1 in edges1:
         for edge2 in edges2:
-            intersection = getIntersectionBetweenTwoEdges2D(edge1, edge2)
+            intersection = getIntersectionBetweenTwoEdges2D(edge1, edge2 , epsilon)
             if(intersection.__class__ == type(list())):
                 edgesIntersection.append(intersection)
                 count += 1
@@ -737,8 +768,10 @@ def getIntersectionBetweenEdgesWithoutLimits2D(edges1, edges2, maxEdges=None):
 
     return edgesIntersection
 
-def getIntersectionBetweenTwoEdges2D(edge1, edge2):
+def getIntersectionBetweenTwoEdges2D(edge1, edge2, epsilon = None):
     global littleEpsilon
+    if(not epsilon):
+        epsilon = littleEpsilon
     #First line
     p = edge1[0]
     v = vecSub(edge1[1], edge1[0])
@@ -749,7 +782,7 @@ def getIntersectionBetweenTwoEdges2D(edge1, edge2):
     #Omega= (OyVx - PyVx - VyOx + VyPx) / (VyKx + VxKy)
     divider = (v[1] * k[0] - v[0] * k[1])
 
-    if(divider > (littleEpsilon / 100) or divider < -(littleEpsilon / 100)):
+    if(divider > (epsilon / 100) or divider < -(epsilon / 100)):
         #If divider==0 the lines are parallel, no solution possible
         omega = float((o[1] * v[0] - p[1] * v[0] - v[1] * o[0] + v[1] * p[0])) / float(divider)
     else:
@@ -1385,3 +1418,12 @@ def pointInVolume(referencedGeo, pointIO):
     #de la primitiva que evaluamos esta dentro del volumen('point in poligon' pero aplicado a 3D,
     #es decir, un "point in volume")
     return counter % 2 != 0
+
+
+def test():
+    import doctest
+    from ExternalClasses import GeoMath
+    doctest.testmod(GeoMath, verbose = True)
+    
+if __name__ == "__main__":
+    test()

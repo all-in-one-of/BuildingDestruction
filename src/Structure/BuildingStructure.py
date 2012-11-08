@@ -7,6 +7,8 @@ Created on Oct 27, 2011
 from DestructionDataAndFunctions import BoundingBox
 from DestructionDataAndFunctions import Errors
 from ExternalClasses import GeoMath
+#FIXME: no hou when bounding box extracted
+import hou #@UnresolvedImport
 import FloorStructure
 import MetallicStructure
 import logging
@@ -19,7 +21,7 @@ class BuildingStructure(object):
     We get the information based on the size of windows.
     '''
 
-    def __init__(self, crack, inserts, geo, user_restriction_parms):
+    def __init__(self, crack, path, inserts, geo, user_restriction_parms):
         reload(FloorStructure)
         reload(MetallicStructure)
         reload(BoundingBox)
@@ -41,6 +43,7 @@ class BuildingStructure(object):
         '''
         self.user_restriction_parms = user_restriction_parms
         self.crack = crack
+        self.path = path
         self.all_building_primitives = None
         self.base_node = None
         self.geo = geo
@@ -92,9 +95,10 @@ class BuildingStructure(object):
         print self.get_user_restriction_parms()['window_size_x']
         print self.get_user_restriction_parms()['window_size_y']
         self.find_base_node()
-
+        if(not self.extract_parm_from_user_restrictions('floor_default_put_each_y')):
+            self.set_parm_user_restrictions('floor_default_put_each_y', self.extract_parm_from_user_restrictions('window_size_y')) 
         self.set_floor_structure(FloorStructure.FloorStructure(
-            self.get_user_restriction_parms(), self.get_crack(),
+            self.get_user_restriction_parms(), self.get_crack(), self.get_path(),
              self.get_base_node(), self.get_geo()))
 
         #=======================================================================
@@ -134,17 +138,10 @@ class BuildingStructure(object):
         delete_node.parm('group').set(self.extract_parm_from_user_restrictions('label_window'))
         delete_node.parm('negate').set('keep')
         some_window = delete_node.geometry().prims()[0]
-        #TODO: HACK since boundingBox from a polygon is not implemented in houdini
-        #window_size = list(some_window.boundingBox().maxvec())
         window_points = [list(p.point().position()) for p in some_window.vertices()]
-        #FIXME: we're assuming windows are rectangles AND oriented to xy plane
-        if(abs(window_points[0][1] - window_points[1][1]) < epsilon):
-            height = abs(window_points[0][1] - window_points[3][1])
-            width = abs(window_points[0][0] - window_points[1][0])
-        else:
-            height = abs(window_points[0][1] - window_points[1][1])
-            width = abs(window_points[0][0] - window_points[3][0])
-        window_size = [height, width]
+        window_bounding_box = boundingBox(window_points)
+        window_bounding_box.maxvec()
+        window_size = [window_bounding_box.sizevec()[0], window_bounding_box.sizevec()[1]]
         return window_size
             
     def find_base_node(self):
@@ -169,7 +166,9 @@ class BuildingStructure(object):
     def get_crack(self):
         return self.__crack
 
-
+    def get_path(self):
+        return self.path
+    
     def get_all_building_primitives(self):
         return self.__all_building_primitives
 
@@ -205,7 +204,9 @@ class BuildingStructure(object):
     def set_crack(self, value):
         self.__crack = value
 
-
+    def set_path(self, value):
+        self.path = value
+        
     def set_all_building_primitives(self, value):
         self.__all_building_primitives = value
 
@@ -302,5 +303,24 @@ class BuildingStructure(object):
 
     def del_geo(self):
         del self.__geo
-
     geo = property(get_geo, set_geo, del_geo, "geo's docstring")
+
+#FIXME: make a wraper into BoundignBox class, not here!!!
+def boundingBox(points):
+    print "Window points"
+    print points
+    tempListMin = list(points[0])
+    tempListMax = list(points[0])
+    for position in points:
+        tempListMin[0] = min(tempListMin[0], position[0])
+        tempListMin[1] = min(tempListMin[1], position[1])
+        tempListMin[2] = min(tempListMin[2], position[2])
+        tempListMax[0] = max(tempListMax[0], position[0])
+        tempListMax[1] = max(tempListMax[1], position[1])
+        tempListMax[2] = max(tempListMax[2], position[2])
+    boundingBox = hou.BoundingBox(tempListMin[0], tempListMin[1], tempListMin[2], tempListMax[0], tempListMax[1], tempListMax[2])
+    print tempListMax
+    print tempListMin
+    return boundingBox
+
+

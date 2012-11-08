@@ -164,6 +164,7 @@ class DefDestroy(object):
         user_restriction_parms['tube_default_radius'] = 0.08
 
         building_structure = BuildingStructure.BuildingStructure(self.patternControl.crack,
+                                            self.patternControl.pathConf.path,
                                             initDestroyedBuildingClass.__inserts__,
                                              initDestroyedBuildingClass.__geo__,
                                               user_restriction_parms)
