@@ -37,7 +37,6 @@ class BuildingStructure(object):
                 floor_default_put_each_y
             tubes:
                 tube_default_radius
-                tube_default_put_each_y
                 tube_default_put_each_x
                 tube_default_put_each_z
         '''
@@ -91,9 +90,6 @@ class BuildingStructure(object):
         # Create floor structure
         # Put plant each y-size of window - size of plant/2
         #=======================================================================
-        #TEMP: print params
-        print self.get_user_restriction_parms()['window_size_x']
-        print self.get_user_restriction_parms()['window_size_y']
         self.find_base_node()
         if(not self.extract_parm_from_user_restrictions('floor_default_put_each_y')):
             self.set_parm_user_restrictions('floor_default_put_each_y', self.extract_parm_from_user_restrictions('window_size_y')) 
@@ -106,7 +102,10 @@ class BuildingStructure(object):
         # Put a tube each x-size window and each y-size window to create a grid
         #=======================================================================
         self.set_metal_structure(MetallicStructure.MetallicStructure
-                                 (self.get_user_restriction_parms()))
+                                 (self.get_user_restriction_parms(),
+                                  self.get_floor_structure(),
+                                  self.get_geo()))
+        
     def calculate_windows_size(self):
         global epsilon
         #=======================================================================
@@ -139,8 +138,7 @@ class BuildingStructure(object):
         delete_node.parm('negate').set('keep')
         some_window = delete_node.geometry().prims()[0]
         window_points = [list(p.point().position()) for p in some_window.vertices()]
-        window_bounding_box = boundingBox(window_points)
-        window_bounding_box.maxvec()
+        window_bounding_box = GeoMath.boundingBox(window_points)
         window_size = [window_bounding_box.sizevec()[0], window_bounding_box.sizevec()[1]]
         return window_size
             
@@ -304,23 +302,5 @@ class BuildingStructure(object):
     def del_geo(self):
         del self.__geo
     geo = property(get_geo, set_geo, del_geo, "geo's docstring")
-
-#FIXME: make a wraper into BoundignBox class, not here!!!
-def boundingBox(points):
-    print "Window points"
-    print points
-    tempListMin = list(points[0])
-    tempListMax = list(points[0])
-    for position in points:
-        tempListMin[0] = min(tempListMin[0], position[0])
-        tempListMin[1] = min(tempListMin[1], position[1])
-        tempListMin[2] = min(tempListMin[2], position[2])
-        tempListMax[0] = max(tempListMax[0], position[0])
-        tempListMax[1] = max(tempListMax[1], position[1])
-        tempListMax[2] = max(tempListMax[2], position[2])
-    boundingBox = hou.BoundingBox(tempListMin[0], tempListMin[1], tempListMin[2], tempListMax[0], tempListMax[1], tempListMax[2])
-    print tempListMax
-    print tempListMin
-    return boundingBox
 
 

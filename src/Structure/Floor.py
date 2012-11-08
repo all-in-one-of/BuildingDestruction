@@ -6,7 +6,7 @@ Created on Oct 27, 2011
 '''
 
 from ExternalClasses import GeoMath
-from ExternalClasses.HouInterface import HouInterface
+from ExternalClasses import HouInterface
 
 class Floor(object):
     '''
@@ -16,12 +16,21 @@ class Floor(object):
     #FIXME: position needed? If we deleted relative points it is not long needed
     
     def __init__(self, floor_params, structure_points):
+        reload(GeoMath)
+        reload(HouInterface)
         '''
         Constructor
+        '''
+        '''
+        Parms
+        floors:
+                floor_default_size_y
+                floor_default_put_each_y
         '''
         reload (GeoMath)
         self.floor_params = floor_params
         self.absolute_points = structure_points
+        self.associate_nodes = None
         self.intersections = []
     
     #TEMP: this functions is no longer used
@@ -51,15 +60,10 @@ class Floor(object):
                 pattern_edges = GeoMath.getEdgesFromPoints(pattern.getPoints())
                 may_intersect, pattern_edge_inter, floor_edge_inter = GeoMath.bolzanoIntersectionEdges2_5D(pattern_edges, edges_floor)
                 if(may_intersect):
-                    #TEMP:
-                    print "may_intersect"
-
                     #FIXME: HACK: we take one point of the pattern edge and put the y of the floor.
                     #We are assuming the edge is perpendicular to the floor.
                     #TEMP:
                     point_intersection = [pattern_edge_inter[0][0], floor_edge_inter[0][1], pattern_edge_inter[0][2]]
-                    print "intersect"
-                    print point_intersection
                     if(not prev_intersection):
                         prev_intersection = point_intersection
                         break
@@ -80,10 +84,24 @@ class Floor(object):
             if(not contains): break
         return contains
     
-    def display(self, name):
-        HI = HouInterface()
-        HI.showCurve(self.get_absolute_points(), name, True)
-
+    def display(self, name = 'floor', HI= None):
+        if(not HI):
+            HI = HouInterface.HouInterface()
+        #Get the size of the floor using its points
+        bounding_box = GeoMath.boundingBox(self.get_absolute_points())
+        size = bounding_box.sizevec()
+        #Put the size 'y' that user wants the floor to be
+        size[1] = self.extract_parm_from_user_restrictions('floor_default_size_y')
+        center = GeoMath.centerOfPoints(self.get_absolute_points())
+        nodeName = HI.showCube(name, size, center)
+        self.associate_nodes = HI.cubes[nodeName]
+        
+    def extract_parm_from_user_restrictions(self, parm, default=None):
+        #TODO: define an get parms from building
+        if(parm in self.get_floor_params()):
+            return self.get_floor_params()[parm]
+        return default
+    
     def get_floor_params(self):
         return self.__floor_params
 

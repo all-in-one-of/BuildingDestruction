@@ -16,12 +16,13 @@ class FloorStructure(object):
     '''
     def __init__(self, floor_params, crack, path, base_node, geo):
         reload(Floor)
+        reload(CreateFloors)
         '''
         Constructor
         user_restriction_parms:
-            floors:
-                floor_default_size_y
-                floor_default_put_each_y
+        floors:
+            floor_default_size_y
+            floor_default_put_each_y
         '''
         self.floor_params = floor_params
         self.crack = crack
@@ -29,13 +30,9 @@ class FloorStructure(object):
         self.put_floor_each_y = None
         self.base_node = base_node
         self.geo = geo
-        self.calculate_floors_position()
         
-    def extract_parm_from_user_restrictions(self, parm, default=None):
-        #TODO: define an get parms from building
-        if(parm in self.get_floor_params()):
-            return self.get_floor_params()[parm]
-        return None
+        self.floors = []
+        self.calculate_floors_position()
 
     def calculate_floors_position(self):
         logging.debug('START Class FloorStructure, method calculate_floors_position')
@@ -65,10 +62,7 @@ class FloorStructure(object):
         previous_virtual_floor = virtual_floor
         connected_prims_with_crack = virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path())
         floor_inside = virtual_floor.inside(self.get_base_node())
-        #TEMP: display floor
-        virtual_floor.display('First_floor')
-        print "Points of the floor"
-        print virtual_floor.get_absolute_points()
+
         #MAYFIX: structure points are the same for each floor, we assume that
         #the building have the same boundary for each floor
         increment = GeoMath.vecScalarProduct(
@@ -76,11 +70,6 @@ class FloorStructure(object):
         logging.debug("Increment " + str(increment))
         acumulated_increment = [0, 0, 0]
         while(not connected_prims_with_crack and floor_inside):
-            #TEMP: display floor
-            print "EN EL WHILE"
-            print virtual_floor.get_absolute_points()
-            virtual_floor.display('Not_connected_and_inside')
-
             logging.debug("Acumulated increment " + str(acumulated_increment))
             acumulated_increment = GeoMath.vecPlus(acumulated_increment, increment)
             new_structure_of_floor = [GeoMath.vecPlus(position, acumulated_increment) for position in structure_of_floor]
@@ -89,8 +78,8 @@ class FloorStructure(object):
             connected_prims_with_crack = (
             virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path()))
             floor_inside = virtual_floor.inside(self.get_base_node())
-
-            #If not inside, delete it
+        
+        #If not inside, delete it
         if(not floor_inside):
             logging.debug("Floor_outside")
             virtual_floor = None
@@ -109,30 +98,30 @@ class FloorStructure(object):
         #    if(not floor_inside):
         #        virtual_floor = None
         #=======================================================================
-
+        
+        #The first floor is untouched
+        destroyed_virtual_floors = [previous_virtual_floor]
         #=======================================================================
         # Now we have to create the other floors until we reached the first floor
         # outside building or not connected with crack prims
         #=======================================================================
-        destroyed_virtual_floors = []
         if(virtual_floor):
             connected_prims_with_crack = True
             floor_inside_building = True
 
             while(connected_prims_with_crack and floor_inside_building):
-                #TEMP: display floor
-                virtual_floor.display('Connected_and_inside')
                 destroyed_virtual_floors.append(virtual_floor)
+                logging.debug("Acumulated increment " + str(acumulated_increment))
                 acumulated_increment = GeoMath.vecPlus(acumulated_increment, increment)
-                virtual_floor = Floor.Floor(self.get_floor_params(), structure_of_floor)
+                new_structure_of_floor = [GeoMath.vecPlus(position, acumulated_increment) for position in structure_of_floor]
+                previous_virtual_floor = virtual_floor
+                virtual_floor = Floor.Floor(self.get_floor_params(), new_structure_of_floor)
                 connected_prims_with_crack = (
-                    virtual_floor.intersections_with_crack(
-                                                self.get_crack().patternCrack, self.get_path()))
-                floor_inside_building = virtual_floor.inside(self.get_base_node())
+                virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path()))
+                floor_inside = virtual_floor.inside(self.get_base_node())
 
             #Now add the last floor if needed
             if(virtual_floor.inside(self.get_base_node())):
-                virtual_floor.display('Last_floor_inside')
                 destroyed_virtual_floors.append(virtual_floor)
 
         else:
@@ -140,16 +129,15 @@ class FloorStructure(object):
             destroyed_virtual_floors.append(previous_virtual_floor)
 
         CreateFloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
-    logging.debug('END Class FloorStructure, method calculate_floors_position')
+        self.floors = destroyed_virtual_floors
+        logging.debug('END Class FloorStructure, method calculate_floors_position')
 
-    #TEMP: no longer used this function, erase it
-    def translate_structure_to_center(self, center_point_of_structure, structure_of_floor):
-        translation = GeoMath.vecSub([0, 0, 0], center_point_of_structure)
-        new_structure = []
-        for point in structure_of_floor:
-            new_structure.append(GeoMath.vecPlus(point, translation))
-        return new_structure
-
+    def extract_parm_from_user_restrictions(self, parm, default=None):
+        #TODO: define an get parms from building
+        if(parm in self.get_floor_params()):
+            return self.get_floor_params()[parm]
+        return default
+    
     def create_floors(self):
         pass
 
@@ -162,7 +150,9 @@ class FloorStructure(object):
 
     def get_path(self):
         return self.path
-
+    def get_floors(self):
+        return self.floors
+        
     def set_floor_params(self, value):
         self.__floor_params = value
 

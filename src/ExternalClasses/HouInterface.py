@@ -11,16 +11,41 @@ class HouInterface(object):
         self.curves = {}
         self.points = {}
         self.transforms = {}
-
-    def showPoint(self, point, name='', size=0.05, color=[1, 0, 0]):
+        self.tubes = {}
+        self.cubes = {}
+        
+    def initGeo(self):
+        isGeoCreated = True
         if(not self.geometry):
             obj = hou.node('/obj')
             geo = obj.createNode('geo')
             #erase file node
             geo.children()[0].destroy()
+            isGeoCreated = True
         else:
             geo = self.geometry
-        sphere = geo.createNode('sphere')
+            isGeoCreated = False
+        return geo, isGeoCreated
+    
+    def createNode(self, nodeType, geo, name=''):
+        if(name):
+            node = geo.createNode(nodeType, name, True)
+        else:
+            node = geo.createNode(nodeType)
+        return node
+    
+    #Normally, if we created a geo just only for this node, we want to display
+    #it always. Else, we want to not take the control about the display flag,
+    #and we put the template flag instead.
+    def setFlags(self, node, isGeoCreated):
+        if(isGeoCreated):
+            node.setDisplayFlag(True)
+        else:
+            node.setTemplateFlag(True)
+            
+    def showPoint(self, point, name='', size=0.05, color=[1, 0, 0]):
+        geo = self.initGeo()
+        sphere = self.createNode('sphere', geo, name)
         sphere.parm('radx').set(size)
         sphere.parm('rady').set(size)
         sphere.parm('radz').set(size)
@@ -28,12 +53,10 @@ class HouInterface(object):
         sphere.parm('tx').set(str(point[0]))
         sphere.parm('ty').set(str(point[1]))
         sphere.parm('tz').set(str(point[2]))
-        if(name):
-            colorNode = geo.createNode('color', name)
-            name = colorNode.name()
-        else:
-            colorNode = geo.createNode('color')
-            name = colorNode.name()
+        
+        colorNode = self.createNode('color', geo, name)
+        name = colorNode.name()
+
         colorNode.parm('colorr').set(str(color[0]))
         colorNode.parm('colorg').set(str(color[1]))
         colorNode.parm('colorb').set(str(color[2]))
@@ -44,10 +67,10 @@ class HouInterface(object):
         colorNode.moveToGoodPosition()
         geo.moveToGoodPosition()
         self.points[name] = [sphere, colorNode]
+        
+        return name
 
     def deletePoints(self):
-        "POINTS!!!!!!!!!!"
-        print self.points
         for point in self.points.values():
             for node in point:
                 node.destroy()
@@ -56,24 +79,11 @@ class HouInterface(object):
     def showCurve(self, points, name='', close=False):
         if(not points):
             return
-        if(not self.geometry):
-            obj = hou.node('obj')
-            if(name != ''):
-                geo = obj.createNode('geo', name)
-            else:
-                geo = obj.createNode('geo')
-            #erase file node
-            geo.children()[0].destroy()
-        else:
-            geo = self.geometry
-
+        geo, isGeoCreated = self.initGeo()
+        curveNode = self.createNode('curve', geo, name)
+        name = curveNode.name()
+        
         pointsString = ""
-        if(name != ''):
-            curveNode = geo.createNode('curve', name, True)
-            name = curveNode.name()
-        else:
-            curveNode = geo.createNode('curve')
-            name = curveNode.name()
         for point in points:
             pointsString = pointsString + str(point[0]) + "," + str(point[1]) + "," + str(point[2]) + " "
         curveNode.parm('coords').set(pointsString)
@@ -83,10 +93,10 @@ class HouInterface(object):
         curveNode.moveToGoodPosition()
         geo.moveToGoodPosition()
         self.curves[name] = [curveNode]
+        
+        return name
 
     def deleteCurves(self):
-        "Cruves!!!!!!!!!!"
-        print self.curves
         for curve in self.curves.values():
             for node in curve:
                 node.destroy()
@@ -97,7 +107,76 @@ class HouInterface(object):
             for node in self.curves[tag]:
                 node.destroy()
             del self.curves[tag]
-
+    
+    def showTube(self, name = '', radius = 1, center = [0,0,0], height = 10, orientation = 'y'):
+        geo, isGeoCreated = self.initGeo()
+        tubeNode = self.createNode('tube', geo, name)  
+        name = tubeNode.name()
+        
+        tubeNode.parm('tx').set(center[0])
+        tubeNode.parm('ty').set(center[1])
+        tubeNode.parm('tz').set(center[2])
+        
+        tubeNode.parm('rad1').set(radius)
+        tubeNode.parm('rad2').set(radius)
+        
+        tubeNode.parm('height').set(height)
+        
+        tubeNode.parm('orient').set(orientation)
+        
+        #End caps
+        tubeNode.parm('cap').set(True)
+        
+        self.tubes[name] = [tubeNode]
+        tubeNode.moveToGoodPosition()
+        geo.moveToGoodPosition()
+        self.setFlags(tubeNode, isGeoCreated)
+        
+        return name
+        
+    def deleteTube(self, tag):
+        if(self.tubes.has_key(tag)):
+            for node in self.tubes[tag]:
+                node.destroy()
+            del self.tubes[tag]
+            
+    def deleteTubes(self):
+        for tube in self.tube.values():
+            for node in tube:
+                node.destroy()
+        self.curves.clear()
+        
+    def showCube(self, name = '', size = [1,1,1], center = [0,0,0]):
+        geo, isGeoCreated = self.initGeo()
+        cubeNode = self.createNode('box', geo, name)
+        name = cubeNode.name()
+        
+        cubeNode.parm('tx').set(center[0])
+        cubeNode.parm('ty').set(center[1])
+        cubeNode.parm('tz').set(center[2])
+        
+        cubeNode.parm('sizex').set(size[0])
+        cubeNode.parm('sizey').set(size[1])
+        cubeNode.parm('sizez').set(size[2])
+    
+        self.setFlags(cubeNode, isGeoCreated)
+        self.cubes[name] = [cubeNode]
+        
+        cubeNode.moveToGoodPosition()
+        return name
+    
+    def deleteCube(self, tag):
+        if(self.cubes.has_key(tag)):
+            for node in self.cubes[tag]:
+                node.destroy()
+            del self.cubes[tag]
+    
+    def deleteCubes(self):
+        for cube in self.cubes.values():
+            for node in cube:
+                node.destroy()
+        self.cubes.clear()
+        
     def transform(self, volume, translate=[0, 0, 0], scale=[0, 0, 0], rotate=[0, 0, 0]):
         node = volume.parent().createNode('xtrans')
         node.parm('tx').set(translate[0])

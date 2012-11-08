@@ -1,15 +1,12 @@
-* Floor
+# Floor
 - Mas suelos?
-
-* Maths
+- Ventanas mismo tamaño, no hay una via limpia para separar por pisos. Libreria?
+# Maths
 - Interseccion lineas 3D
 
-* General
+# General
 - Añadido fichero prerequisitos
 - Añadida carpeta screencasts
 
-* TODO
-Task | Done?
------------- | -------------
-Content Cell | Content Cell
-Content Cell | Content Cell
+# TODO
+

@@ -378,8 +378,9 @@ def centerOfPoints(points):
     curSum = [0, 0, 0]
     for point in points:
         curSum = vecPlus(curSum, point)
-    center = vecScalarProduct(curSum, 1 / len(points))
+    center = vecScalarProduct(curSum, 1.0 / len(points))
     return center
+
 def pointEqualPoint(point1, point2):
     global littleEpsilon
     return vecModul(vecSub(point1, point2)) < littleEpsilon
@@ -727,10 +728,6 @@ def getFalseIntersectionsBetweenEdges3D(list_edges1, list_edges2, prim, num_max_
 
     return edgesIntersection
 def getIntersectionsBetweenEdges2D(edges1, edges2, maxEdges=None, epsilon = None):
-    #TEMP:
-    print "EDGES START"
-    print edges1
-    print edges2
     count = 0
     edgesIntersection = []
     
@@ -1419,6 +1416,18 @@ def pointInVolume(referencedGeo, pointIO):
     #es decir, un "point in volume")
     return counter % 2 != 0
 
+def boundingBox(points):
+    tempListMin = list(points[0])
+    tempListMax = list(points[0])
+    for position in points:
+        tempListMin[0] = min(tempListMin[0], position[0])
+        tempListMin[1] = min(tempListMin[1], position[1])
+        tempListMin[2] = min(tempListMin[2], position[2])
+        tempListMax[0] = max(tempListMax[0], position[0])
+        tempListMax[1] = max(tempListMax[1], position[1])
+        tempListMax[2] = max(tempListMax[2], position[2])
+    boundingBox = hou.BoundingBox(tempListMin[0], tempListMin[1], tempListMin[2], tempListMax[0], tempListMax[1], tempListMax[2])
+    return boundingBox
 
 def test():
     import doctest
