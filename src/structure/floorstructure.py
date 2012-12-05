@@ -4,9 +4,9 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
-from Structure import CreateFloors
-import Floor
+from lib import GeoMath
+import createfloors
+import floor
 import logging
 
 
@@ -15,8 +15,8 @@ class FloorStructure(object):
     classdocs
     '''
     def __init__(self, floor_params, crack, path, base_node, geo):
-        reload(Floor)
-        reload(CreateFloors)
+        reload(floor)
+        reload(createfloors)
         '''
         Constructor
         user_restriction_parms:
@@ -58,7 +58,7 @@ class FloorStructure(object):
         # floor will be visible trough the hole of the next floor
         #=======================================================================
         # Initialize position of the first virtual floor in the center point of the base
-        virtual_floor = Floor.Floor(self.get_floor_params(), structure_of_floor)
+        virtual_floor = floor.Floor(self.get_floor_params(), structure_of_floor)
         previous_virtual_floor = virtual_floor
         connected_prims_with_crack = virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path())
         floor_inside = virtual_floor.inside(self.get_base_node())
@@ -74,7 +74,7 @@ class FloorStructure(object):
             acumulated_increment = GeoMath.vecPlus(acumulated_increment, increment)
             new_structure_of_floor = [GeoMath.vecPlus(position, acumulated_increment) for position in structure_of_floor]
             previous_virtual_floor = virtual_floor
-            virtual_floor = Floor.Floor(self.get_floor_params(), new_structure_of_floor)
+            virtual_floor = floor.Floor(self.get_floor_params(), new_structure_of_floor)
             connected_prims_with_crack = (
             virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path()))
             floor_inside = virtual_floor.inside(self.get_base_node())
@@ -115,7 +115,7 @@ class FloorStructure(object):
                 acumulated_increment = GeoMath.vecPlus(acumulated_increment, increment)
                 new_structure_of_floor = [GeoMath.vecPlus(position, acumulated_increment) for position in structure_of_floor]
                 previous_virtual_floor = virtual_floor
-                virtual_floor = Floor.Floor(self.get_floor_params(), new_structure_of_floor)
+                virtual_floor = floor.Floor(self.get_floor_params(), new_structure_of_floor)
                 connected_prims_with_crack = (
                 virtual_floor.intersections_with_crack(self.get_crack().patternCrack, self.get_path()))
                 floor_inside = virtual_floor.inside(self.get_base_node())
@@ -128,7 +128,7 @@ class FloorStructure(object):
             #Only one floor
             destroyed_virtual_floors.append(previous_virtual_floor)
 
-        CreateFloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
+        createfloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
         self.floors = destroyed_virtual_floors
         logging.debug('END Class FloorStructure, method calculate_floors_position')
 

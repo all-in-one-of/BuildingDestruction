@@ -4,10 +4,10 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
-import Tube
+from lib import GeoMath
+import tube
 import math
-import CreateMetallicStructure
+import createmetallicstructure
 DEFAULT_PUT_TUBE_EACH_X = 0.50
 DEFAULT_PUT_TUBE_EACH_Z = 0.70
 class MetallicStructure(object):
@@ -16,8 +16,8 @@ class MetallicStructure(object):
     '''
 
     def __init__(self, tube_params, floor_structure, geo):
-        reload(Tube)
-        reload(CreateMetallicStructure)
+        reload(tube)
+        reload(createmetallicstructure)
         reload(GeoMath)
         '''
         user_restriction_parms:
@@ -54,14 +54,14 @@ class MetallicStructure(object):
             n_tubes_z_half_section = int(math.floor(size_z_half_section / put_tube_each_z))
             
             #The first time putting tubes in x we put a tube in the middle
-            tube = Tube.Tube(self.tube_params, center, height_x_tubes, orientation_x_tubes)
+            tube = tube.Tube(self.tube_params, center, height_x_tubes, orientation_x_tubes)
             self.tubes['x'].append(tube)
             #To the right in x, so we will adding 'x' value to the center point
             increment = [put_tube_each_x, 0, 0]
             tube_center = GeoMath.vecPlus(center, increment)
             
             for _ in range(n_tubes_x_half_section):
-                tube = Tube.Tube(self.tube_params, tube_center, height_x_tubes, orientation_x_tubes)
+                tube = tube.Tube(self.tube_params, tube_center, height_x_tubes, orientation_x_tubes)
                 self.tubes['x'].append(tube)
                 tube_center = GeoMath.vecPlus(tube_center, increment)
             
@@ -69,19 +69,19 @@ class MetallicStructure(object):
             increment = [-put_tube_each_x, 0, 0]
             tube_center = GeoMath.vecPlus(center, increment)
             for _ in range(n_tubes_x_half_section):
-                tube = Tube.Tube(self.tube_params, tube_center, height_x_tubes, orientation_x_tubes)
+                tube = tube.Tube(self.tube_params, tube_center, height_x_tubes, orientation_x_tubes)
                 self.tubes['x'].append(tube)
                 tube_center = GeoMath.vecPlus(tube_center, increment)
             
             #The first time putting tubes in z we put a tube in the middle
-            tube = Tube.Tube(self.tube_params, center, height_z_tubes, orientation_z_tubes)
+            tube = tube.Tube(self.tube_params, center, height_z_tubes, orientation_z_tubes)
             self.tubes['z'].append(tube)
             #To the right in x, so we will adding 'x' value to the center point
             increment = [0, 0, put_tube_each_z]
             tube_center = GeoMath.vecPlus(center, increment)
 
             for _ in range(n_tubes_z_half_section):
-                tube = Tube.Tube(self.tube_params, tube_center, height_z_tubes, orientation_z_tubes)
+                tube = tube.Tube(self.tube_params, tube_center, height_z_tubes, orientation_z_tubes)
                 self.tubes['z'].append(tube)
                 tube_center = GeoMath.vecPlus(tube_center, increment)
             
@@ -89,11 +89,11 @@ class MetallicStructure(object):
             increment = [0, 0, -put_tube_each_z]
             tube_center = GeoMath.vecPlus(center, increment)
             for _ in range(n_tubes_z_half_section):
-                tube = Tube.Tube(self.tube_params, tube_center, height_z_tubes, orientation_z_tubes)
+                tube = tube.Tube(self.tube_params, tube_center, height_z_tubes, orientation_z_tubes)
                 self.tubes['z'].append(tube)
                 tube_center = GeoMath.vecPlus(tube_center, increment)
                 
-            CreateMetallicStructure.CreateMetallicStructure(self.tubes, self.geo)
+            createmetallicstructure.CreateMetallicStructure(self.tubes, self.geo)
                
     def extract_parm_from_user_restrictions(self, parm, default=None):
         #TODO: define an get parms from building

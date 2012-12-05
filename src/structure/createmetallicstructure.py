@@ -4,7 +4,7 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-from ExternalClasses import HouInterface
+from lib import HouInterface
 
 class CreateMetallicStructure(object):
     '''

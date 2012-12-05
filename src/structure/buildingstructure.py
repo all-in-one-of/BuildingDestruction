@@ -4,13 +4,13 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-from DestructionDataAndFunctions import BoundingBox
-from DestructionDataAndFunctions import Errors
-from ExternalClasses import GeoMath
-#FIXME: no hou when bounding box extracted
-import hou #@UnresolvedImport
-import FloorStructure
-import MetallicStructure
+#FIXME: bounding box has to been ported
+from destruction import BoundingBox
+#FIXME deprectaed custom errors
+from destruction import Errors
+from lib import GeoMath
+import floorstructure
+import metallicstructure
 import logging
 epsilon = GeoMath.littleEpsilon
 
@@ -22,8 +22,8 @@ class BuildingStructure(object):
     '''
 
     def __init__(self, crack, path, inserts, geo, user_restriction_parms):
-        reload(FloorStructure)
-        reload(MetallicStructure)
+        reload(floorstructure)
+        reload(metallicstructure)
         reload(BoundingBox)
         '''
         Constructor
@@ -50,12 +50,6 @@ class BuildingStructure(object):
         self.floor_structure = None
         self.metal_structure = None
 
-    def do(self):
-        logging.debug("START Class BuildingStructure, method do")
-        self.extract_parms_and_do_automatically_from_building()
-        logging.debug("END Class BuildingStructure, method do")
-
-
     def extract_parm_from_user_restrictions(self, parm, default=None):
         #TODO: define an get parms from building
         if(parm in self.get_user_restriction_parms()):
@@ -64,7 +58,7 @@ class BuildingStructure(object):
     def set_parm_user_restrictions(self, parm, value):
         self.user_restriction_parms[parm] = value
 
-    def extract_parms_and_do_automatically_from_building(self):
+    def create_extra_structure(self):
         #=======================================================================
         # Get information about size of where can be the floors or tubes
         #=======================================================================
@@ -93,7 +87,7 @@ class BuildingStructure(object):
         self.find_base_node()
         if(not self.extract_parm_from_user_restrictions('floor_default_put_each_y')):
             self.set_parm_user_restrictions('floor_default_put_each_y', self.extract_parm_from_user_restrictions('window_size_y')) 
-        self.set_floor_structure(FloorStructure.FloorStructure(
+        self.set_floor_structure(floorstructure.FloorStructure(
             self.get_user_restriction_parms(), self.get_crack(), self.get_path(),
              self.get_base_node(), self.get_geo()))
 
@@ -101,7 +95,7 @@ class BuildingStructure(object):
         # Create metal structure
         # Put a tube each x-size window and each y-size window to create a grid
         #=======================================================================
-        self.set_metal_structure(MetallicStructure.MetallicStructure
+        self.set_metal_structure(metallicstructure.MetallicStructure
                                  (self.get_user_restriction_parms(),
                                   self.get_floor_structure(),
                                   self.get_geo()))

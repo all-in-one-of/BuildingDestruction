@@ -5,8 +5,8 @@ Created on Oct 27, 2011
 @author: carlos
 '''
 
-from ExternalClasses import GeoMath
-from ExternalClasses import HouInterface
+from lib import GeoMath
+from lib import HouInterface
 
 class Floor(object):
     '''
