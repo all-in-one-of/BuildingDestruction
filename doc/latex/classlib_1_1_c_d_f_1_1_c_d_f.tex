@@ -1,0 +1,80 @@
+\hypertarget{classlib_1_1_c_d_f_1_1_c_d_f}{\section{lib.\-C\-D\-F.\-C\-D\-F Class Reference}
+\label{classlib_1_1_c_d_f_1_1_c_d_f}\index{lib.\-C\-D\-F.\-C\-D\-F@{lib.\-C\-D\-F.\-C\-D\-F}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classlib_1_1_c_d_f_1_1_c_d_f_ab8fe8efcc7e7d707c5a5ae971e8f57b8}{cdf}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classlib_1_1_c_d_f_1_1_c_d_f_ab8fe8efcc7e7d707c5a5ae971e8f57b8}{\index{lib\-::\-C\-D\-F\-::\-C\-D\-F@{lib\-::\-C\-D\-F\-::\-C\-D\-F}!cdf@{cdf}}
+\index{cdf@{cdf}!lib::CDF::CDF@{lib\-::\-C\-D\-F\-::\-C\-D\-F}}
+\subsubsection[{cdf}]{\setlength{\rightskip}{0pt plus 5cm}def lib.\-C\-D\-F.\-C\-D\-F.\-cdf (
+\begin{DoxyParamCaption}
+\item[{}]{P\-List}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classlib_1_1_c_d_f_1_1_c_d_f_ab8fe8efcc7e7d707c5a5ae971e8f57b8}
+\begin{DoxyVerb}Cumulative distribution function
+
+In probability theory and statistics, the cumulative distribution function (CDF),
+or just distribution function, describes the probability that a real-valued random
+variable X with a given probability distribution will be found at a value less than or
+equal to x.
+
+Intuitively, the function tell you one ID(from all ID's) taking into account the provability
+to choose that ID.
+_________________________________
+
+Usage:
+PList in format [[Provability,ID],...]
+Call the function like: CDF.cdf(PList)
+_______________________________________________________________________
+
+Examples:
+If you put one ID with 100% of chance, the function will return that ID
+>>> CDF.cdf([[100,0]])
+0
+
+If you put one ID with 0% of chance, the function will return that ID
+>>> CDF.cdf([[0,0]])
+0
+
+In the next test, the probability are 50 in both ID, so, in the normal case, the summation
+of returns from the function are 50 about 100 in each case.
+>>> if(True):
+...     acum0=0
+...     acum1=0
+...     for i in range(100000):
+...         if(CDF.cdf([[50,0],[50,1]])==0): acum0+=1
+...         else: acum1+=1
+...     print int(round(float(acum0)/1000))
+...     print int(round(float(acum1)/1000))
+50
+50
+
+In the next test, the probability are 10 in firts ID, 90 in second ID and 150 in third ID
+so, in the normal case, the summation of returns from the function are 10, 90 and 150 about 250
+in each case.
+>>> if(True):
+...     acum0=0
+...     acum1=0
+...     acum2=0
+...     for i in range(250000):
+...         res=CDF.cdf([[10,0],[90,1],[150,2]])
+...         if(res==0): acum0+=1
+...         elif(res==1): acum1+=1
+...         else:acum2+=1
+...     print int(round(float(acum0)/1000))
+...     print int(round(float(acum1)/1000))
+...     print int(round(float(acum2)/1000))
+10
+90
+150
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{_c_d_f_8py}{C\-D\-F.\-py}\end{DoxyCompactItemize}

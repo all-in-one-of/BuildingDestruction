@@ -1,0 +1,142 @@
+\hypertarget{classlib_1_1_dec_1_1_dec}{\section{lib.\-Dec.\-Dec Class Reference}
+\label{classlib_1_1_dec_1_1_dec}\index{lib.\-Dec.\-Dec@{lib.\-Dec.\-Dec}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classlib_1_1_dec_1_1_dec_a69ba89d91be2944c8ba77b8c6988a788}{info}
+\item 
+def \hyperlink{classlib_1_1_dec_1_1_dec_ade919170625403846760d4ec1b30f691}{accepts}
+\item 
+def \hyperlink{classlib_1_1_dec_1_1_dec_ae09f5250c9d50c8ab2269c8797e470e0}{returns}
+\item 
+def \hyperlink{classlib_1_1_dec_1_1_dec_a414388e7d0357f00664a4dfdfd1988ad}{trace}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}This class provide a self-implemented decorators.
+How implements it: http://www.artima.com/weblogs/viewpost.jsp?thread=240845 (accesed 02/03/2011)
+
+Quick list:
+accepts: This decorator provide a type checking of parameters inputs to the function.
+It will work with any classes and also accepts static functions and class functions.
+
+returns: This decorator provide a type checking of parameters outputs from the function.
+It will work with any classes and also accepts static functions and class functions.
+_________________________________
+
+WARNING: be careful with staticmethod and classmethod decorators provided by python, they will must
+be before the @accepts and @returns decorators.
+_________________________________
+
+Usage:
+Put the decorator before the function like:
+@accepts(class1, class2, class3)
+def function(x, y, z)
+
+The "self" parameter and "class" parameter(in class methods) must be not indicated.
+
+One of three degrees of enforcement may be specified by passing
+the 'debug' keyword argument to the decorator:
+    0 -- NONE:   No type-checking. Decorators disabled.
+    1 -- MEDIUM: Print warning message to stderr. (Default)
+    2 -- STRONG: Raise TypeError with message.
+If 'debug' is not passed to the decorator, the default level is used.
+
+Example usage:
+    >>> if(True):
+    ...     NONE, MEDIUM, STRONG = 0, 1, 2
+    ...     @Dec.accepts(int, int, int)
+    ...     @Dec.returns(float)
+    ...     def average(x, y, z):
+    ...         return (x + y + z) / 2
+    ...     sys.stderr= sys.stdout #Doctest purpose only
+    ...     average(5.5, 10, 15.0)
+    ...
+    TypeWarning:  'average' method accepts (int, int, int), but was given (float, int, float)
+    15.25
+    >>> average(5, 10, 15)
+    TypeWarning:  'average' method returns (float), but result is (int)
+    15
+
+    In fibonaci, the param must be a integer, so if it is not a integer, it'll raise an error,
+    not a warning. Indicated that with the debug=3 param.
+    >>> if(True):
+    ...     @Dec.accepts(int, debug=STRONG)
+    ...     @Dec.returns(int, debug=STRONG)
+    ...     def fib(n):
+    ...         if n in (0, 1): return n
+    ...         return fib(n-1) + fib(n-2)
+    ...
+    ...     fib(5.3)
+    Traceback (most recent call last):
+      ...
+    TypeError: 'fib' method accepts (int), but was given (float)
+\end{DoxyVerb}
+ 
+
+\subsection{Member Function Documentation}
+\hypertarget{classlib_1_1_dec_1_1_dec_ade919170625403846760d4ec1b30f691}{\index{lib\-::\-Dec\-::\-Dec@{lib\-::\-Dec\-::\-Dec}!accepts@{accepts}}
+\index{accepts@{accepts}!lib::Dec::Dec@{lib\-::\-Dec\-::\-Dec}}
+\subsubsection[{accepts}]{\setlength{\rightskip}{0pt plus 5cm}def lib.\-Dec.\-Dec.\-accepts (
+\begin{DoxyParamCaption}
+\item[{}]{types, }
+\item[{}]{kw}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classlib_1_1_dec_1_1_dec_ade919170625403846760d4ec1b30f691}
+\begin{DoxyVerb}Function decorator. Checks that inputs given to decorated function
+are of the expected type.
+
+Parameters:
+@param types:
+The expected types of the inputs to the decorated function.
+Must specify type for each parameter.
+
+@param kw:
+Optional specification of 'debug' level (this is the only valid
+keyword argument, no other should be given).
+debug = ( 0 | 1 | 2 )\end{DoxyVerb}
+ \hypertarget{classlib_1_1_dec_1_1_dec_a69ba89d91be2944c8ba77b8c6988a788}{\index{lib\-::\-Dec\-::\-Dec@{lib\-::\-Dec\-::\-Dec}!info@{info}}
+\index{info@{info}!lib::Dec::Dec@{lib\-::\-Dec\-::\-Dec}}
+\subsubsection[{info}]{\setlength{\rightskip}{0pt plus 5cm}def lib.\-Dec.\-Dec.\-info (
+\begin{DoxyParamCaption}
+\item[{}]{fname, }
+\item[{}]{expected, }
+\item[{}]{actual, }
+\item[{}]{flag}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classlib_1_1_dec_1_1_dec_a69ba89d91be2944c8ba77b8c6988a788}
+\begin{DoxyVerb}Convenience function returns nicely formatted error/warning messages. \end{DoxyVerb}
+ \hypertarget{classlib_1_1_dec_1_1_dec_ae09f5250c9d50c8ab2269c8797e470e0}{\index{lib\-::\-Dec\-::\-Dec@{lib\-::\-Dec\-::\-Dec}!returns@{returns}}
+\index{returns@{returns}!lib::Dec::Dec@{lib\-::\-Dec\-::\-Dec}}
+\subsubsection[{returns}]{\setlength{\rightskip}{0pt plus 5cm}def lib.\-Dec.\-Dec.\-returns (
+\begin{DoxyParamCaption}
+\item[{}]{ret\-\_\-types, }
+\item[{}]{kw}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classlib_1_1_dec_1_1_dec_ae09f5250c9d50c8ab2269c8797e470e0}
+\begin{DoxyVerb}Function decorator. Checks that inputs given to decorated function
+are of the expected type.
+
+Parameters:
+@param ret_types:
+The expected types of returns of the decorated function.
+Must specify type for each parameter.
+
+@param kw:
+Optional specification of 'debug' level (this is the only valid
+keyword argument, no other should be given).
+debug = ( 0 | 1 | 2 )\end{DoxyVerb}
+ \hypertarget{classlib_1_1_dec_1_1_dec_a414388e7d0357f00664a4dfdfd1988ad}{\index{lib\-::\-Dec\-::\-Dec@{lib\-::\-Dec\-::\-Dec}!trace@{trace}}
+\index{trace@{trace}!lib::Dec::Dec@{lib\-::\-Dec\-::\-Dec}}
+\subsubsection[{trace}]{\setlength{\rightskip}{0pt plus 5cm}def lib.\-Dec.\-Dec.\-trace (
+\begin{DoxyParamCaption}
+\item[{}]{f}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classlib_1_1_dec_1_1_dec_a414388e7d0357f00664a4dfdfd1988ad}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{_dec_8py}{Dec.\-py}\end{DoxyCompactItemize}
