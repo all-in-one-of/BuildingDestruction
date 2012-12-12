@@ -6,13 +6,13 @@ class InfoPathPrim():
         self.prim = prim
         self.visited = False
         self.parent = None
-        #Sum of heuristics G and H
+        # Sum of heuristics G and H
         self.F = 0
-        #Cost from initial point to this point
+        # Cost from initial point to this point
         self.G = 0
-        #Cost from this point to final point
+        # Cost from this point to final point
         self.H = 0
-        #Angle from initial point to this point trougth path
+        # Angle from initial point to this point trougth path
         self.sumAngle = 0
         self.next = None
         self.fPoint = None
@@ -21,8 +21,8 @@ class InfoPathPrim():
     def setParent(self, newParent):
         self.parent = newParent
 
-    def setNext(self, next):
-        self.next = next
+    def setNext(self, next_):
+        self.next = next_
 
     def getNext(self):
         return self.next
@@ -50,7 +50,7 @@ class InfoPathPrim():
     def setSumAngle(self, angle):
         self.sumAngle = angle
 
-    #Functions to manage InfoPathPrim instances
+    # Functions to manage InfoPathPrim instances
 def convertIntoInfoPrim(prim):
     infoPrim = InfoPathPrim(prim)
     return infoPrim

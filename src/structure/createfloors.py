@@ -32,7 +32,7 @@ class CreateFloors(object):
 
     def do(self):
         for virtual_floor in self.virtual_floors:
-            virtual_floor.display(HI = self.floors_geo)
+            virtual_floor.display_on(HI = self.floors_geo)
             
     def extract_parm_from_user_restrictions(self, parm, default=None):
         #TODO: define an get parms from building

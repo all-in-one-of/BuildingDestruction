@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# DEPREATED, use instead the base class crack and make a new type of crack builder
 
 from lib import GeoMath
 from lib import HouInterface

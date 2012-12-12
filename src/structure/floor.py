@@ -13,8 +13,8 @@ class Floor(object):
     classdocs
     '''
 
-    #FIXME: position needed? If we deleted relative points it is not long needed
-    
+    # FIXME: position needed? If we deleted relative points it is not long needed
+
     def __init__(self, floor_params, structure_points):
         reload(GeoMath)
         reload(HouInterface)
@@ -32,8 +32,8 @@ class Floor(object):
         self.absolute_points = structure_points
         self.associate_nodes = None
         self.intersections = []
-    
-    #TEMP: this functions is no longer used
+
+    # TEMP: this functions is no longer used
     def calculate_absolute_points(self):
         translation = GeoMath.vecSub(self.get_position(), [0, 0, 0])
         new_structure = []
@@ -41,9 +41,9 @@ class Floor(object):
             new_structure.append(GeoMath.vecPlus(point, translation))
         self.set_absolute_points(new_structure)
 
-    #FIXME: We assume that the crack have to pass at least one time to one floor
-    #but it is not correct, because the patterns can go between two floors
-    #without passing floors
+    # FIXME: We assume that the crack have to pass at least one time to one floor
+    # but it is not correct, because the patterns can go between two floors
+    # without passing floors
     def intersections_with_crack(self, crack, path_ordered):
         intersections = []
         edges_floor = GeoMath.getEdgesFromPoints(self.get_absolute_points())
@@ -53,16 +53,16 @@ class Floor(object):
         # we group the intersections in doublets, because after we'll have a different
         # destruction in the floor for each doublet of intersection
         #=======================================================================
-        
+
         for infoPrim in path_ordered:
             patterns = crack[infoPrim.getPrim()]
             for pattern in patterns:
                 pattern_edges = GeoMath.getEdgesFromPoints(pattern.getPoints())
                 may_intersect, pattern_edge_inter, floor_edge_inter = GeoMath.bolzanoIntersectionEdges2_5D(pattern_edges, edges_floor)
                 if(may_intersect):
-                    #FIXME: HACK: we take one point of the pattern edge and put the y of the floor.
-                    #We are assuming the edge is perpendicular to the floor.
-                    #TEMP:
+                    # FIXME: HACK: we take one point of the pattern edge and put the y of the floor.
+                    # We are assuming the edge is perpendicular to the floor.
+                    # TEMP:
                     point_intersection = [pattern_edge_inter[0][0], floor_edge_inter[0][1], pattern_edge_inter[0][2]]
                     if(not prev_intersection):
                         prev_intersection = point_intersection
@@ -83,25 +83,29 @@ class Floor(object):
             contains = boun.contains(point)
             if(not contains): break
         return contains
-    
-    def display(self, name = 'floor', HI= None):
+
+    def display_on(self, name = 'floor', HI = None):
         if(not HI):
             HI = HouInterface.HouInterface()
-        #Get the size of the floor using its points
+        # Get the size of the floor using its points
         bounding_box = GeoMath.boundingBox(self.get_absolute_points())
         size = bounding_box.sizevec()
-        #Put the size 'y' that user wants the floor to be
+        # Put the size 'y' that user wants the floor to be
         size[1] = self.extract_parm_from_user_restrictions('floor_default_size_y')
         center = GeoMath.centerOfPoints(self.get_absolute_points())
         nodeName = HI.showCube(name, size, center)
         self.associate_nodes = HI.cubes[nodeName]
-        
-    def extract_parm_from_user_restrictions(self, parm, default=None):
-        #TODO: define an get parms from building
+
+    def display_off(self):
+        for node in self.associate_nodes:
+            node.delete()
+
+    def extract_parm_from_user_restrictions(self, parm, default = None):
+        # TODO: define an get parms from building
         if(parm in self.get_floor_params()):
             return self.get_floor_params()[parm]
         return default
-    
+
     def get_floor_params(self):
         return self.__floor_params
 

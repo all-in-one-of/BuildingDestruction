@@ -1,20 +1,21 @@
+# NOT USED
 import productTree
 import parseparameters
 
-DEFAULT_LABELS =  {
+DEFAULT_LABELS = {
     'floors': '',
     'floor': '',
     'windows': '',
     'window': '',
     'doors': '',
-    'door': ''    
+    'door': ''
 }
 
 class BuildingParts(object):
     '''
     Give context to the building, identifying its parts, like floors, windows, etc.
     '''
-    def __init__(self, top_node, label_dictionary = DEFAULT_LABELS):
+    def __init__(self, top_node, label_dictionary=DEFAULT_LABELS):
         '''
         @param top_node the top node of the building. We are using the product 
         tree library to navigate over the tree, so we don't depend on a specific
@@ -49,7 +50,7 @@ class BuildingParts(object):
         }
         '''
         self.__building_parts = {}
-        
+
     def identify_parts(self):
         '''
         @return building_parts it is the main dictionary of parts. It is
@@ -58,30 +59,30 @@ class BuildingParts(object):
         floors: 
         '''
 
-    
+
     def _ensure_existing_parts(self):
-        
-        #Manage errors maybe due to user interaction in the GUI while the program run
-        assert (not len(self.__original_label_dicionary.keys()) > 
+
+        # Manage errors maybe due to user interaction in the GUI while the program run
+        assert (not len(self.__original_label_dicionary.keys()) >
                len(self.__label_dictionary.keys())), (
                "Some part of the building were not recognizable")
-        
-    
+
+
     def _identify_floors(self):
         pass
-    
+
     def _identify_floor(self):
         pass
-    
+
     def _identify_windows(self):
         pass
-    
+
     def _identify_window(self):
         pass
-    
+
     def _identify_doors(self):
         pass
-    
+
     def _identify_door(self):
         pass
-        
+

@@ -48,7 +48,7 @@ class TransitionError(Error):
         msg  -- explanation of why the specific transition is not allowed
     """
 
-    def __init__(self, prev, next, msg):
+    def __init__(self, prev, next_, msg):
         self.prev = prev
-        self.next = next
+        self.next = next_
         self.msg = msg

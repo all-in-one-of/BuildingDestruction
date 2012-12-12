@@ -3,7 +3,7 @@
 
 from lib import DesPatternControl
 from lib import  Model_Texture
-from structure import BuildingStructure
+from structure import buildingstructurecontainer
 import InitDestroyedBuilding
 import hou  # @UnresolvedImport
 import logging
@@ -107,7 +107,7 @@ class DefDestroy(object):
         self.patternControl = DesPatternControl.DesPatternControl(
                             primsCombinedPartDesG, primsCombinedTotDesG,
                             primsCombinedNotDesG, geo, namePathGroup,
-                            primsCombinedNotDes, volume=volume, modelTex=modelTex)
+                            primsCombinedNotDes, volume = volume, modelTex = modelTex)
         self.patternControl.doPath(geo, combineGroupNotDes)
         # self.patternControl.doCrack()
         # Insert color to primitives in path
@@ -143,6 +143,7 @@ class DefDestroy(object):
 
     def createStructure(self, initDestroyedBuildingClass):
         reload (BuildingStructure)
+        reload(building)
         logging.debug("Class DefDestroy, Method createStructure")
         '''
         user_restriction_parms:
@@ -160,17 +161,19 @@ class DefDestroy(object):
                 tube_default_put_each_z
         '''
         user_restriction_parms = {}
-        # FIXME: hardcoded window label
+        # FIXME: hardcoded window label and parameters
         user_restriction_parms['label_window'] = 'finestra'
         user_restriction_parms['floor_default_size_y'] = 0.1
         user_restriction_parms['tube_default_radius'] = 0.08
 
-        building_structure = BuildingStructure.BuildingStructure(self.patternControl.crack,
+        building_structure = buildingstructurecontainer.BuildingStructureContainer(
+                                            self.patternControl.crack,
                                             self.patternControl.pathConf.path,
                                             initDestroyedBuildingClass.__inserts__,
-                                             initDestroyedBuildingClass.__geo__,
-                                              user_restriction_parms)
+                                            initDestroyedBuildingClass.__geo__,
+                                            user_restriction_parms)
         building_structure.do()
+
 
     def deleteNodes(self):
         for node in self.nodes:

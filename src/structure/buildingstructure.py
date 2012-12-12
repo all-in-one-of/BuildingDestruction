@@ -4,11 +4,12 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-#FIXME: bounding box has to been ported
+# FIXME: bounding box has to been ported
 from destruction import BoundingBox
-#FIXME deprectaed custom errors
+# FIXME deprectaed custom errors
 from destruction import Errors
 from lib import GeoMath
+import destroystructure
 import floorstructure
 import metallicstructure
 import logging
@@ -50,8 +51,8 @@ class BuildingStructure(object):
         self.floor_structure = None
         self.metal_structure = None
 
-    def extract_parm_from_user_restrictions(self, parm, default=None):
-        #TODO: define an get parms from building
+    def extract_parm_from_user_restrictions(self, parm, default = None):
+        # TODO: define an get parms from building
         if(parm in self.get_user_restriction_parms()):
             return self.get_user_restriction_parms()[parm]
         return None
@@ -75,7 +76,7 @@ class BuildingStructure(object):
             exit()
 
         window_size = self.calculate_windows_size()
-        
+
         if(not self.extract_parm_from_user_restrictions('window_size_x')):
             self.set_parm_user_restrictions('window_size_x', window_size[0])
         if(not self.extract_parm_from_user_restrictions('window_size_y')):
@@ -86,7 +87,7 @@ class BuildingStructure(object):
         #=======================================================================
         self.find_base_node()
         if(not self.extract_parm_from_user_restrictions('floor_default_put_each_y')):
-            self.set_parm_user_restrictions('floor_default_put_each_y', self.extract_parm_from_user_restrictions('window_size_y')) 
+            self.set_parm_user_restrictions('floor_default_put_each_y', self.extract_parm_from_user_restrictions('window_size_y'))
         self.set_floor_structure(floorstructure.FloorStructure(
             self.get_user_restriction_parms(), self.get_crack(), self.get_path(),
              self.get_base_node(), self.get_geo()))
@@ -99,7 +100,11 @@ class BuildingStructure(object):
                                  (self.get_user_restriction_parms(),
                                   self.get_floor_structure(),
                                   self.get_geo()))
-        
+
+    def destroy_extra_structure(self):
+        destroystructure.DestroyStructure(self.get_floor_structure(),
+                                          self.get_metal_structure())
+
     def calculate_windows_size(self):
         global epsilon
         #=======================================================================
@@ -123,9 +128,9 @@ class BuildingStructure(object):
         #=======================================================================
         # Get the size of the geometry of own window primitive
         #=======================================================================
-        #We use the parent node because the insertnode has a cooked geometry 
-        #with windows inserteds.
-        
+        # We use the parent node because the insertnode has a cooked geometry
+        # with windows inserteds.
+
         previous_node = insert_windows.inputs()[0]
         delete_node = previous_node.createOutputNode('delete')
         delete_node.parm('group').set(self.extract_parm_from_user_restrictions('label_window'))
@@ -135,7 +140,7 @@ class BuildingStructure(object):
         window_bounding_box = GeoMath.boundingBox(window_points)
         window_size = [window_bounding_box.sizevec()[0], window_bounding_box.sizevec()[1]]
         return window_size
-            
+
     def find_base_node(self):
         geo = self.get_geo()
         all_childrens = geo.children()
@@ -160,7 +165,7 @@ class BuildingStructure(object):
 
     def get_path(self):
         return self.path
-    
+
     def get_all_building_primitives(self):
         return self.__all_building_primitives
 
@@ -198,7 +203,7 @@ class BuildingStructure(object):
 
     def set_path(self, value):
         self.path = value
-        
+
     def set_all_building_primitives(self, value):
         self.__all_building_primitives = value
 
