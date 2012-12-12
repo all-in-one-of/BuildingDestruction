@@ -4,7 +4,7 @@ Created on Jul 5, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import CreateTBN
 import DetermineVectors
 import logging
@@ -21,13 +21,13 @@ class Texture(object):
     def __init__(self, material, absolutePoints=None, delimitedProportions=None
                   , absolutePointsNotErasable=None, OBJ=None, isDefault=False):
         reload(DetermineVectors)
-        #Absolute points
+        # Absolute points
         self.__absolutePoints = absolutePoints
 
-        #Absolute points not erasables, fixed texture, not mapping
+        # Absolute points not erasables, fixed texture, not mapping
         self.__absolutePointsNotErasable = absolutePointsNotErasable
 
-        #Relative points
+        # Relative points
         self.__delimitedProportions = delimitedProportions
         self.__material = material
         self.__OBJ = OBJ
@@ -109,7 +109,7 @@ class Texture(object):
         global DEBUG
         global epsilon
         logging.debug("Start method checkIntersectionWithTexture, class Texture")
-        #First we check intersection with boundingBox
+        # First we check intersection with boundingBox
         if(self.get_prim() and self.get_absolute_points()):
             param_points_bounding_box = BoundingBox.BoundingBox2D(points, prim)
             texture_bounding_box = BoundingBox.BoundingBox2D(
@@ -140,10 +140,10 @@ class Texture(object):
                 nextTexIndex = (texIndex + 1) % len(self.absolutePoints)
                 texEdge = [self.absolutePoints[texIndex], self.absolutePoints[nextTexIndex]]
                 pointIntersect = GeoMath.getFalseIntersectionBetweenTwoEdges3D(edge, texEdge, prim)
-                #We have to avoid first point, that surely intersect with some texture.
-                #Also avoid the case where two texture are together and pattern intersect with
-                #the first texture, but when 'exit' from this texture, it intersect with the
-                #other texture anda pattern of length 0 is used; with this method we avoid this
+                # We have to avoid first point, that surely intersect with some texture.
+                # Also avoid the case where two texture are together and pattern intersect with
+                # the first texture, but when 'exit' from this texture, it intersect with the
+                # other texture anda pattern of length 0 is used; with this method we avoid this
                 if(pointIntersect):
                     distacenToLastPoint = GeoMath.vecModul(GeoMath.vecSub(
                                         points[len(points) - 1], pointIntersect))
@@ -153,15 +153,15 @@ class Texture(object):
 
         if(pointsIntersect):
             nearestPointIntersect = None
-            #Big number
+            # Big number
             minDistance = 999999
 
-            #For each point we look if intersection is the minimum distance intersection
+            # For each point we look if intersection is the minimum distance intersection
             for pointIntersect in pointsIntersect:
                 distance, achieved = GeoMath.takeDistanceInTrackToPoint(points,
                                                      pointIntersect, points[0])
                 if(achieved and distance < minDistance and distance > epsilon):
-                    #We need the minimun distance, but to avoid errors, we have
+                    # We need the minimun distance, but to avoid errors, we have
                     # to discard the first point and the last
                     minDistance = distance
                     nearestPointIntersect = pointIntersect
@@ -182,10 +182,10 @@ class Texture(object):
         return minDistance, nearestPointIntersect, pointsIntersect
 
     def mappingToPrimitive(self, prim):
-        #If ttexture have not erasable points, return this points
+        # If ttexture have not erasable points, return this points
         if(not self.get_absolute_points_not_erasable()):
 
-            #If not, map to prim
+            # If not, map to prim
             global primnumber
             global epsilon
             logging.debug('Start method mappingToPrimitive, class Texture')
@@ -193,7 +193,7 @@ class Texture(object):
             logging.debug('Prim: ' + str(prim.number()) + ' points object space: '
                            + str(vertices))
 
-            #Convert prim to tangent space of patterns
+            # Convert prim to tangent space of patterns
             tbnCalculated = CreateTBN.CreateTBN(prim)
             tbnCalculated.do()
             absolutePoints = []

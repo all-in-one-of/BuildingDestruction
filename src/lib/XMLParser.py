@@ -3,7 +3,8 @@
 #
 # ////////////////////////////////////////////
 
-from xml.dom import minidom, Node
+from xml.dom import minidom
+from xml.dom import  Node
 
 # ////////////////////////////////////////////
 # productTreeXMLFileReader:
@@ -27,7 +28,7 @@ from xml.dom import minidom, Node
 #
 #   For CornerBuilding:
 #      productTreeXMLFileReader.productTreeXMLFileReader('/Users/dagush/skylineEngine/Demos/UrbanSprawl/City/CornerBuilding.productTree', hou.node('/obj/geo1'), "/Users/dagush/skylineEngine/Demos/UrbanSprawl")
-#    
+#
 # //////////////////////////////////////////
 
 class XMLParser:
@@ -49,14 +50,14 @@ class XMLParser:
 
     def getNextNode(self, sibling, tagName):
         childNode = sibling
-        #print "      START", tagName, childNode
+        # print "      START", tagName, childNode
         while childNode != None:
             if childNode.nodeType == Node.ELEMENT_NODE and childNode.nodeName == tagName:
-                #print "      FOUND", tagName, childNode
+                # print "      FOUND", tagName, childNode
                 return childNode
-            #print "      =>", tagName, childNode
+            # print "      =>", tagName, childNode
             childNode = childNode.nextSibling
-        #print "      FINAL", tagName, childNode
+        # print "      FINAL", tagName, childNode
         return childNode
 
     def keepNodesOnly(self, nodes):

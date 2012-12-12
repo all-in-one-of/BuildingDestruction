@@ -4,11 +4,11 @@ Created on Sep 28, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
-import math
-import logging
+from lib import GeoMath
 import DetermineVectors
 import cmath
+import logging
+import math
 epsilon = 0.001
 
 class CreateTBN(object):
@@ -27,7 +27,7 @@ class CreateTBN(object):
     to draw the texture.
     '''
 
-    #TODO: remove prim dependancy, allowing points and normal in parameters
+    # TODO: remove prim dependancy, allowing points and normal in parameters
     def __init__(self, prim):
         '''
         Constructor
@@ -111,37 +111,37 @@ class CreateTBN(object):
         del self.__tbnInverse
 
     def do(self, scale=False):
-        #Calcule points to tbn matrix
+        # Calcule points to tbn matrix
         self.calculatePoints()
-        #Get some arbitrary vectors conected from vertices of prim
+        # Get some arbitrary vectors conected from vertices of prim
 
         vec1 = GeoMath.vecSub(self.get_previous_point(), self.get_point_which_is_relative())
         vec2 = GeoMath.vecSub(self.get_next_point(), self.get_point_which_is_relative())
-        #logging.debug('Two arbitrary vec1 and vec2:' + str(vec1) + ' ' + str(vec2))
+        # logging.debug('Two arbitrary vec1 and vec2:' + str(vec1) + ' ' + str(vec2))
 
-        #We have to know which angle reside between the two coencted vectors, to know if suposed vectors
-        #in tangent space will be correct
+        # We have to know which angle reside between the two coencted vectors, to know if suposed vectors
+        # in tangent space will be correct
 
         angle = GeoMath.vecDotProduct(vec1, vec2) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vec2))
         angle = math.acos(angle)
         angle = math.degrees(angle)
-        #logging.debug('Angle between vecs:' + str(angle))
+        # logging.debug('Angle between vecs:' + str(angle))
 
-        #We put relative one arbitrary point to tangent space
+        # We put relative one arbitrary point to tangent space
 
 
-        #logging.debug('Point relative:' + str(self.get_point_which_is_relative()))
-        #Determine x and y vectors, now we'll have suposed horizontal and vertical vectors acording to
-        #prim and direction of the crack
+        # logging.debug('Point relative:' + str(self.get_point_which_is_relative()))
+        # Determine x and y vectors, now we'll have suposed horizontal and vertical vectors acording to
+        # prim and direction of the crack
         hasTheNormalToY = GeoMath.vecDotProduct(list(self.get_prim().normal()), [0, 1, 0])
-        #logging.debug('Has the normal to y?:' + str(hasTheNormalToY))
+        # logging.debug('Has the normal to y?:' + str(hasTheNormalToY))
         if(hasTheNormalToY < (1 - epsilon) and hasTheNormalToY > (-1 + epsilon)):
             vecH, vecV = DetermineVectors.DetermineVectors.detVec(self.get_prim(), [0, 1, 0], [0, 0, 1])
-            #logging.debug('Yes, it has the normal to y and vecs are:' + str(vecH) + ' ' + str(vecV))
+            # logging.debug('Yes, it has the normal to y and vecs are:' + str(vecH) + ' ' + str(vecV))
         else:
             vecH, vecV = DetermineVectors.DetermineVectors.detVec(self.get_prim(), [0, 0, 1], [0, 0, 1])
-            #logging.debug('No, it isnt has the normal to y and vecs are:' + str(vecH) + ' ' + str(vecV))
-        #CHAPUZA CON NUMEROS COMPLEJOS!!! Precision de python pésima, 1.000000001>1?? no! y math.acos error
+            # logging.debug('No, it isnt has the normal to y and vecs are:' + str(vecH) + ' ' + str(vecV))
+        # CHAPUZA CON NUMEROS COMPLEJOS!!! Precision de python pésima, 1.000000001>1?? no! y math.acos error
         cosAngle = GeoMath.vecDotProduct(vecH, vec1) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vecH))
         complexAngle = cmath.acos(cosAngle)
         if(complexAngle.imag == 0):
@@ -152,11 +152,11 @@ class CreateTBN(object):
             else:
                 angleBetweenDetVecAndVecH = math.acos(1)
 
-        #Now we have to ensure that the vec1 has the same direction that the horizontal vector, if not, we
-        #change and the horizontal vector will be vec2. Also we have to check if the prim is not a quad,
-        #in this case we have to get the vertical vector from horizontal vector, rotating the known angle
-        #between the two vectors conected in prim (in quad we know that the angle is 90 and we already have the
-        #good vectors)
+        # Now we have to ensure that the vec1 has the same direction that the horizontal vector, if not, we
+        # change and the horizontal vector will be vec2. Also we have to check if the prim is not a quad,
+        # in this case we have to get the vertical vector from horizontal vector, rotating the known angle
+        # between the two vectors conected in prim (in quad we know that the angle is 90 and we already have the
+        # good vectors)
         if((math.fabs(angleBetweenDetVecAndVecH) < epsilon) or (math.fabs(angleBetweenDetVecAndVecH) > (math.pi - epsilon))):
             if(scale):
                 x = GeoMath.vecScalarProduct([1, 0, 0], GeoMath.vecModul(vec1))
@@ -172,7 +172,7 @@ class CreateTBN(object):
             if(scale):
                 y = GeoMath.vecScalarProduct(GeoMath.vecNormalize(y), GeoMath.vecModul(vec1))
             tbn = GeoMath.createTBNmatrix(self.get_previous_point(), self.get_point_which_is_relative(), self.get_next_point(), y, [0, 0], x)
-        #logging.debug('tbn: ' + str(tbn.printAttributes()))
+        # logging.debug('tbn: ' + str(tbn.printAttributes()))
         tbnInverse = GeoMath.Matrix(3, 3)
         tbnInverse.copy(tbn)
         tbnInverse.matrix3Inverse()
@@ -181,8 +181,8 @@ class CreateTBN(object):
         self.set_tbn_inverse(tbnInverse)
 
     def calculatePoints(self):
-        #Filter the points, first we get the undermost points, and then,
-        #The point which less angle from z+ vector by y+ vector has.
+        # Filter the points, first we get the undermost points, and then,
+        # The point which less angle from z+ vector by y+ vector has.
         global epsilon
         vertices = [list(p.point().position()) for p in self.prim.vertices()]
         lessy = vertices[0][1]
@@ -194,7 +194,7 @@ class CreateTBN(object):
                 lessy = point[1]
                 mayPoints = [point]
 
-        #We construct vectors from points to determine which is leftmost, so we delete 'y' component
+        # We construct vectors from points to determine which is leftmost, so we delete 'y' component
         minAngle = 2 * math.pi + epsilon
         for point in mayPoints:
             vec = GeoMath.vecNormalize([point[0], 0, point[2]])

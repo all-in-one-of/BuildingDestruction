@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from ExternalClasses import GeoMath, HouInterface
-from ExternalClasses.CDF import CDF
+from lib import GeoMath
+from lib import HouInterface
+from lib import UIProcessStatus
+from lib.CDF import CDF
 import AutoPattern
 import Bresenham
 import Data
+import DetermineVectors
 import InfoPathPrim
+import cmath
 import logging
 import math
-import DetermineVectors
-import cmath
-from ExternalClasses import UIProcessStatus
 
 HouInter = None
 epsilon = 0.001
@@ -18,7 +19,7 @@ primnumber = 31
 NUMITER = 0
 
 
-#_Class to manage a crack_#
+# _Class to manage a crack_#
 class Crack(object):
 
     def __init__(self):
@@ -81,30 +82,30 @@ class Crack(object):
         reload (HouInterface)
         global epsilon
         global primnumber
-        #TEMP: only for debug the patterns
-        #Size x and size y is the valor of some material with the minor wavelength(bigger pattern)
+        # TEMP: only for debug the patterns
+        # Size x and size y is the valor of some material with the minor wavelength(bigger pattern)
         curPoint = Ipoint
         self.patternCrack[prim] = []
         vertices = [list(p.point().position()) for p in prim.vertices()]
         print "vertices"
         print vertices
-        #Convert prim to tangent space of patterns
-        #Get some arbitrary vectors conected from vertices of prim
+        # Convert prim to tangent space of patterns
+        # Get some arbitrary vectors conected from vertices of prim
         vec1 = GeoMath.vecSub(vertices[0], vertices[1])
         vec2 = GeoMath.vecSub(vertices[2], vertices[1])
-        #We have to know which angle reside between the two coencted vectors, to know if suposed vectors
-        #in tangent space will be correct
+        # We have to know which angle reside between the two coencted vectors, to know if suposed vectors
+        # in tangent space will be correct
         angle = GeoMath.vecDotProduct(vec1, vec2) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vec2))
         angle = math.acos(angle)
         angle = math.degrees(angle)
 
-        #We put relative one arbitrary point to tangent space
+        # We put relative one arbitrary point to tangent space
         pointWhichIsRelative = vertices[1]
-        #Determine x and y vectors, now we'll have suposed horizontal and vertical vectors acording to
-        #prim and direction of the crack
+        # Determine x and y vectors, now we'll have suposed horizontal and vertical vectors acording to
+        # prim and direction of the crack
 
         vecH, vecV = DetermineVectors.DetermineVectors.detVec(prim, GeoMath.vecSub(Ipoint, Fpoint), [0, 0, 1])
-        #CHAPUZA CON NUMEROS COMPLEJOS!!! Precision de python pésima, 1.000000001>1?? no! y math.acos error
+        # CHAPUZA CON NUMEROS COMPLEJOS!!! Precision de python pésima, 1.000000001>1?? no! y math.acos error
 
         cosAngle = GeoMath.vecDotProduct(vecH, vec1) / (GeoMath.vecModul(vec1) * GeoMath.vecModul(vecH))
         complexAngle = cmath.acos(cosAngle)
@@ -140,17 +141,17 @@ class Crack(object):
         tbnInverse.copy(tbn)
         tbnInverse.matrix3Inverse()
 
-        #Get the first material:
+        # Get the first material:
         print "texture get first layer"
         texture = texturePrim.getFirstLayer(Ipoint)
         nextMaterial = texture.get_material()
         print "end get material"
-        #Create status of the process to show to the user
+        # Create status of the process to show to the user
         distance_to_complete = GeoMath.vecModul(GeoMath.vecSub(curPoint, Fpoint))
         ui_process_status = UIProcessStatus.UIProcessStatus('crack for prim',
                                                                 distance_to_complete)
         while(GeoMath.vecModul(GeoMath.vecSub(curPoint, Fpoint)) > epsilon):
-            #Print status of the process
+            # Print status of the process
             dist = GeoMath.vecModul(GeoMath.vecSub(curPoint, Fpoint))
             ui_process_status.calculate_status(dist, inverse=True)
             ui_process_status.print_status()
@@ -164,7 +165,7 @@ class Crack(object):
                     pat = AutoPattern.AutoPattern(curPoint, nextPoint, setOfTypeOfPattern, prim, wavelength, self.patternCrack, tbn, tbnInverse, pointWhichIsRelative, texture, texturePrim).pattern
                 genPattern.applyPattern(pat, wavelength)
 
-            #Check texture
+            # Check texture
             previousTexture = texture
             pii, texture = self.checkTexture(texturePrim, previousTexture, genPattern, Fpoint, nextPoint)
             logging.debug('Pii defcrack: ' + str(pii))
@@ -180,7 +181,7 @@ class Crack(object):
             else:
                 if(not (GeoMath.vecModul(GeoMath.vecSub(curPoint, Fpoint)) > epsilon)):
                     logging.error('Texture no matched, previous texture applied')
-            #version 4
+            # version 4
             self.patternCrack[prim].append(genPattern)
 
     def getSample(self, Ipoint, curPoint, Fpoint, xSize, ySize, prim):
@@ -209,7 +210,7 @@ class Crack(object):
                 count = 0
                 if(prim in self.patternCrack):
                     for patt in self.patternCrack[prim]:
-                    #Show crack
+                    # Show crack
                         crackNode = node.createNode('curve', 'crack_pattern_' + str(prim.number()) + "_" + str(count))
                         pointsString = ""
                         for point in patt.getPoints():
@@ -245,7 +246,7 @@ class Crack(object):
                             self.linePerPrim[prim].append(point)
 
         #=======================================================================
-        # 
+        #
         # for countPrim in range(len(groupOfPrimsOrdered)):
         #    prim = groupOfPrimsOrdered[countPrim]
         #    self.linePerPrim[prim] = []
@@ -303,7 +304,7 @@ class Crack(object):
         else:
             logging.debug('nearestPointIntersect: ' + str(nearestPointIntersect) + 'Distance: ' + str(minDistance) + 'No Texture')
 
-        #If we found some interect point we clip the pattern to this point
+        # If we found some interect point we clip the pattern to this point
         if(nearestPointIntersect):
             achieved = genPattern.clipPattern(nearestPointIntersect)
             if(not achieved):
@@ -311,29 +312,29 @@ class Crack(object):
                 return None, previousTexture
         else:
             return None, previousTexture
-        #Now we have to ensure that the next texture is correct, because possibly the intersection
-        #is correct and the next texture in pattern direction is correct, but maybe the direction
-        #has changed due to the clipping of the pattern and the point clipped. The direction now is
-        #the direction between point clipped-intersected with next texture and the final point of
-        #the crack in prim.
-        #also, in the NORMAL case, maybe the pattern intersect with his texture, because are exiting
-        #from it, so we have to do a point in polygon to search what texture is the next
+        # Now we have to ensure that the next texture is correct, because possibly the intersection
+        # is correct and the next texture in pattern direction is correct, but maybe the direction
+        # has changed due to the clipping of the pattern and the point clipped. The direction now is
+        # the direction between point clipped-intersected with next texture and the final point of
+        # the crack in prim.
+        # also, in the NORMAL case, maybe the pattern intersect with his texture, because are exiting
+        # from it, so we have to do a point in polygon to search what texture is the next
 
-        #Check texture, for do that get the vector direction and do it little and do a point in
-        #polygon with the texture
+        # Check texture, for do that get the vector direction and do it little and do a point in
+        # polygon with the texture
         nextDir = GeoMath.vecSub(Fpoint, nearestPointIntersect)
         logging.debug('next dir before', str(nextDir))
         if(GeoMath.vecModul(nextDir) > 0):
             nextDir = GeoMath.vecNormalize(nextDir)
-            #make it little, not more little than the epsilon used at GeoMath pointInSegmentDistance method,
-            #so we use a 10x bigger than epsilon, so 0.05
+            # make it little, not more little than the epsilon used at GeoMath pointInSegmentDistance method,
+            # so we use a 10x bigger than epsilon, so 0.05
             nextDir = GeoMath.vecScalarProduct(nextDir, 0.05)
             nextPoint = GeoMath.vecPlus(nextDir, nearestPointIntersect)
             nextTex = texture.findUpperTextureContainingPoint(nextPoint)
             logging.debug('Direction and texture , next point: %s, next direction', str(nextPoint), str(nextDir))
         else:
             nextTex = None
-            #We get the final point, so we not have to ensure anything
+            # We get the final point, so we not have to ensure anything
 
 
         logging.debug("End method checkTexture, class Crack")

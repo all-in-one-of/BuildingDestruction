@@ -3,9 +3,11 @@ Created on Jun 13, 2011
 
 @author: carlos
 '''
+from lib import GeoMath
+from lib import HouInterface
 import logging
 import random
-from ExternalClasses import GeoMath, HouInterface
+
 class ValidatePath(object):
     '''
     Classe which permit to validate the path taking into account tree curves or set of primitives.
@@ -51,7 +53,7 @@ class ValidatePath(object):
             '''
             if(len(GeoMath.getEdgesFromPrim(prim)) <= 3):
                 prim = self.tryToCollapseTwoTrianglesInOneQuad(prim, path)
-                #NOT IMPLEMENTED YET
+                # NOT IMPLEMENTED YET
                 logging.debug("Collapse in one quad NOT IMPLEMENTED YET")
             else:
                 validPrim1, validPrim2 = self.getPrimsSharingGroupOfEdges(prim, setNotDestroyed, setPartiallyDestroyed, setTotDestroyed)
@@ -132,8 +134,8 @@ class ValidatePath(object):
                 edgesSharedWithPrim = GeoMath.getEdgesBetweenPrims(primSharedPath, prim)
                 excluded.extend(edgesSharedWithPrim)
 
-            #We need some first edge and last edge for track edges between this edges, excluding edges
-            #(included in group "excluded") in other prims that share some edge with central prim
+            # We need some first edge and last edge for track edges between this edges, excluding edges
+            # (included in group "excluded") in other prims that share some edge with central prim
             indexPrim = self.path.index(prim)
             if(indexPrim == 0):
                 prevIndexPrim = len(self.path) - 1
@@ -145,7 +147,7 @@ class ValidatePath(object):
             logging.debug("edges shared curPrim2: %s with prim: %s, edges: %s", str(self.path[prevIndexPrim].number()), str(prim.number()), str(edgesSharedWithPrim2))
             groupEdges1, groupEdges2 = GeoMath.trackEdges(edgesSharedWithPrim1[0], setOfEdgesToTrack, edgesSharedWithPrim2[0], excluded)
 
-            #Find two good prims containing one of the group of edges
+            # Find two good prims containing one of the group of edges
             index = 0
             while(index < len(primsSharedInGeneral) and not (validPrim1 and validPrim2)):
                 curPrim = primsSharedInGeneral[index]
@@ -168,7 +170,7 @@ class ValidatePath(object):
         while(index < len(path) and path[index] != prim):
             index += 1
         if (index == len(path)):
-            #If error ocurred and no prim mathched
+            # If error ocurred and no prim mathched
             return None
         nextPrim = (index + 1) % len(path)
         if(index != 0):
@@ -180,8 +182,8 @@ class ValidatePath(object):
         if(len(nextPrimEdges) >= 3 and len(previousPrimEdges) >= 3):
             return None
         else:
-            #Case when we can to collapse two connected triangles
-            #NOT IMPLEMENTED YET
+            # Case when we can to collapse two connected triangles
+            # NOT IMPLEMENTED YET
             pass
 
     '''
@@ -201,9 +203,9 @@ class ValidatePath(object):
         connectedWithTot = len(GeoMath.getConnectedPrims(prim, self.setTotDestroyed, 1))
         connectedWithPartially = len(GeoMath.getConnectedPrimsOneForEachEdge(prim, self.setPartiallyDestroyed))
         connectedWithPath = len(GeoMath.getConnectedPrimsOneForEachEdge(prim, self.path))
-        #Prim must to acomplished that the number of connected with partially destroyed plus
-        #connected with not destroyed plus connected with totally destroyed minus connecte with path
-        #must to be greater than 2 primitives (at least two wanted primitives to do recursion after)
+        # Prim must to acomplished that the number of connected with partially destroyed plus
+        # connected with not destroyed plus connected with totally destroyed minus connecte with path
+        # must to be greater than 2 primitives (at least two wanted primitives to do recursion after)
         logging.debug("Method isThisPrimMaybeValid, prim %s , with:", str(prim.number()))
         logging.debug("Connected with not: %s, connected with tot: %s, connected with partially: %s, connected with path: %s, edges having primitive: %s",
                       str(connectedWithNot), str(connectedWithTot), str(connectedWithPartially), str(connectedWithPath), str(edgesHavingPrimitiveConnected))

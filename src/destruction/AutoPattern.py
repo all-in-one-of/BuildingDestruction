@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from lib import GeoMath
+import DetermineVectors
+import Validator
 import logging
 import math
 import random
 
-import DetermineVectors
-from ExternalClasses import GeoMath
-import Validator
 epsilon = 0.001
 primnumber = 51
 class AutoPattern(object):
@@ -27,25 +27,25 @@ class AutoPattern(object):
             self.pattern = self.findBestPatternDynamic(currentPoint, nextPoint,
                             setClass, prim, patternCrack, tbn, tbnInverse,
                             pointWhichIsRelative, texture, texturePrim)
-    #NOT USED!!!! Now we use TBN matrix
+    # NOT USED!!!! Now we use TBN matrix
     def convertVector(self, normal):
         logging.debug("Start method convertVector, class AutoPattern")
         global epsilon
-        #Convert vector to the plane x,y
-        #Convert it in a matrix vector
+        # Convert vector to the plane x,y
+        # Convert it in a matrix vector
         normal.append(0)
         logging.debug("Normal in convertVector %s", str(normal))
         if(not(math.fabs(normal[0]) < epsilon and math.fabs(normal[1]) < epsilon)):
             '''
             Transformations for moving a vector to the z-axis
             '''
-            #The matrix to rotate a vector about the  z-axis to the  xz-plane is
+            # The matrix to rotate a vector about the  z-axis to the  xz-plane is
             Rxz = GeoMath.Matrix(4, 4)
             Rxz[0, 0] = normal[0] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
             Rxz[0, 1] = -normal[1] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
             Rxz[1, 0] = normal[1] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
             Rxz[1, 1] = normal[0] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
-            #The matrix to rotate the vector in the xz-plane to the  z-axis is
+            # The matrix to rotate the vector in the xz-plane to the  z-axis is
             Rz = GeoMath.Matrix(4, 4)
             Rz[0, 0] = normal[2] / math.sqrt(math.pow(normal[0], 2) + math.pow(normal[1], 2) + math.pow(normal[2], 2))
             Rz[0, 2] = math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2)) / math.sqrt(math.pow(normal[0], 2) + math.pow(normal[1], 2) + math.pow(normal[2], 2))
@@ -70,7 +70,7 @@ class AutoPattern(object):
             trans.append(1)
             Rtrans = GeoMath.Matrix(4, 4)
             Rtrans.matrix4Trans(trans)
-            pointCon = Rtrans.mulPoint4ToMatrix4(pointCon)#Delete the last element
+            pointCon = Rtrans.mulPoint4ToMatrix4(pointCon)  # Delete the last element
             pointCon.pop()
             return pointCon
 
@@ -82,7 +82,7 @@ class AutoPattern(object):
         for num in range(len(pat.points)):
             pat.points[num] = tbn.mulPoint3ToMatrix3(pat.points[num])
             pat.points[num] = GeoMath.vecPlus(pointWhichIsRelative, pat.points[num])
-        #Transform normal vector also
+        # Transform normal vector also
         logging.debug("Changing normal" + str(pat.getNormal()))
         transformed_normal = tbn.mulPoint3ToMatrix3(pat.getNormal())
         logging.debug("Transformed normal" + str(transformed_normal))
@@ -121,12 +121,12 @@ class AutoPattern(object):
         if(not c):
             logging.debug("Points of pattern outside of texture: %s", str(prim.number()))
             return False
-        #To avoid the first pattern we ask if the prim has already added to the list of prims
-        #with patterns
+        # To avoid the first pattern we ask if the prim has already added to the list of prims
+        # with patterns
         if((prim in patternCrack.keys())):
             c = Validator.Validator.patternWithPatternsInPrim(pat, patternCrack[prim], prim)
 
-            #c = Validator.Validator.patternWithPatternsInPrim(pat, patternCrack[prim], prim)
+            # c = Validator.Validator.patternWithPatternsInPrim(pat, patternCrack[prim], prim)
             if(not c):
                 logging.debug("Pattern intersect other pattern in the same primitive")
                 return False
@@ -154,14 +154,14 @@ class AutoPattern(object):
         logging.debug("Vector rotated %s", str(vectorRotated))
         logging.debug("Curpooint %s", str(curPoint))
         logging.debug("NextPoint %s", str(nextPoint))
-        #Same length
+        # Same length
         if (math.fabs(GeoMath.vecModul(vecPat) - GeoMath.vecModul(vectorRotated)) < epsilon):
             rest = GeoMath.vecSub(vectorRotated, vecPat)
             restIn = GeoMath.vecSub(vectorRotated, vecPatIn)
-            #Same direction
+            # Same direction
             if ((GeoMath.vecModul(rest) < epsilon) or (GeoMath.vecModul(restIn) < epsilon)):
                 goodPattern = copyPat
-                match = True #No same direction
+                match = True  # No same direction
             if (match == False):
                 '''
             See simetry in this order:
@@ -181,7 +181,7 @@ class AutoPattern(object):
                     else:
                         maxRot = (360 / anglez) - 1
                     while numRotations < (maxRot) and not match:
-                        copyVecPat = Rzva.mulPoint4ToMatrix4(copyVecPat) #Not necesary to delete the last number in vector(which added for homogeneous)
+                        copyVecPat = Rzva.mulPoint4ToMatrix4(copyVecPat)  # Not necesary to delete the last number in vector(which added for homogeneous)
                         restRz = GeoMath.vecSub(copyVecPat, vectorRotated)
                         restInRz = GeoMath.vecSub(GeoMath.vecSub([0, 0, 0], copyVecPat), vectorRotated)
                         numRotations += 1
@@ -191,7 +191,7 @@ class AutoPattern(object):
                         copyPat.rotatePattern([0, 0, 1], anglezTot)
                         goodPattern = copyPat
                         match = True
-                #Rotation in y if in z is not valid
+                # Rotation in y if in z is not valid
                 simRoty = setClass.getSimY(copyPat)
                 if (not match and simRoty):
                     Ry = GeoMath.Matrix(4, 4)
@@ -201,13 +201,13 @@ class AutoPattern(object):
                     copyVecPat.append(0)
                     copyVecPatIn.append(0)
                     copyVecPat = Ry.mulPoint4ToMatrix4(copyVecPat)
-                    copyVecPatIn = Ry.mulPoint4ToMatrix4(copyVecPatIn) #Not necesary to delete the last number in vector(which added for homogeneous)
+                    copyVecPatIn = Ry.mulPoint4ToMatrix4(copyVecPatIn)  # Not necesary to delete the last number in vector(which added for homogeneous)
                     restRy = GeoMath.vecSub(copyVecPat, vectorRotated)
                     restRyIn = GeoMath.vecSub(copyVecPatIn, vectorRotated)
                     if (GeoMath.vecModul(restRy) < epsilon or (GeoMath.vecModul(restRyIn) < epsilon)):
                         copyPat.rotatePattern([0, 1, 0], 180)
                         goodPattern = copyPat
-                        match = True #Rotation in x if in z neither y is valid
+                        match = True  # Rotation in x if in z neither y is valid
                 simRotx = setClass.getSimX(copyPat)
                 if (not match and simRotx):
                     Rx = GeoMath.Matrix(4, 4)
@@ -217,7 +217,7 @@ class AutoPattern(object):
                     copyVecPat.append(0)
                     copyVecPatIn.append(0)
                     copyVecPat = Rx.mulPoint4ToMatrix4(copyVecPat)
-                    copyVecPatIn = Rx.mulPoint4ToMatrix4(copyVecPatIn) #Not necesary to delete the last number in vector(which added for homogeneous)
+                    copyVecPatIn = Rx.mulPoint4ToMatrix4(copyVecPatIn)  # Not necesary to delete the last number in vector(which added for homogeneous)
                     restRx = GeoMath.vecSub(copyVecPat, vectorRotated)
                     restRxIn = GeoMath.vecSub(copyVecPatIn, vectorRotated)
                     if (GeoMath.vecModul(restRx) < epsilon or (GeoMath.vecModul(restRxIn) < epsilon)):
@@ -236,7 +236,7 @@ class AutoPattern(object):
                              pointWhichIsRelative, prim, patternCrack,
                               texture, texturePrim)):
             validatedPattern = goodCopyPat
-            match = True #If not valid we try to rotate about direction of pattern (firsPoint-lastPoint)
+            match = True  # If not valid we try to rotate about direction of pattern (firsPoint-lastPoint)
         goodCopyPat = pat.copy()
         if (not match and setClass.getSimDir(pat)):
 
@@ -245,7 +245,7 @@ class AutoPattern(object):
                                  pointWhichIsRelative, prim, patternCrack,
                                   texture, texturePrim)):
                 validatedPattern = goodCopyPat
-                match = True #If not valid we try to rotate about normal
+                match = True  # If not valid we try to rotate about normal
         goodCopyPat = pat.copy()
         if (not match and setClass.getSimNormal(pat)):
             nor = goodCopyPat.getNormal()
@@ -264,7 +264,7 @@ class AutoPattern(object):
         global epsilon
         global primnumber
         setPat = setClass.getPatternsWavelength(self.wavelength)
-        #We have to convert vector, because the patterns are defined into positive xy plane
+        # We have to convert vector, because the patterns are defined into positive xy plane
         goodPatterns = []
         vector = GeoMath.vecSub(nextPoint, curPoint)
         vectorRotated = tbnInverse.mulPoint3ToMatrix3(vector)
@@ -275,7 +275,7 @@ class AutoPattern(object):
             if(goodPattern):
                 goodPatterns.append(goodPattern)
 
-        #Validate patterns with prim
+        # Validate patterns with prim
         validatedPatterns = []
         for pat in goodPatterns:
             validatedPattern = self.validateAndAdjustPatterns(
@@ -286,7 +286,7 @@ class AutoPattern(object):
                 validatedPatterns.append(validatedPattern)
 
         if(not validatedPatterns):
-            #Apply the joker pattern!
+            # Apply the joker pattern!
             vecH, vecV = DetermineVectors.DetermineVectors.detVec(prim, GeoMath.vecSub(nextPoint, curPoint), [0, 0, 1])
             validatedPatterns.append(setClass.applyJoker(curPoint, nextPoint, vecH, vecV))
             logging.debug("End method finBestPattern, class Autopattern. State: Joker applied")
@@ -323,24 +323,24 @@ class AutoPattern(object):
         logging.debug('Class AutoPattern, method findBestPatternDinamically')
         logging.debug('cur_point: ' + str(curPoint) + "next_point: " + str(nextPoint))
 
-        #Direction of the crack
+        # Direction of the crack
         vector = GeoMath.vecSub(nextPoint, curPoint)
         vector_rotated = tbnInverse.mulPoint3ToMatrix3(vector)
         logging.debug("vector_rotated: " + str(vector_rotated))
-        #Number of attemps to try to find a good pattern
+        # Number of attemps to try to find a good pattern
         attempts = 2
-        #Get a pattern generated dynamically
-        #TODO: wavelength now only 0, but it can be any number
+        # Get a pattern generated dynamically
+        # TODO: wavelength now only 0, but it can be any number
         wavelenght = 0
         first_point = [0, 0, 0]
-        #Calculate normal of pattern
+        # Calculate normal of pattern
         direction = GeoMath.vecNormalize(GeoMath.vecSub(vector_rotated, first_point))
         normal_of_pattern = GeoMath.vecCrossProduct(list(prim.normal()), direction)
         pattern = setClass.getRandomPattern(wavelenght, first_point, vector_rotated, normal_of_pattern)
         validatedPattern = self.validateAndAdjustPatterns(curPoint, nextPoint, setClass, prim, patternCrack, tbn, pointWhichIsRelative, texture, texturePrim, pattern)
 
         if(not validatedPattern):
-            #Try 10 times variing random offset(seed) in the noise function to get a valid pattern
+            # Try 10 times variing random offset(seed) in the noise function to get a valid pattern
             for _ in range(attempts):
                 pattern = setClass.getRandomPattern(wavelenght, first_point, vector_rotated, normal_of_pattern)
                 validatedPattern = self.validateAndAdjustPatterns(curPoint, nextPoint, setClass, prim, patternCrack, tbn, pointWhichIsRelative, texture, texturePrim, pattern)
@@ -348,20 +348,20 @@ class AutoPattern(object):
                     break
 
         if(not validatedPattern):
-            #Try "attemps" times varying the random offset(seed) of the noise funcion and do the height little to
-            #increase posibilities to get a valid pattern
+            # Try "attemps" times varying the random offset(seed) of the noise funcion and do the height little to
+            # increase posibilities to get a valid pattern
             height = setClass.getSizey() / 2
             reduction_height = 2
             for _ in range(attempts):
                 pattern = setClass.getRandomPattern(wavelenght, first_point, vector_rotated, normal_of_pattern, height)
 
                 validatedPattern = self.validateAndAdjustPatterns(curPoint, nextPoint, setClass, prim, patternCrack, tbn, pointWhichIsRelative, texture, texturePrim, pattern)
-                #Make the height half, for get more possibilities to do a good pattern
+                # Make the height half, for get more possibilities to do a good pattern
                 height = height / reduction_height
                 if(validatedPattern):
                     break
         if(not validatedPattern):
-            #Apply the joker pattern!
+            # Apply the joker pattern!
             vecH, vecV = DetermineVectors.DetermineVectors.detVec(prim, GeoMath.vecSub(nextPoint, curPoint), [0, 0, 1])
             validatedPattern = setClass.applyJoker(curPoint, nextPoint, vecH, vecV)
             logging.debug("End method finBestPatternDynamic, class Autopattern. State: Joker applied")

@@ -4,7 +4,7 @@ Created on Jul 22, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import logging
 DEBUG = False
 
@@ -29,11 +29,11 @@ class TextureForPrim(object):
         tex = None
         if(DEBUG):
             debugPoints = []
-        #Initialize with a random texture
+        # Initialize with a random texture
         minDistance = 999999
         for texture in self.textures:
             distance, pointIntersect, allIntersections = texture.checkIntersectionWithTexture(points, self.prim)
-            #DEBUG ONLY
+            # DEBUG ONLY
             if (DEBUG and pointIntersect):
                 debugPoints.extend(allIntersections)
 
@@ -44,14 +44,14 @@ class TextureForPrim(object):
 
         return tex, nearestPointIntersect, minDistance
 
-    #This method return the upper texture containing a point. Be careful! to correct use of methos
-    #the point MUST NOT LIE in a edge of some texture    
+    # This method return the upper texture containing a point. Be careful! to correct use of methos
+    # the point MUST NOT LIE in a edge of some texture
     def findUpperTextureContainingPoint(self, point):
 
         if(not self.reverseListOfTextures):
-            #Get ordered layers
+            # Get ordered layers
             layers = list(self.getLayers())
-            #We want to start from the upper texture, so we inverse the list
+            # We want to start from the upper texture, so we inverse the list
             layers.reverse()
             self.reverseListOfTextures = layers
 
@@ -59,8 +59,8 @@ class TextureForPrim(object):
         for layer in self.reverseListOfTextures:
             if(layer.pointInTexture(point)):
                 if(GeoMath.pointInEdges(point, GeoMath.getEdgesFromPoints(layer.get_absolute_points()))):
-                    #Warning!!! point are in the edge of a texture, so if you call this method to know
-                    #the next texture be careful, it will be error
+                    # Warning!!! point are in the edge of a texture, so if you call this method to know
+                    # the next texture be careful, it will be error
                     logging.warning('Method findUpperTextureContainingPoint, Point lie in a edge of texture')
                 layerInPoint = layer
                 break
@@ -70,7 +70,7 @@ class TextureForPrim(object):
 
     def getLayers(self):
         if(not self.orderedListOfTextures):
-            #Insertion algorithm to do a layered order of textures O(n²)
+            # Insertion algorithm to do a layered order of textures O(n²)
             self.orderedListOfTextures = []
             for texture in self.textures:
                 texOutside = False
@@ -81,7 +81,7 @@ class TextureForPrim(object):
                     else:
                         n += 1
                 self.orderedListOfTextures.insert(n, texture)
-        #Insert default texture as the upper texture
+        # Insert default texture as the upper texture
             self.orderedListOfTextures.insert(0, self.getDefaultTexture())
         return self.orderedListOfTextures
 

@@ -3,9 +3,10 @@ Created on Mar 25, 2011
 
 @author: carlos
 '''
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import logging
 epsilon = 0.01
+
 class PrimDivided(object):
     '''
     WARNING=This class works with prims in diferents states.
@@ -52,11 +53,11 @@ class PrimDivided(object):
         firstPointCrack = crack[prim][0]
         lastPointCrack = crack[prim][len(crack[prim]) - 1]
         matched = False
-        #Points ordered by prim
+        # Points ordered by prim
         points = [list(p.point().position()) for p in prim.vertices()]
         edgeFirst = GeoMath.getEdgeWithPointInPrim(prim, firstPointCrack)
         edgeFirst = [list(edgeFirst[0]), list(edgeFirst[1])]
-        #Put the edge in clockwise direction
+        # Put the edge in clockwise direction
         if(GeoMath.determineDirEdge(edgeFirst, prim, True)):
             curEdge = [firstPointCrack, edgeFirst[1]]
         else:
@@ -80,7 +81,7 @@ class PrimDivided(object):
             edgeLast = [list(edgeLast[1]), list(edgeLast[0])]
         pointsDisplaced = []
 
-        #Normal iteration over points
+        # Normal iteration over points
         count = 0
         logging.debug("Last edge where the 'to validate edge' lies: %s", str(edgeLast))
         self.pointsOutside = []
@@ -92,10 +93,10 @@ class PrimDivided(object):
                 logging.error("Last edge not found")
                 logging.debug("End method houDoBooleanOperation, class PrimDivided. State: Last edge not found")
                 return
-            #Calcule the displacement
+            # Calcule the displacement
             vecDis = self.calculateDisplacement(curEdge, nextEdge)
             pointDisplaced = self.applyDisplacement(curEdge[1], vecDis)
-            #Add displace point
+            # Add displace point
             pointsDisplaced.append(pointDisplaced)
             self.pointsOutside.append(curEdge[1])
             if(len(GeoMath.getSharedEdges(curEdge, edgeToValidate, 1)) > 0):
@@ -105,14 +106,14 @@ class PrimDivided(object):
             nextEdge = [nextEdge[1], points[nextIndex]]
         logging.debug("Ha salido del segundo bucle con: %s", str(curEdge))
         curEdge = [curEdge[0], lastPointCrack]
-        #Last comprovation
+        # Last comprovation
         if(not matched and (len(GeoMath.getSharedEdges(curEdge, edgeToValidate, 1)) > 0)):
             logging.debug("Final comprovation edge: %s", str(curEdge))
             matched = True
         if(not matched):
             logging.debug("Not matched at normal iteration over points, trying in inverse mode")
-            #Do inverse
-            #Put the edge in not clockwise direction
+            # Do inverse
+            # Put the edge in not clockwise direction
             if(GeoMath.determineDirEdge(edgeFirst, prim, False)):
                 curEdge = [firstPointCrack, edgeFirst[1]]
             else:
@@ -135,7 +136,7 @@ class PrimDivided(object):
                 edgeLast = [list(edgeLast[1]), list(edgeLast[0])]
             pointsDisplaced = []
             self.pointsOutside = []
-            #Inverse iteration over points
+            # Inverse iteration over points
             count = 0
             logging.debug("Inverse iteration over points")
             while(len(GeoMath.getSharedEdges(curEdge, edgeLast, 1)) == 0):
@@ -144,7 +145,7 @@ class PrimDivided(object):
                     logging.error("Last edge not found")
                     logging.debug("End method houDoBooleanOperation, class PrimDivided. State: Last edge not found")
                     return
-                #Calcule the displacement
+                # Calcule the displacement
                 vecDis = self.calculateDisplacement(curEdge, nextEdge)
                 pointDisplaced = self.applyDisplacement(curEdge[1], vecDis)
                 pointsDisplaced.append(pointDisplaced)
@@ -157,23 +158,23 @@ class PrimDivided(object):
                     nextIndex = len(points) - 1
                 nextEdge = [nextEdge[1], points[nextIndex]]
             curEdge = [curEdge[0], lastPointCrack]
-            #Last comprovation
+            # Last comprovation
             if(not matched and (len(GeoMath.getSharedEdges(curEdge, edgeToValidate, 1)) > 0)):
                 logging.debug("Final comprovation edge: %s", str(curEdge))
                 matched = True
         if(not matched):
             logging.error("Validate edge not found at primitive")
-        #Add the extrem points
+        # Add the extrem points
         self.pointsOutside.insert(0, firstPointCrack)
         self.pointsOutside.append(lastPointCrack)
-        #Now we have a structure with the points in correct order, with the edge that was broken and
-        #with applied displacement for each point. Not firstCrackPoint either lastCrackPoint added.
+        # Now we have a structure with the points in correct order, with the edge that was broken and
+        # with applied displacement for each point. Not firstCrackPoint either lastCrackPoint added.
         curveNode = sweepingNode.createNode('curve', 'crack_pattern_' + str(prim.number()))
-        #curveNode.setNextInput(volumeNode)
+        # curveNode.setNextInput(volumeNode)
         pointsString = ""
         for point in crack[prim]:
             pointsString = pointsString + str(point[0]) + "," + str(point[1]) + "," + str(point[2]) + " "
-        #Now we add the displacement point to close the prim
+        # Now we add the displacement point to close the prim
         pointsDisplaced.reverse()
         for point in pointsDisplaced:
             pointsString = pointsString + str(point[0]) + "," + str(point[1]) + "," + str(point[2]) + " "
@@ -190,8 +191,8 @@ class PrimDivided(object):
         extrudeNode.parm('depthxlate').set(-largeOfGeo / 2 - 0.5)
         extrudeNode.parm('depthscale').set(largeOfGeo + 1)
 
-        #Associate part B with crack line volume
-        #extrudeNode.setNextInput(crackNode)
+        # Associate part B with crack line volume
+        # extrudeNode.setNextInput(crackNode)
 
         cookieNode = sweepingNode.createNode('cookie', 'cookie_' + str(prim.number()))
 
@@ -202,7 +203,7 @@ class PrimDivided(object):
         cookieNode.parm('insideB').set(True)
         cookieNode.parm('outsideB').set(True)
         cookieNode.setNextInput(extrudeNode)
-        #Associate part B with volume
+        # Associate part B with volume
         cookieNode.setNextInput(volumeNode)
         cookieNode.parm('groupB').set("__" + str(prim.number()))
         cookieNode.parm('createGroup').set(True)
@@ -213,7 +214,7 @@ class PrimDivided(object):
         cookieNode.parm('overlapAGroup').set("Aover")
         cookieNode.parm('overlapBGroup').set("Bover")
 
-        #Delete the unwanted groups
+        # Delete the unwanted groups
         deleteNode = sweepingNode.createNode('delete', 'unwantedGroups_' + str(prim.number()))
         deleteNode.parm('group').set(self.nameGroupBroken + ' Ain Aout Aover Bover')
         deleteNode.setNextInput(cookieNode)

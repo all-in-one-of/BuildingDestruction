@@ -5,6 +5,7 @@ Created on Oct 18, 2011
 '''
 import traceback
 import logging
+
 class Error(Exception):
     """Base class for exceptions in this module."""
     @staticmethod

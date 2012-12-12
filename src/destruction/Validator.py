@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import BoundingBox
 import logging
 epsilon = 0.001
@@ -24,12 +24,12 @@ class Validator:
         #IMPLEMENTS!!!!
         inside = True
         valid = False
-        #We have to check if the pattern (is inside of the texture except the first and the last point,
-        #because by definition this points are always inside) OR (intersect with his texture) OR
-        #(intersect with a texture in upper level than his texture)
-        #In the three cases the pattern will be valid, in other case the pattern will be invalid
+        # We have to check if the pattern (is inside of the texture except the first and the last point,
+        # because by definition this points are always inside) OR (intersect with his texture) OR
+        # (intersect with a texture in upper level than his texture)
+        # In the three cases the pattern will be valid, in other case the pattern will be invalid
         for index in range(len(pat.getPoints()) - 2):
-            #check if the upper texture containign the point of pattern is his texture
+            # check if the upper texture containign the point of pattern is his texture
             inside = (textureForPrim.findUpperTextureContainingPoint(pat.getPoints()[index + 1]) == texture)
             if (not inside):
                 tex = textureForPrim.findUpperTextureContainingPoint(pat.getPoints()[index + 1])
@@ -53,15 +53,15 @@ class Validator:
         if(inside):
             valid = True
         else:
-            #Check if the pattern intersect with his texture
-            #To do that, we have to check if it intersects, and if it intersects, the point which intersect
-            #the texture has to be before than the first point outside the texture
-            minDistance, nearestPointIntersect, allIntersections = texture.checkIntersectionWithTexture(pat.getPoints(), prim) #@UnusedVariable
+            # Check if the pattern intersect with his texture
+            # To do that, we have to check if it intersects, and if it intersects, the point which intersect
+            # the texture has to be before than the first point outside the texture
+            minDistance, nearestPointIntersect, allIntersections = texture.checkIntersectionWithTexture(pat.getPoints(), prim)  # @UnusedVariable
             outsidePointDistance = GeoMath.takeDistanceInTrackToPoint(pat.getPoints(), pat.getPoints()[firstIndexOutside], pat.getPoints()[0])
             valid = (minDistance <= outsidePointDistance)
             if(not valid):
                 logging.debug("Texture not inside")
-                #Check if intersect with upper texture
+                # Check if intersect with upper texture
                 upperLayer = textureForPrim.get_upper_texture(texture)
                 if(upperLayer):
                     logging.debug("Texture has upper layer")
@@ -71,9 +71,9 @@ class Validator:
                     logging.debug(str(upperLayer.get_absolute_points_not_erasable()))
                     logging.debug(str(upperLayer.get_delimited_proportions()))
                     logging.debug(str(upperLayer.get_obj()))
-                    #If exsits upper layer than the current texture
-                    minDistance, nearestPointIntersect, allIntersections = upperLayer.checkIntersectionWithTexture(pat.getPoints(), prim) #@UnusedVariable
-                    #Now check if the point intersection is before than the first point outside of his texture
+                    # If exsits upper layer than the current texture
+                    minDistance, nearestPointIntersect, allIntersections = upperLayer.checkIntersectionWithTexture(pat.getPoints(), prim)  # @UnusedVariable
+                    # Now check if the point intersection is before than the first point outside of his texture
                     if(nearestPointIntersect):
                         valid = (minDistance <= outsidePointDistance)
                         if(not valid):
@@ -83,8 +83,8 @@ class Validator:
                     else:
                         logging.debug('Texture upper layer doesnt intersect')
                 else:
-                    #If not exists upper layer of texture, we check the intersection before,
-                    #so if it doesn't intersect, the pattern will be invalid
+                    # If not exists upper layer of texture, we check the intersection before,
+                    # so if it doesn't intersect, the pattern will be invalid
                     logging.debug('Texture has not upper layer, so its incorrect')
                     valid = False
         return valid
@@ -153,9 +153,9 @@ class Validator:
                 gr = groupOfPrims[primConected]
                 for patInGr in gr:
                     param_pattern_bounding_box = BoundingBox.BoundingBox2D(patInGr.getPoints(), prim)
-                    intersections, shared_prims_edges = pattern_bounding_box.intersect_bounding_box_with_limits_3D(param_pattern_bounding_box) #@UnusedVariable
+                    intersections, shared_prims_edges = pattern_bounding_box.intersect_bounding_box_with_limits_3D(param_pattern_bounding_box)  # @UnusedVariable
                     if (intersections):
-                        #Check if it is true that intersect
+                        # Check if it is true that intersect
                         edges = GeoMath.getEdgesBetweenPoints(patInGr.getPoints(), pat.getPoints(), 1)
 
                         if(edges):

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*
-import Crack
-import DefPath
+from lib import UIProcessStatus
 import BoolIntersection_RegionGrowing
+import Crack
 import Data
-from ExternalClasses import UIProcessStatus
+import DefPath
 DEBUG = True
-
 
 class DesPatternControl(object):
     def __init__(self, partDes=None, totDes=None, notDes=None, geo=None, namePathGroup="path", node=None, volume=None, modelTex=None):
@@ -65,14 +64,14 @@ class DesPatternControl(object):
         self.modelTex.deleteShowTextureNodes()
 
     def showCrack(self, allInOne=True):
-        #Show crack
+        # Show crack
         self.crack.showCrack(self.geo, self.pathConf.path, False)
 
     def deleteShowCrackNodes(self):
         self.crack.deleteShowCrackNodes()
 
     def showIntersectionTexture(self):
-        #Show crack
+        # Show crack
         self.crack.showTextureIntersections(self.geo)
 
     def deleteShowIntersectionTexture(self):
@@ -87,7 +86,7 @@ class DesPatternControl(object):
         self.boolIntersection = BoolIntersection_RegionGrowing.BoolIntersection_RegionGrowing(self.pathConf.refPrim, self.partDes, self.crack.linePerPrim, initDestroyedObject.__finalBuilding__, sweepingNode)
 
         stringToCompose = ""
-        #Generic and inserts not broken prims
+        # Generic and inserts not broken prims
         stringToCompose = stringToCompose + initDestroyedObject.__nameOfGenericGroups__[2] + " "
         stringToCompose = stringToCompose + initDestroyedObject.__nameOfInsertGroups__[2] + " "
 

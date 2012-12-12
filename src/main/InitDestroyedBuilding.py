@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
+# HOU dependant
+
+from lib import LoD
+import hou  # @UnresolvedImport
+import logging
 import math
 import re
 
-from ExternalClasses import LoD
-import logging
-import hou #@UnresolvedImport
 
-#PRECONDITIONS: Not modified building, not with condition nodes before, etc.(for LoD function cause!)
-#Program possible issues:
+# PRECONDITIONS: Not modified building, not with condition nodes before, etc.(for LoD function cause!)
+# Program possible issues:
 # -need to be linux, for the slash in some parameters?¿?¿?¿?¿?¿?. It will be fixed shortly
 # -be careful with the products and filters and the function hou.parm.expression(). Take it into account.
 
-#Houdini names(not all yet)
+# Houdini names(not all yet)
 nameParmObjPath = 'objpath'
 nameParmGroups = 'group'
 nameParmEnable = 'enable'
@@ -29,7 +31,7 @@ class InitDestroyedBuilding:
         self.__finalBuilding__ = None
         self.__inserts__ = []
         self.__base_node__ = None
-        #Program names
+        # Program names
         self.__listNamesInserts__ = ['insertsTotallyDestroyed', 'insertsPartiallyDestroyed', 'insertsNotDestroyed']
         self.__listNamesGeneric__ = ['genericDestroyed']
         self.__nameOfInsertGroups__ = ['insertTotDestroyed', 'insertPartDestroy', 'insertNotDestroy']
@@ -48,24 +50,24 @@ class InitDestroyedBuilding:
     def twoSpeheresDestruction(self, geo):
         self.__geo__ = geo
         self.__selectionMetode__ = "twoSpeheresDestruction"
-        #Creating building nodes
+        # Creating building nodes
         print "#Creating building nodes"
         self.__createBuildingNodes__()
-        #Creating 2 spheres for the destruction
+        # Creating 2 spheres for the destruction
         print "#Creating 2 spheres for the destruction"
         self.inside = self.__geo__.createNode('sphere')
         self.outside = self.__geo__.createNode('sphere')
-        #Setting up the condition node with the 2 created spheres
+        # Setting up the condition node with the 2 created spheres
         print "#Setting up the condition node with the 2 created spheres"
         self.__iniCondiNode__(self.__conditionNodeInserts__, self.inside, self.outside, 0, 0)
         self.__iniCondiNode__(self.__conditionNodeGeneric__, self.inside, self.outside, 1, 0)
-        #Setting values to spheres based on geometry previous condition node
+        # Setting values to spheres based on geometry previous condition node
         print "#Setting values to spheres based on geometry previous condition node"
         self.__iniSpheres__(self.inside, self.outside, self.__conditionNodeInserts__)
-        #Setting up building nodes, IMPORTANT: need to all nodes(condition node and spheres) inicialized
+        # Setting up building nodes, IMPORTANT: need to all nodes(condition node and spheres) inicialized
         print "#Setting up building nodes"
         self.__iniBuildingNodes__()
-        #Deleting building parts totally destroyed
+        # Deleting building parts totally destroyed
         print "#Deleting building parts totally destroyed"
         self.__iniDeleteGeo__()
         self.__finalBuilding__.setDisplayFlag(True)
@@ -76,23 +78,23 @@ class InitDestroyedBuilding:
     def secureSelectionDestruction(self, geo):
         self.__geo__ = geo
         self.__selectionMetode__ = "secureSelectionDestruction"
-        #Creating building nodes
+        # Creating building nodes
         print "#Creating building nodes"
         self.__createBuildingNodes__()
-        #Creating 2 spheres for the destruction
+        # Creating 2 spheres for the destruction
         print "#Creating 2 spheres for the destruction"
         self.inside = self.__geo__.createNode('sphere')
-        #Setting up the condition node with the 2 created spheres
+        # Setting up the condition node with the 2 created spheres
         print "#Setting up the condition node with the 1 created spheres"
         self.__iniCondiNode__(self.__conditionNodeInserts__, self.inside, None, 0, 1)
         self.__iniCondiNode__(self.__conditionNodeGeneric__, self.inside, None, 1, 1)
-        #Setting values to spheres based on geometry previous condition node
+        # Setting values to spheres based on geometry previous condition node
         print "#Setting values to spheres based on geometry previous condition node"
         self.__iniSpheres__(self.inside, None, self.__conditionNodeInserts__)
-        #Setting up building nodes, IMPORTANT: need to all nodes(condition node and spheres) inicialized
+        # Setting up building nodes, IMPORTANT: need to all nodes(condition node and spheres) inicialized
         print "#Setting up building nodes"
         self.__iniBuildingNodes__()
-        #Deleting building parts totally destroyed
+        # Deleting building parts totally destroyed
         print "#Deleting building parts totally destroyed"
         self.__iniDeleteGeo__()
         self.__finalBuilding__.setDisplayFlag(True)
@@ -103,17 +105,17 @@ class InitDestroyedBuilding:
     ###############################################################################################
     ###############################################################################################
 
-    ##Global variables used: nameParmObjPath
+    # #Global variables used: nameParmObjPath
     def __createBuildingNodes__(self):
-        #Inicialize for LoD function
+        # Inicialize for LoD function
         firstNode = self.__geo__.children()[0]
         firstNode.setSelected(True)
         LoD.LoD_max().recorrer(LoD.connexioDescendent(), LoD.obtenirNodesArrels().obtenir())
-        #Last added node(node from LoD import function) which contains the original building
+        # Last added node(node from LoD import function) which contains the original building
         originalBuilding = self.__geo__.children()[len(self.__geo__.children()) - 1]
         originalBuilding.moveToGoodPosition()
-        #We create the condition node and connect it with the nodes
-        #which input nodes were connected
+        # We create the condition node and connect it with the nodes
+        # which input nodes were connected
         conditionNodeInserts = self.__geo__.createNode('destructionConditional')
         conditionNodeInserts.setName('conditionNodeInserts', True)
         conditionNodeGeneric = self.__geo__.createNode('destructionConditional')
@@ -130,8 +132,8 @@ class InitDestroyedBuilding:
         fuseFromGeneric.parm('dist').set(0.01)
         conditionNodeInserts.moveToGoodPosition()
         conditionNodeGeneric.moveToGoodPosition()
-        #pattern to find the correct parm in the "object_merge" node
-        #wich is the original building
+        # pattern to find the correct parm in the "object_merge" node
+        # wich is the original building
         pattern = nameParmObjPath + '[0-9]*'
         patternCompiled = re.compile(pattern)
 
@@ -140,24 +142,24 @@ class InitDestroyedBuilding:
         '''
         geo = self.__geo__
         listOfParmsGroup = self.__conditionGroupsParm__
-        #Create merge node
+        # Create merge node
         mergeNode = geo.createNode('merge')
         mergeNode.setNextInput(conditionNodeInserts)
         mergeNode.setNextInput(conditionNodeGeneric)
-        #Connect groupNode partDes shop to condition nodes
+        # Connect groupNode partDes shop to condition nodes
         combineGroupPartDes = geo.createNode('group')
         combineGroupPartDes.setNextInput(mergeNode)
-        #rename node
+        # rename node
         combineGroupPartDes.setName('combinedGroupPartDes', True)
-        #Connect groupNode totDes shop to groupPartDes node
+        # Connect groupNode totDes shop to groupPartDes node
         combineGroupTotDes = geo.createNode('group')
         combineGroupTotDes.setNextInput(combineGroupPartDes)
-        #rename node
+        # rename node
         combineGroupTotDes.setName('combinedGroupTotDes', True)
 
         combineGroupNotDes = geo.createNode('group')
         combineGroupNotDes.setNextInput(combineGroupTotDes)
-        #rename node
+        # rename node
         combineGroupNotDes.setName('combinedGroupNotDes', True)
 
         totDesInsertName = conditionNodeInserts.evalParm(listOfParmsGroup[0])
@@ -168,7 +170,7 @@ class InitDestroyedBuilding:
         partiDesGenericName = conditionNodeGeneric.evalParm(listOfParmsGroup[1])
         notDesGenericName = conditionNodeGeneric.evalParm(listOfParmsGroup[2])
 
-        #Inicialize combined groups
+        # Inicialize combined groups
         combineGroupPartDes.parm('crname').set('combinedPartDes')
         combineGroupPartDes.parm('grpequal').set('combinedPartDes')
         combineGroupPartDes.parm('grp1').set(partiDesInsertName)
@@ -199,7 +201,7 @@ class InitDestroyedBuilding:
                     logging.debug('INSERTS:' + str(posibleNode))
                     self.__inserts__.append(posibleNode)
                     tempInputs = posibleNode.inputs()
-                    #we delete the connections from input nodes to not duplicated geometry
+                    # we delete the connections from input nodes to not duplicated geometry
                     '''
                     Added and modified 12/05/2011, Labeler
                     '''
@@ -211,7 +213,7 @@ class InitDestroyedBuilding:
                     for i in range(len(tempInputs) - 1):
                         posibleNode.setInput(i + 1, None, 0)
                     for input in tempInputs:
-                        #We have to ensure that "input" is not None(in houdini it's allowed None inputs) and not repeat
+                        # We have to ensure that "input" is not None(in houdini it's allowed None inputs) and not repeat
                         if input != None and input not in mergeToInserts.inputs():
                             mergeToInserts.setNextInput(input, 0)
 
@@ -222,12 +224,12 @@ class InitDestroyedBuilding:
         conditionNodeInserts.moveToGoodPosition()
         for output in conditionNodeInserts.outputs():
             output.moveToGoodPosition()
-        #we create the nodes which will contain the destroyed building. They will be a copy
-        #of the original building, and later we will change some parameters to convert it to
-        #a destroyed building
+        # we create the nodes which will contain the destroyed building. They will be a copy
+        # of the original building, and later we will change some parameters to convert it to
+        # a destroyed building
 
-        #"group" of nodes to copy. We need only the original building, but, for houdini software reasons
-        #it must be a group.
+        # "group" of nodes to copy. We need only the original building, but, for houdini software reasons
+        # it must be a group.
         tempGroup = [originalBuilding]
         listPartsInserts = []
         listPartsGeneric = []
@@ -241,15 +243,15 @@ class InitDestroyedBuilding:
             listPartsGeneric.append(tempNode)
         originalBuilding.destroy()
 
-        #Create the final building node
+        # Create the final building node
         finalBuilding = self.__geo__.createNode('merge')
         finalBuilding.setName('finalBuilding', True)
         finalBuilding.moveToGoodPosition()
-        #Connect the building inserts geometry(modified) with the final building
+        # Connect the building inserts geometry(modified) with the final building
         for node in listPartsInserts:
             finalBuilding.setNextInput(node)
             node.moveToGoodPosition()
-        #Connect the building general(no insert geometry) with the condition node especific for they
+        # Connect the building general(no insert geometry) with the condition node especific for they
         for node in listPartsGeneric:
             mergeFromGeneric.setNextInput(node)
             node.moveToGoodPosition()
@@ -265,10 +267,10 @@ class InitDestroyedBuilding:
         combineGroupTotDes.moveToGoodPosition()
         combineGroupNotDes.moveToGoodPosition()
 
-        #Finally connect the condition node of the general geometry to the final building
+        # Finally connect the condition node of the general geometry to the final building
         finalBuilding.setNextInput(labeler)
         finalBuilding.moveToGoodPosition()
-        #Assign the data
+        # Assign the data
         self.__listPartsInserts__ = listPartsInserts
         self.__listPartsGeneric__ = listPartsGeneric
         self.__conditionNodeInserts__ = conditionNodeInserts
@@ -278,11 +280,11 @@ class InitDestroyedBuilding:
 
     ###############################################################################################
 
-    ##Global variables used: nameParmGroups, nameParmObjPath, offsetCondNodeGroupsParm, nameParmEnable
+    # #Global variables used: nameParmGroups, nameParmObjPath, offsetCondNodeGroupsParm, nameParmEnable
     def __iniBuildingNodes__(self):
 
         patternGroups = re.compile(nameParmGroups + '[0-9]*')
-        #the order to set name group is: first group name to the first group name in node condition parm
+        # the order to set name group is: first group name to the first group name in node condition parm
 
         ###___###___###   Inserts geometry   ###___###___###
 
@@ -290,20 +292,20 @@ class InitDestroyedBuilding:
             for parm in node.parms():
                 if patternGroups.match(parm.name()):
                     nodeInParm = hou.node(node.parm(nameParmObjPath + str(re.split(nameParmGroups, parm.name())[1])).evalAsString())
-                    #Ok for insert nodes geometry
+                    # Ok for insert nodes geometry
                     if nodeInParm.type().name() == 'Insert':
                         expression = "hou.evalParm(\"" + self.__conditionNodeInserts__.parms()[offsetCondNodeGroupsParm + self.__listPartsInserts__.index(node)].path() + "\")"
                         parm.setExpression(expression, hou.exprLanguage.Python)
                     else:
                         node.parm(nameParmEnable + str(re.split(nameParmGroups, parm.name())[1])).set(False)
 
-        ###___###___###   Generic geometry   ###___###___###    
+        ###___###___###   Generic geometry   ###___###___###
 
         for node in self.__listPartsGeneric__:
             for parm in node.parms():
                 if patternGroups.match(parm.name()):
                     nodeInParm = hou.node(node.parm(nameParmObjPath + str(re.split(nameParmGroups, parm.name())[1])).evalAsString())
-                    #Not insert nodes geometry
+                    # Not insert nodes geometry
                     if nodeInParm.type().name() == 'Insert':
                         node.parm(nameParmEnable + str(re.split(nameParmGroups, parm.name())[1])).set(False)
 
@@ -316,14 +318,14 @@ class InitDestroyedBuilding:
         if mode == 0:
             conditionNode.parm('importgeototal').set(inside.path())
             conditionNode.parm('importgeoparti').set(outside.path())
-            #typeOfgeometry=0, geometry of insert nodes
+            # typeOfgeometry=0, geometry of insert nodes
             if typeOfgeometry == 0:
                 conditionNode.parm(self.__conditionGroupsParm__[0]).set(self.__nameOfInsertGroups__[0])
                 conditionNode.parm(self.__conditionGroupsParm__[1]).set(self.__nameOfInsertGroups__[1])
                 conditionNode.parm(self.__conditionGroupsParm__[2]).set(self.__nameOfInsertGroups__[2])
                 conditionNode.parm('pythonfile').set(self.__rayIntersectAllPointsPath__)
                 conditionNode.parm('pythonfile2').set(self.__rayIntersectCenterPath__)
-            #typeOfgeometry=1, geometry of generic nodes
+            # typeOfgeometry=1, geometry of generic nodes
             elif typeOfgeometry == 1:
                 conditionNode.parm(self.__conditionGroupsParm__[0]).set(self.__nameOfGenericGroups__[0])
                 conditionNode.parm(self.__conditionGroupsParm__[1]).set(self.__nameOfGenericGroups__[1])
@@ -337,13 +339,13 @@ class InitDestroyedBuilding:
 
         elif mode == 1:
             conditionNode.parm('importgeototal').set(inside.path())
-            #typeOfgeometry=0, geometry of insert nodes
+            # typeOfgeometry=0, geometry of insert nodes
             if typeOfgeometry == 0:
                 conditionNode.parm(self.__conditionGroupsParm__[0]).set(self.__nameOfInsertGroups__[0])
                 conditionNode.parm(self.__conditionGroupsParm__[1]).set(self.__nameOfInsertGroups__[1])
                 conditionNode.parm(self.__conditionGroupsParm__[2]).set(self.__nameOfInsertGroups__[2])
                 conditionNode.parm('pythonfile').set(self.__rayIntersectAllPointsPath__)
-            #typeOfgeometry=1, geometry of generic nodes
+            # typeOfgeometry=1, geometry of generic nodes
             elif typeOfgeometry == 1:
                 conditionNode.parm(self.__conditionGroupsParm__[0]).set(self.__nameOfGenericGroups__[0])
                 conditionNode.parm(self.__conditionGroupsParm__[1]).set(self.__nameOfGenericGroups__[1])
@@ -417,7 +419,7 @@ class InitDestroyedBuilding:
         genericDeleteTotDes.moveToGoodPosition()
         '''
 
-###############################################################################################    
+###############################################################################################
 
     def printAtributtes(self):
         print self.__listPartsInserts__
@@ -426,7 +428,7 @@ class InitDestroyedBuilding:
         print self.__conditionNodeGeneric__
         print self.__finalBuilding__
 
-        #Program names
+        # Program names
         print self.__listNamesInserts__
         print self.__listNamesGeneric__
         print self.__nameOfInsertGroups__

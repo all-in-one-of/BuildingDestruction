@@ -3,15 +3,15 @@ Created on Oct 17, 2011
 
 @author: carlos
 '''
+from lib import GeoMath
+from lib import HouInterface
 import CreateTBN
 import Errors
-from ExternalClasses import GeoMath
-from ExternalClasses import HouInterface
 import logging
 littleEpsilon = 0.002
 
-#FIXME: DEPRECATED CLASS. We should do a wraper against bounding box of houdini or use
-#CGAL
+# FIXME: DEPRECATED CLASS. We should do a wraper against bounding box of houdini or use
+# CGAL
 
 class BoundingBox(object):
     def __init__(self, points):
@@ -24,7 +24,7 @@ class BoundingBox(object):
         pass
     '''
 
-#TODO: removing prim dependancy, allowing point and normal as parameters
+# TODO: removing prim dependancy, allowing point and normal as parameters
 class BoundingBox2D(BoundingBox):
     """
     #=======================================================================
@@ -411,7 +411,7 @@ class BoundingBox2D(BoundingBox):
                        [self.get_x_min(), self.get_y_max(), 0]]
 
     def calculate_bounding_box_tangent_space(self):
-        #Calculate bounding box in tangent space
+        # Calculate bounding box in tangent space
         points_tangent_space = self.get_points_tangent_space()
         self.x_min_tangent = points_tangent_space[0][0]
         self.x_max_tangent = points_tangent_space[0][0]
@@ -427,8 +427,8 @@ class BoundingBox2D(BoundingBox):
                                             ' after in other functions')
         except Errors.NegativeValueError as e:
             Errors.Error.display_exception(e)
-            #MAYFIX:Non negative values?
-            #exit()
+            # MAYFIX:Non negative values?
+            # exit()
         for point in points_tangent_space:
             self.x_min_tangent = min(self.x_min_tangent, point[0])
             self.y_min_tangent = min(self.y_min_tangent, point[1])
@@ -504,7 +504,7 @@ class BoundingBox2D(BoundingBox):
     def intersect_bounding_box_2D(self, bounding_box, DISPLAY=False):
         intersection = GeoMath.getIntersectionsBetweenEdges2D(self.get_edges_object_space(), bounding_box.get_edges_object_edges(), 1)
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             self.to_display_intersections.append(intersection)
@@ -513,7 +513,7 @@ class BoundingBox2D(BoundingBox):
     def intersect_bounding_box_without_limits_2D(self, bounding_box, DISPLAY=False):
         intersection = GeoMath.getIntersectionBetweenEdgesWithoutLimits2D(self.get_edges_object_space(), bounding_box.get_edges_object_edges(), 1)
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             self.to_display_intersections.append(intersection)
@@ -523,7 +523,7 @@ class BoundingBox2D(BoundingBox):
         intersection = GeoMath.getIntersectionBetweenEdgesWithoutLimits2D(self.get_edges_object_space(), bounding_box.get_edges_object_edges(), 1)
         intersection_bool = intersection or GeoMath.getEdgesBetweenEdges(self.get_points_object_space(), bounding_box.get_points_object_space(), 1)
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             self.to_display_intersections.append(intersection)
@@ -586,7 +586,7 @@ class BoundingBox2D(BoundingBox):
             param_bounding_box_points_in_this_tangent_space.append(point_tangent_space)
         intersections = GeoMath.getIntersectionsBetweenEdges2D(GeoMath.getEdgesFromPoints(self.get_rectangle_tangent_space()), GeoMath.getEdgesFromPoints(param_bounding_box_points_in_this_tangent_space))
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             for intersection in intersections:
@@ -619,7 +619,7 @@ class BoundingBox2D(BoundingBox):
                        GeoMath.getEdgesFromPoints(param_bounding_box_points_in_this_tangent_space))
         if (intersections):
             #===============================================================
-            # Check if the limits are touching and if it are touching it, 
+            # Check if the limits are touching and if it are touching it,
             # check if the intersection is in there. If it is in there,
             # the intersection lie in the limit, so we dont consider an
             # intersection
@@ -641,9 +641,9 @@ class BoundingBox2D(BoundingBox):
             if(inside):
                 intersections = []
             else:
-                #check if intersections are in the corner, because we consider corner as limit
+                # check if intersections are in the corner, because we consider corner as limit
                 shared_points_between_bounding_boxes = GeoMath.getSharedPoints(self.get_rectangle_tangent_space(), param_bounding_box_points_in_this_tangent_space)
-                #If all intersections lie in the corner we doen't consider intersections as intersections
+                # If all intersections lie in the corner we doen't consider intersections as intersections
                 true_intersections = list(intersections)
                 for intersection in intersections:
                     for corner in shared_points_between_bounding_boxes:
@@ -653,7 +653,7 @@ class BoundingBox2D(BoundingBox):
                 intersections = true_intersections
 
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             for intersection in intersections:
@@ -693,7 +693,7 @@ class BoundingBox2D(BoundingBox):
         GeoMath.getEdgesFromPoints(param_bounding_box_points_in_this_tangent_space))
 
         if(DISPLAY):
-            #TEMP: exit
+            # TEMP: exit
             1 / 0
             exit()
             for intersection in intersections:
@@ -705,7 +705,7 @@ class BoundingBox2D(BoundingBox):
         return intersections, edges_shared_between_bounding_boxes
 
     #===========================================================================
-    # Display some help to the user    
+    # Display some help to the user
     #===========================================================================
     def display_bounding_box_object_space(self):
         hi = HouInterface.HouInterface()
@@ -740,11 +740,11 @@ class BoundingBox2D(BoundingBox):
     vector_size_tangent_space = property(get_vector_size_tangent_space, set_vector_size_tangent_space, del_vector_size_tangent_space, "vector_size_tangent_space's docstring")
     vector_size_object_space = property(get_vector_size_object_space, set_vector_size_object_space, del_vector_size_object_space, "vector_size_object_space's docstring")
 
-    
+
 def test():
     import doctest
     from DestructionDataAndFunctions import BoundingBox
     doctest.testmod(BoundingBox)
-    
+
 if __name__ == "__main__":
     test()

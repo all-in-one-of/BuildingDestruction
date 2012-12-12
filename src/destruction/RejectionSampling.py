@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from ExternalClasses import GeoMath
+from lib import GeoMath
+
 class RejectionSampling():
         def __init__(self, edge, volume):
             self.edge = edge

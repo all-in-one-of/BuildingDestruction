@@ -1,16 +1,17 @@
-import random
 # -*- coding: utf-8 -*-
-import math
-import hou #@UnresolvedImport
+from destruction import Errors
+from lib import HouInterface
+from lib import TypeEnforcement
+import hou  # @UnresolvedImport
 import logging
+import math
+import random
 
-from ExternalClasses import HouInterface
-from ExternalClasses import TypeEnforcement
-from DestructionDataAndFunctions import Errors
 epsilon = 0.1
-#simple bulding, with 0.001 of epsilon 2, getSharedEdge fails in big prims,
-#but with 0.1 getSharedEdges fails in get the REAL shared edges.
+# simple bulding, with 0.001 of epsilon 2, getSharedEdge fails in big prims,
+# but with 0.1 getSharedEdges fails in get the REAL shared edges.
 littleEpsilon = 0.002
+
 class Matrix:
     '''
     Column major matrix, so we access first to columns an then to rows(like OpenGL)
@@ -54,7 +55,7 @@ class Matrix:
     def getSize(self):
         return [len(self.M), len(self.M[0])]
 
-    #Quadratic matrix
+    # Quadratic matrix
     def upgrade(self):
         if (len(self.M) == 0):
             col = [0]
@@ -94,7 +95,7 @@ class Matrix:
             print"]",
             if(i != len(self.M[0])):
                 print "\n",
-#Matrix operations
+# Matrix operations
 
     def matrixIdentity(self):
         self.M = [[int(col == row) for row in range(len(self.M[0]))]for col in range(len(self.M))]
@@ -207,12 +208,12 @@ class Matrix:
         if(len(self.M) == 2):
             return self.M[0][0] * self.M[1][1] - self.M[1][0] * self.M[0][1]
         elif(len(self.M) == 3):
-            #Det=a(ek-fh)+b(fg-kd)+c(dh-eg)
-            #fc=a(ek-fh)
+            # Det=a(ek-fh)+b(fg-kd)+c(dh-eg)
+            # fc=a(ek-fh)
             fc = self.M[0][0] * (self.M[1][1] * self.M[2][2] - self.M[2][1] * self.M[1][2])
-            #sc=b(fg-kd)
+            # sc=b(fg-kd)
             sc = self.M[1][0] * (self.M[2][1] * self.M[0][2] - self.M[2][2] * self.M[0][1])
-            #tc=c(dh-eg)
+            # tc=c(dh-eg)
             tc = self.M[2][0] * (self.M[0][1] * self.M[1][2] - self.M[1][1] * self.M[0][2])
             return fc + sc + tc
 
@@ -241,7 +242,7 @@ def createTBNmatrix(oc1, oc2, oc3, tc1, tc2, tc3):
 
     return tbn
 
-#Vectors functions
+# Vectors functions
 def angleBetweenVectors(vec1, vec2):
     return math.acos(vecDotProduct(vec1, vec2) / (vecModul(vec1) * vecModul(vec2)))
 
@@ -259,7 +260,7 @@ def vecScalarProduct(vec1, sc):
     return [vec1[0] * sc, vec1[1] * sc, vec1[2] * sc]
 
 def vecCrossProduct(vec1, vec2):
-    #Determinant
+    # Determinant
     '''
     x = Ay * Bz - By * Az
     y = Az * Bx - Bz * Ax
@@ -270,7 +271,7 @@ def vecCrossProduct(vec1, vec2):
     crossz = vec1[0] * vec2[1] - vec2[0] * vec1[1]
     return [crossx, crossy, crossz]
 
-#FIXME:When we get a item from a hou vector it's is very slow!!
+# FIXME:When we get a item from a hou vector it's is very slow!!
 def vecSub(vec1, vec2):
     return [vec1[0] - vec2[0], vec1[1] - vec2[1], vec1[2] - vec2[2]]
 
@@ -278,7 +279,7 @@ def vecPlus(vec1, vec2):
     return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]]
 
 def rotateVecByVec(vector, normal, angle):
-    #angleR = math.radians(angle)
+    # angleR = math.radians(angle)
     angleR = angle
     '''
     http://inside.mines.edu/~gmurray/ArbitraryAxisRotation/ArbitraryAxisRotation.html
@@ -291,18 +292,18 @@ def rotateVecByVec(vector, normal, angle):
     (6) apply the inverse of step (2)
     (7) apply the inverse of step (1)
     '''
-    #not (1), because we assume lastDir in origin(0,0,0) coordinate system
+    # not (1), because we assume lastDir in origin(0,0,0) coordinate system
     if(not(normal[0] == 0 and normal[1] == 0)):
         '''
         Transformations for moving a vector to the z-axis
         '''
-        #The matrix to rotate a vector about the  z-axis to the  xz-plane is
+        # The matrix to rotate a vector about the  z-axis to the  xz-plane is
         Rxz = Matrix(4, 4)
         Rxz[0, 0] = normal[0] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
         Rxz[0, 1] = -normal[1] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
         Rxz[1, 0] = normal[1] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
         Rxz[1, 1] = normal[0] / math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2))
-        #The matrix to rotate the vector in the xz-plane to the  z-axis is
+        # The matrix to rotate the vector in the xz-plane to the  z-axis is
         Rxz2z = Matrix(4, 4)
         Rxz2z[0, 0] = normal[2] / math.sqrt(math.pow(normal[0], 2) + math.pow(normal[1], 2) + math.pow(normal[2], 2))
         Rxz2z[0, 2] = math.sqrt(pow(normal[0], 2) + math.pow(normal[1], 2)) / math.sqrt(math.pow(normal[0], 2) + math.pow(normal[1], 2) + math.pow(normal[2], 2))
@@ -316,7 +317,7 @@ def rotateVecByVec(vector, normal, angle):
         '''
         Inverses
         '''
-        #Rxzi*Rxz2zi*Rz(Identity)Rxz2z*Rxz
+        # Rxzi*Rxz2zi*Rz(Identity)Rxz2z*Rxz
         Rxzi = Matrix(4, 4)
         Rxz2zi = Matrix(4, 4)
         Rxzi.copy(Rxz)
@@ -326,7 +327,7 @@ def rotateVecByVec(vector, normal, angle):
         '''
         Get the final matrix
         '''
-        #Rxzi*Rxz2zi*Rz(Identity)Rxz2z*Rxz
+        # Rxzi*Rxz2zi*Rz(Identity)Rxz2z*Rxz
         Rxz2z.mulMatrix4toMatrix4(Rxz)
         Rz.mulMatrix4toMatrix4(Rxz2z)
         Rxz2zi.mulMatrix4toMatrix4(Rz)
@@ -336,10 +337,10 @@ def rotateVecByVec(vector, normal, angle):
         Get the vector rotated
         '''
         vectorRotated = list(vector)
-        #with 0 in the last component, it will be a vector
+        # with 0 in the last component, it will be a vector
         vectorRotated.append(0)
         vectorRotated = Rxzi.mulPoint4ToMatrix4(vectorRotated)
-        #Del last component (0)
+        # Del last component (0)
         vectorRotated.pop()
     else:
 
@@ -352,19 +353,19 @@ def rotateVecByVec(vector, normal, angle):
         Get the vector rotated
         '''
         vectorRotated = list(vector)
-        #with 0 in the last component, it will be a vector
+        # with 0 in the last component, it will be a vector
         vectorRotated.append(0)
         vectorRotated = Rz.mulPoint4ToMatrix4(vectorRotated)
-        #Del last component (0)
+        # Del last component (0)
         vectorRotated.pop()
     return vectorRotated
 
 def getVectorsArea(lenght, angle):
-    #paralelepiped area between one vector in x, rotate around y an angle of "angle" with
-    #lenght of vectors "lenght"
-    #We have to do the cross product between the two vectors, one vector will be x=lenght and the
-    #other is rotated in y an angle.
-    #rotate around y: x=radi*cos(alfa), z=radi*sin(alfa)
+    # paralelepiped area between one vector in x, rotate around y an angle of "angle" with
+    # lenght of vectors "lenght"
+    # We have to do the cross product between the two vectors, one vector will be x=lenght and the
+    # other is rotated in y an angle.
+    # rotate around y: x=radi*cos(alfa), z=radi*sin(alfa)
     vector2 = []
     vector1 = [lenght, 0, 0]
     vector2.append(lenght * math.cos(angle))
@@ -373,7 +374,7 @@ def getVectorsArea(lenght, angle):
     area = vecCrossProduct(vector1, vector2)
     return area
 
-#End functions with vectors
+# End functions with vectors
 def centerOfPoints(points):
     curSum = [0, 0, 0]
     for point in points:
@@ -386,7 +387,7 @@ def pointEqualPoint(point1, point2):
     return vecModul(vecSub(point1, point2)) < littleEpsilon
 
 
-def pointInSegmentDistance(p1, p2, pIO, epsilon = None):
+def pointInSegmentDistance(p1, p2, pIO, epsilon=None):
     '''
     >>> p1 = [0,0,0]
     >>> p2 = [0,1,0]
@@ -422,16 +423,16 @@ def pointInSegmentDistance(p1, p2, pIO, epsilon = None):
     dotProduct1 = vecDotProduct(vec12, vec1IO)
     dotProduct2 = vecDotProduct(vec21, vec2IO)
     if(vecModul(vec12) < epsilon):
-        #Invalid edge
+        # Invalid edge
         return False
     proj1 = dotProduct1 / vecModul(vec12)
     proj2 = dotProduct2 / vecModul(vec12)
     if(proj1 < 0):
-        #Extrem case
+        # Extrem case
         if(vecModul(vec1IO) > epsilon):
             return False
     if(proj2 < 0):
-        #Extrem case
+        # Extrem case
         if(vecModul(vec2IO) > epsilon):
             return False
 
@@ -527,12 +528,12 @@ def getEdgeBetweenEdges(edge1, edge2):
         finalEdge.append(list(edge1[1]))
         count += 1
     if(pointInSegmentDistance(edge1[0], edge1[1], edge2[0]) and count < 2):
-        #we have to ensure taht points are not the same that we already put
+        # we have to ensure taht points are not the same that we already put
         if(not(count == 1 and (vecModul(vecSub(edge2[0], finalEdge[0])) < epsilon))):
             finalEdge.append(list(edge2[0]))
             count += 1
     if(pointInSegmentDistance(edge1[0], edge1[1], edge2[1]) and count < 2):
-        #we have to ensure taht points are not the same that we already put
+        # we have to ensure taht points are not the same that we already put
         if(not(count == 1 and (vecModul(vecSub(edge2[1], finalEdge[0])) < epsilon))):
             finalEdge.append(list(edge2[1]))
             count += 1
@@ -579,7 +580,7 @@ def getEdgesBetweenPoints(listPoints1, listPoints2, numEdges=None):
                 matchEdges.extend(edge)
             if(len(matchEdges) >= numEdges): break
     return matchEdges
-#at least one shared edge, if not, return empty edge
+# at least one shared edge, if not, return empty edge
 def getEdgesBetweenPrims(prim1, prim2, numEdges=None):
     curNumEdges = 0
     finalEdges = []
@@ -595,10 +596,10 @@ def getEdgesBetweenPrims(prim1, prim2, numEdges=None):
             if(toValidateEdge):
                 finalEdges.append(toValidateEdge)
                 curNumEdges += 1
-                #go to the next edge
+                # go to the next edge
                 break
         if(curNumEdges >= numEdges):
-            #stop the for statement
+            # stop the for statement
             break
 
     return finalEdges
@@ -649,14 +650,14 @@ def bolzanoIntersectionPoint2_5D(point1, point2, reference_point, axis):
             raise TypeError
     except TypeError:
         print "Expected integer"
-    
+
     if(point1[axis] < reference_point[axis] and point2[axis] > reference_point[axis]):
         return True
     if(point1[axis] > reference_point[axis] and point2[axis] < reference_point[axis]):
         return True
 
     return False
-#Intersect the bounding box of the edge, not the edge.
+# Intersect the bounding box of the edge, not the edge.
 def bolzanoIntersectionEdges2_5D(edges1, edges2):
     edge_1_inter = None
     edge_2_inter = None
@@ -671,7 +672,7 @@ def bolzanoIntersectionEdges2_5D(edges1, edges2):
         if(inter):
             edge_1_inter = edge1
             break
-        
+
     return inter, edge_1_inter, edge_2_inter
 
 def getFalseIntersectionBetweenTwoEdges3D(edge1, edge2, prim):
@@ -682,36 +683,36 @@ def getFalseIntersectionBetweenTwoEdges3D(edge1, edge2, prim):
     tbnInverse.matrix3Inverse()
     pointWhichIsRelative = vertices[1]
 
-    #Relative the points of edges to the point in prim which is relative in tbn matrix
+    # Relative the points of edges to the point in prim which is relative in tbn matrix
     edge10relative = vecSub(edge1[0], pointWhichIsRelative)
     edge11relative = vecSub(edge1[1], pointWhichIsRelative)
     edge20relative = vecSub(edge2[0], pointWhichIsRelative)
     edge21relative = vecSub(edge2[1], pointWhichIsRelative)
 
-    #Tranform to tangent space
+    # Tranform to tangent space
     edge10tbn = tbn.mulPoint3ToMatrix3(edge10relative)
     edge11tbn = tbn.mulPoint3ToMatrix3(edge11relative)
     edge20tbn = tbn.mulPoint3ToMatrix3(edge20relative)
     edge21tbn = tbn.mulPoint3ToMatrix3(edge21relative)
 
 
-    #Make the edges in tangent space
+    # Make the edges in tangent space
     edge1tbn = [edge10tbn, edge11tbn]
     edge2tbn = [edge20tbn, edge21tbn]
 
 
-    #Find intersections in 2D
+    # Find intersections in 2D
     pointIntersectiontbn = getIntersectionBetweenTwoEdges2D(edge1tbn, edge2tbn)
-    #Transform to object coordinates
+    # Transform to object coordinates
     if(pointIntersectiontbn.__class__ == type(list())):
-        #If exists inersection
+        # If exists inersection
         pointIntersection = tbnInverse.mulPoint3ToMatrix3(pointIntersectiontbn)
         pointIntersection = vecPlus(pointWhichIsRelative, pointIntersection)
     else:
         pointIntersection = None
     return pointIntersection
 
-#FIXME: when lines lies in diferntes planes, it is not work. So it is called "false" intersection
+# FIXME: when lines lies in diferntes planes, it is not work. So it is called "false" intersection
 def getFalseIntersectionsBetweenEdges3D(list_edges1, list_edges2, prim, num_max_edges):
     count = 0
     edgesIntersection = []
@@ -727,10 +728,10 @@ def getFalseIntersectionsBetweenEdges3D(list_edges1, list_edges2, prim, num_max_
                     break
 
     return edgesIntersection
-def getIntersectionsBetweenEdges2D(edges1, edges2, maxEdges=None, epsilon = None):
+def getIntersectionsBetweenEdges2D(edges1, edges2, maxEdges=None, epsilon=None):
     count = 0
     edgesIntersection = []
-    
+
     for edge1 in edges1:
         for edge2 in edges2:
             intersection = getIntersectionBetweenTwoEdges2D(edge1, edge2 , epsilon)
@@ -765,34 +766,34 @@ def getIntersectionBetweenEdgesWithoutLimits2D(edges1, edges2, maxEdges=None):
 
     return edgesIntersection
 
-def getIntersectionBetweenTwoEdges2D(edge1, edge2, epsilon = None):
+def getIntersectionBetweenTwoEdges2D(edge1, edge2, epsilon=None):
     global littleEpsilon
     if(not epsilon):
         epsilon = littleEpsilon
-    #First line
+    # First line
     p = edge1[0]
     v = vecSub(edge1[1], edge1[0])
-    #Second line
+    # Second line
     o = edge2[0]
     k = vecSub(edge2[1], edge2[0])
 
-    #Omega= (OyVx - PyVx - VyOx + VyPx) / (VyKx + VxKy)
+    # Omega= (OyVx - PyVx - VyOx + VyPx) / (VyKx + VxKy)
     divider = (v[1] * k[0] - v[0] * k[1])
 
     if(divider > (epsilon / 100) or divider < -(epsilon / 100)):
-        #If divider==0 the lines are parallel, no solution possible
+        # If divider==0 the lines are parallel, no solution possible
         omega = float((o[1] * v[0] - p[1] * v[0] - v[1] * o[0] + v[1] * p[0])) / float(divider)
     else:
         return None
 
-    #Lambda = (Oy + omega*Ky - Py) / Vy
-    #lam = (o[1] + omega * k[1] - p[1]) / v[1]    
+    # Lambda = (Oy + omega*Ky - Py) / Vy
+    # lam = (o[1] + omega * k[1] - p[1]) / v[1]
     pointIntersection = [o[0] + omega * k[0], o[1] + omega * k[1], 0]
-    #Check if the point lies in edges
+    # Check if the point lies in edges
     if (pointInSegmentDistance(edge1[0], edge1[1], pointIntersection) and pointInSegmentDistance(edge2[0], edge2[1], pointIntersection)):
         return pointIntersection
     else:
-        #RETURN NONE
+        # RETURN NONE
         return None
 
 def clipPoints(points, pointToClipWith, firstPoint):
@@ -870,25 +871,25 @@ def trackEdges(firstEdge, setOfEdgesToTrack, lastEdge, exceptions):
     global littleEpsilon
     curPoint = firstEdge[0]
     setOfEdgesTracking = list(setOfEdgesToTrack)
-    #print "All edges"
-    #print setOfEdgesToTrack
+    # print "All edges"
+    # print setOfEdgesToTrack
     for edge in setOfEdgesTracking:
         if(sameEdge(firstEdge, edge)):
             setOfEdgesTracking.remove(edge)
             break
     setOfEdgesTracked1 = []
     count = 0
-    #print "First and last edge"
-    #print firstEdge, lastEdge
-    #One direction of tracking
+    # print "First and last edge"
+    # print firstEdge, lastEdge
+    # One direction of tracking
     while(not pointInSegmentDistance(lastEdge[0], lastEdge[1], curPoint) and count < len(setOfEdgesToTrack)):
         trackEdge = getEdgeWithPoint(setOfEdgesTracking, curPoint)
-        #print "SetOfEdgesTracking1"
-        #print setOfEdgesTracking
-        #Next point to evaluate
-        #print "curPoint"
-        #print curPoint
-        #print "Track edge1: "+str(trackEdge)
+        # print "SetOfEdgesTracking1"
+        # print setOfEdgesTracking
+        # Next point to evaluate
+        # print "curPoint"
+        # print curPoint
+        # print "Track edge1: "+str(trackEdge)
         if(trackEdge not in exceptions):
             setOfEdgesTracked1.append(list(trackEdge))
 
@@ -897,48 +898,48 @@ def trackEdges(firstEdge, setOfEdgesToTrack, lastEdge, exceptions):
         else:
             curPoint = trackEdge[0]
 
-        #Edge already tracted
+        # Edge already tracted
         setOfEdgesTracking.remove(trackEdge)
 
-        #Pay atention with possible errors
+        # Pay atention with possible errors
         count += 1
 
-    #The other direction of tracking edges
+    # The other direction of tracking edges
     curPoint = firstEdge[1]
     setOfEdgesTracked2 = []
     count = 0
     while(not pointInSegmentDistance(lastEdge[0], lastEdge[1], curPoint) and count < len(setOfEdgesToTrack)):
-        #print "SetOfEdgesTracking2"
-        #print setOfEdgesTracking
-        #Next point to evaluate
-        #print "curPoint"
-        #print curPoint
+        # print "SetOfEdgesTracking2"
+        # print setOfEdgesTracking
+        # Next point to evaluate
+        # print "curPoint"
+        # print curPoint
         trackEdge = getEdgeWithPoint(setOfEdgesTracking, curPoint)
-        #print "Track edge2: "+str(trackEdge)
+        # print "Track edge2: "+str(trackEdge)
         if(trackEdge not in exceptions):
             setOfEdgesTracked2.append(list(trackEdge))
 
-        #Next point to evaluate
+        # Next point to evaluate
         if(trackEdge[0] == curPoint):
             curPoint = trackEdge[1]
         else:
             curPoint = trackEdge[0]
 
-        #Edge already tracted
+        # Edge already tracted
         setOfEdgesTracking.remove(trackEdge)
 
-        #Pay atention with possible errors
+        # Pay atention with possible errors
         count += 1
 
     return setOfEdgesTracked1, setOfEdgesTracked2
 
-#Origin in prim.center, vec1[0] and vec2[0] equal to prim.center()
+# Origin in prim.center, vec1[0] and vec2[0] equal to prim.center()
 def angleBetweenPointsByPrim(point1, point2, prim):
     '''
     http://www.gamedev.net/community/forums/topic.asp?topic_id=503639
     '''
-    onePoint = primBoundingBox(prim).center()#[0.5, 0.5, 0]
-    normal = prim.normal()#[0.5, 0.5, 0]
+    onePoint = primBoundingBox(prim).center()  # [0.5, 0.5, 0]
+    normal = prim.normal()  # [0.5, 0.5, 0]
     dist1 = ((point1[0] - onePoint[0]) * normal[0] + (point1[1] - onePoint[1]) * normal[1] + (point1[2] - onePoint[2]) * normal[2])
     projectionPoint1 = [point1[0] - dist1 * normal[0], point1[1] - dist1 * normal[1], point1[2] - dist1 * normal[2]]
     dist2 = ((point2[0] - onePoint[0]) * normal[0] + (point2[1] - onePoint[1]) * normal[1] + (point2[2] - onePoint[2]) * normal[2])
@@ -957,8 +958,8 @@ def angleBetweenPointsByVec(point1, point2, vec):
     '''
     http://www.gamedev.net/community/forums/topic.asp?topic_id=503639
     '''
-    onePoint = [0, 0, 0]#[0.5, 0.5, 0]
-    normal = vec#[0.5, 0.5, 0]
+    onePoint = [0, 0, 0]  # [0.5, 0.5, 0]
+    normal = vec  # [0.5, 0.5, 0]
     dist1 = ((point1[0] - onePoint[0]) * normal[0] + (point1[1] - onePoint[1]) * normal[1] + (point1[2] - onePoint[2]) * normal[2])
     projectionPoint1 = [point1[0] - dist1 * normal[0], point1[1] - dist1 * normal[1], point1[2] - dist1 * normal[2]]
     dist2 = ((point2[0] - onePoint[0]) * normal[0] + (point2[1] - onePoint[1]) * normal[1] + (point2[2] - onePoint[2]) * normal[2])
@@ -974,7 +975,7 @@ def angleBetweenPointsByVec(point1, point2, vec):
     return angle
 
 def getMinMaxAngleBetweenPointsInPrim(prim1, prim2, refPrim):
-    #points1=[po.point().position() for po in prim1.vertices()]
+    # points1=[po.point().position() for po in prim1.vertices()]
     points1 = [list(primBoundingBox(prim1).center())]
     points2 = [po.point().position() for po in prim2.vertices()]
     minAngle = maxAngle = angleBetweenPointsByPrim(points1[0], points2[0], refPrim)
@@ -1001,10 +1002,10 @@ def determineDirEdge(edge, prim, clockwise):
         index = 0
         nextIndex = 1
         while(not (pointInSegmentDistance(points[index], points[nextIndex], edge[0]) and  pointInSegmentDistance(points[index], points[nextIndex], edge[1])) and nextIndex != 0):
-            #Module
+            # Module
             index = (index + 1) % len(points)
             nextIndex = (index + 1) % len(points)
-            #The sum of the diferences between nearly points has to be smallest than the distance of the big edge
+            # The sum of the diferences between nearly points has to be smallest than the distance of the big edge
         if((pointInSegmentDistance(points[index], points[nextIndex], edge[0]) and pointInSegmentDistance(points[index], points[nextIndex], edge[1]))):
             sum = vecModul(vecSub(edge[0], points[index])) + vecModul(vecSub(edge[1], points[nextIndex]))
             return sum < vecModul(vecSub(points[index], points[nextIndex]))
@@ -1015,13 +1016,13 @@ def determineDirEdge(edge, prim, clockwise):
         nextIndex = len(points) - 1
         while(not (pointInSegmentDistance(points[index], points[nextIndex], edge[0]) and pointInSegmentDistance(points[index], points[nextIndex], edge[1])) and nextIndex != 0):
             index -= 1
-            #Module
+            # Module
             if(index < 0):
                 index = len(points) - 1
             nextIndex = index - 1
             if(nextIndex < 0):
                 nextIndex = len(points) - 1
-        #Last comprovation
+        # Last comprovation
         if((pointInSegmentDistance(points[index], points[nextIndex], edge[0]) and pointInSegmentDistance(points[index], points[nextIndex], edge[1]))):
             sum = vecModul(vecSub(edge[0], points[index])) + vecModul(vecSub(edge[1], points[nextIndex]))
             return sum < vecModul(vecSub(points[index], points[nextIndex]))
@@ -1031,9 +1032,9 @@ def determineDirEdge(edge, prim, clockwise):
 
 ################______PRIMITIVES_______##################
 
-#Functions to work with primitives
+# Functions to work with primitives
 
-#Return the edges conected between lists, None if no edge connected#
+# Return the edges conected between lists, None if no edge connected#
 '''
 >>> if(True):
 ...     listPoints1=[[3.1875,18.75,25.0], [3.125,18.75,25.0]]
@@ -1041,7 +1042,7 @@ def determineDirEdge(edge, prim, clockwise):
 ...     len(getSharedEdges(listPoints1, listPoints2, 1))
 1
 '''
-#return the edges coencted from the two lists
+# return the edges coencted from the two lists
 def getSharedEdges(listPoints1, listPoints2, numEdges):
     numVert1 = len(listPoints1)
     numVert2 = len(listPoints2)
@@ -1063,8 +1064,8 @@ def getSharedEdges(listPoints1, listPoints2, numEdges):
             if(len(matchEdges) >= numEdges): break
     return matchEdges
 
-#Return the edges conected between primitives from the first prim, None if no edge connected, return edge from first prim#
-#TEMP: Remove memoize
+# Return the edges conected between primitives from the first prim, None if no edge connected, return edge from first prim#
+# TEMP: Remove memoize
 def getSharedEdgesPrims(prim1, prim2, numEdges=None):
     if(not numEdges):
         numEdges = max(len(prim1.vertices()), len(prim2.vertices()))
@@ -1158,7 +1159,7 @@ def getAnglePrims(curPrim, nextPrim, refPrim):
     vfrc = vecModul(vecFromRefCur)
     vip = vecModul(vecInterPrim)
     vfrn = vecModul(vecFromRefNext)
-    #Propiety of coseno
+    # Propiety of coseno
     angleToSum = math.acos((vip * vip - vfrn * vfrn - vfrc * vfrc) / (-2 * vfrc * vfrn))
     return angleToSum
 
@@ -1180,14 +1181,14 @@ def pointInPolygon(pointIO, poly):
     global littleEpsilon
     reload (HouInterface)
     listVert = []
-    #Borramos componente que obviamos(la 'x') y proyectamos sobre el plano de las x
-    #la primitiva de la geometria de referencia
+    # Borramos componente que obviamos(la 'x') y proyectamos sobre el plano de las x
+    # la primitiva de la geometria de referencia
 
     '''
     Start Modification 8/6/2011
     Adaptly it to the tangent space knowledge to do a properly point in polygon
     '''
-    #Convert to the tangent space of x
+    # Convert to the tangent space of x
     goodPoints = []
     for vertex in poly.vertices():
         curPoint = vertex.point().position()
@@ -1196,7 +1197,7 @@ def pointInPolygon(pointIO, poly):
 
     tbn = createTBNmatrix(goodPoints[1], goodPoints[0], goodPoints[2], [0, 0], [1, 0], [0, 1])
     tbn.matrix3Inverse()
-    #Relative to point in [0,0] in texture coordinate
+    # Relative to point in [0,0] in texture coordinate
     pointRelative = vecSub(pointIO, list(poly.vertices()[1].point().position()))
     pointIOtangentSpace = tbn.mulPoint3ToMatrix3(pointRelative)
     for vert in poly.vertices():
@@ -1240,34 +1241,34 @@ def pointInPolygon(pointIO, poly):
     pointIntersect.append(0)
     numVert = len(listVert)
     counter = 0
-    #Una vez sabemos que intersecta con el rayo que toca solo tenemos en cuenta las componentes 'y' y 'z',
-    #ya que proyectaremos(por ejemplo en x) sobre el plano de las x para poder evaluar
-    #si el punto esta dentro del poligono. Proyectamos el punto del centro de la primitiva
-    #de la geometria original
+    # Una vez sabemos que intersecta con el rayo que toca solo tenemos en cuenta las componentes 'y' y 'z',
+    # ya que proyectaremos(por ejemplo en x) sobre el plano de las x para poder evaluar
+    # si el punto esta dentro del poligono. Proyectamos el punto del centro de la primitiva
+    # de la geometria original
 
 
-    #Pasamos por todas las aristas de la primitiva de la geometria de referencia       
+    # Pasamos por todas las aristas de la primitiva de la geometria de referencia
     for u in range(numVert):
         point1 = listVert[u % numVert]
         point2 = listVert[(u + 1) % numVert]
         if intersect(point1, point2, pointIntersect):
             counter += 1
-    #si interseca un numero impar de veces, significa que el punto esta dentro
-    #del poligono
+    # si interseca un numero impar de veces, significa que el punto esta dentro
+    # del poligono
     return counter % 2 != 0
 
 def pointInPoints(pointIO, poly):
     global littleEpsilon
     reload (HouInterface)
     listVert = []
-    #Borramos componente que obviamos(la 'x') y proyectamos sobre el plano de las x
-    #la primitiva de la geometria de referencia
+    # Borramos componente que obviamos(la 'x') y proyectamos sobre el plano de las x
+    # la primitiva de la geometria de referencia
 
     '''
     Start Modification 8/6/2011
     Adaptly it to the tangent space knowledge to do a properly point in polygon
     '''
-    #Convert to the tangent space of x
+    # Convert to the tangent space of x
     logging.debug("points in point in points" + str(poly))
     logging.debug("pointIO in point in points" + str(pointIO))
     goodPoints = []
@@ -1278,7 +1279,7 @@ def pointInPoints(pointIO, poly):
     logging.debug("goodPoints in point in points" + str(goodPoints))
     tbn = createTBNmatrix(goodPoints[1], goodPoints[0], goodPoints[2], [0, 0], [1, 0], [0, 1])
     tbn.matrix3Inverse()
-    #Relative to point in [0,0] in texture coordinate
+    # Relative to point in [0,0] in texture coordinate
     pointRelative = vecSub(pointIO, list(poly[1]))
     pointIOtangentSpace = tbn.mulPoint3ToMatrix3(pointRelative)
     for vert in poly:
@@ -1322,20 +1323,20 @@ def pointInPoints(pointIO, poly):
     pointIntersect.append(0)
     numVert = len(listVert)
     counter = 0
-    #Una vez sabemos que intersecta con el rayo que toca solo tenemos en cuenta las componentes 'y' y 'z',
-    #ya que proyectaremos(por ejemplo en x) sobre el plano de las x para poder evaluar
-    #si el punto esta dentro del poligono. Proyectamos el punto del centro de la primitiva
-    #de la geometria original
+    # Una vez sabemos que intersecta con el rayo que toca solo tenemos en cuenta las componentes 'y' y 'z',
+    # ya que proyectaremos(por ejemplo en x) sobre el plano de las x para poder evaluar
+    # si el punto esta dentro del poligono. Proyectamos el punto del centro de la primitiva
+    # de la geometria original
 
 
-    #Pasamos por todas las aristas de la primitiva de la geometria de referencia       
+    # Pasamos por todas las aristas de la primitiva de la geometria de referencia
     for u in range(numVert):
         point1 = listVert[u % numVert]
         point2 = listVert[(u + 1) % numVert]
         if intersect(point1, point2, pointIntersect):
             counter += 1
-    #si interseca un numero impar de veces, significa que el punto esta dentro
-    #del poligono
+    # si interseca un numero impar de veces, significa que el punto esta dentro
+    # del poligono
     return counter % 2 != 0
 
 def pointsInPoints(pointsInOut, pointsContainer):
@@ -1374,9 +1375,9 @@ def intersect(p1, p2, pIO):
         if pIO[0] <= max(p1[0], p2[0]) and p1[1] != p2[1]:
             interOfx = (pIO[1] - p1[1]) * (p2[0] - p1[0]) / (p2[1] - p1[1]) + p1[0]
             return(p1[0] == p2[0] or pIO[0] <= interOfx)
-#End functions to work with primitives
+# End functions to work with primitives
 
-#Fucntions to work with volumes
+# Fucntions to work with volumes
 def pointInVolume(referencedGeo, pointIO):
     counter = 0
     global littleEpsilon
@@ -1387,33 +1388,33 @@ def pointInVolume(referencedGeo, pointIO):
             goodRayIntersection = True
             primNormal = list(prim.normal())
             if primNormal[0] == 0:
-                #paralela o coincidente, ya que el vector normal(vector perpendicular al plano)
-                #no contiene x, con lo cual significa que el rayo y el plano se estaran moviendo
-                #paralelamente. Si la ecuacion da como resultado un numero==otronumero es porque siempre
-                #hay punto en comun, por lo tanto, coincidente, si no, son paralelas ya que no hay ningun
-                #punto en comun.
+                # paralela o coincidente, ya que el vector normal(vector perpendicular al plano)
+                # no contiene x, con lo cual significa que el rayo y el plano se estaran moviendo
+                # paralelamente. Si la ecuacion da como resultado un numero==otronumero es porque siempre
+                # hay punto en comun, por lo tanto, coincidente, si no, son paralelas ya que no hay ningun
+                # punto en comun.
                 intersect = False
 
             somepoint = prim.vertices()[0].point().position()
             d = -primNormal[0] * somepoint[0] - primNormal[1] * somepoint[1] - primNormal[2] * somepoint[2]
 
-            #solo tendra factor multiplicador 't' la componente x(ya que rayDirection=[1, 0, 0])
-            #por tanto la aislamos 'x' para hayar el factor 't'.
+            # solo tendra factor multiplicador 't' la componente x(ya que rayDirection=[1, 0, 0])
+            # por tanto la aislamos 'x' para hayar el factor 't'.
             rayVector = [1, 0, 0]
             if(intersect):
                 t = (primNormal[0] * pointIO[0] + primNormal[1] * pointIO[1] + primNormal[2] * pointIO[2] + d) / -(primNormal[0] * rayVector[0] + primNormal[1] * rayVector[1] + primNormal[2] * rayVector[2])
-                #con esto conseguimos simplemente rehusar cuando la interseccion esta detras del rayo.
+                # con esto conseguimos simplemente rehusar cuando la interseccion esta detras del rayo.
                 if t < 0:
-                    #Intersecta con el rayo contrario al que estamos evaluando(detras del rayo)
+                    # Intersecta con el rayo contrario al que estamos evaluando(detras del rayo)
                     goodRayIntersection = False
 
             if(intersect and goodRayIntersection):
                 projectedPoint = [pointIO[0] + rayVector[0] * t, pointIO[1] + rayVector[1] * t, pointIO[2] + rayVector[2] * t]
                 if pointInPolygon(projectedPoint, prim):
                     counter += 1
-    #si intersecta con un numero impar de poligonos significa que el centro
-    #de la primitiva que evaluamos esta dentro del volumen('point in poligon' pero aplicado a 3D,
-    #es decir, un "point in volume")
+    # si intersecta con un numero impar de poligonos significa que el centro
+    # de la primitiva que evaluamos esta dentro del volumen('point in poligon' pero aplicado a 3D,
+    # es decir, un "point in volume")
     return counter % 2 != 0
 
 def boundingBox(points):
@@ -1432,7 +1433,7 @@ def boundingBox(points):
 def test():
     import doctest
     from ExternalClasses import GeoMath
-    doctest.testmod(GeoMath, verbose = True)
-    
+    doctest.testmod(GeoMath, verbose=True)
+
 if __name__ == "__main__":
     test()

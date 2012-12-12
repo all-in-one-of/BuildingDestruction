@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import DetermineVectors
 import copy
-import hou #@UnresolvedImport
+import hou  # @UnresolvedImport
 import logging
 import math
 import random
-
 
 class GeneralPattern:
     def __init__(self):
@@ -28,8 +27,8 @@ class GeneralPattern:
     def applyPattern(self, single_pattern, wavelength):
         logging.debug("applyPattern in General, points: " + str(self.points))
         logging.debug("applyPattern in General, points of param: " + str(single_pattern.getPoints()))
-        #Lazy comprobation
-        #FIXME:Check if in the first if the second condition is correct, maybe it has to be .keys()
+        # Lazy comprobation
+        # FIXME:Check if in the first if the second condition is correct, maybe it has to be .keys()
         if(len(sorted(self.stackPattern.values())) == 0 or sorted(self.stackPattern.values()).pop() < wavelength):
             self.stackPattern[wavelength] = single_pattern
             self.points = single_pattern.applyPattern(self.points)
@@ -44,7 +43,7 @@ class GeneralPattern:
                 logging.debug("Iteration of wavelengths, and points are " + str(self.points))
         else:
             logging.debug("applyPattern in General ERROR: ")
-    #NOT IMPLEMENTED
+    # NOT IMPLEMENTED
     def calculatePattern(self):
         for patt in self.stackPattern:
             patt.applyPattern(self.points)
@@ -62,8 +61,8 @@ class GeneralPattern:
         return self.stackPattern
 
     def add_noise(self, height, frequency, for_edge, wavelength):
-        #FIXME: only applied in this points, not in the single patterns...so the data
-        #in the stack pattern will be corrupt
+        # FIXME: only applied in this points, not in the single patterns...so the data
+        # in the stack pattern will be corrupt
         if (wavelength in self.stackPattern):
             pattern = self.stackPattern[wavelength]
             pointI = self.getFirstPoint()
@@ -77,8 +76,8 @@ class GeneralPattern:
                 exit()
 
     def clipPattern(self, point):
-        #FIXME:Sort this points of general pattern, but not clip the points of the patterns in
-        #the stack
+        # FIXME:Sort this points of general pattern, but not clip the points of the patterns in
+        # the stack
         self.points, achieved = GeoMath.clipPoints(self.points, point, self.points[0])
         return achieved
     points = property(get_points_object_space, set_points, del_points, "points's docstring")
@@ -117,7 +116,7 @@ class Pattern:
 
             pointRot = trans.mulPoint4ToMatrix4(pointRot)
             self.points[num] = pointRot
-        #Rotate normal
+        # Rotate normal
         logging.debug('Normal not rotated:' + str(self.normal))
         to_rotate_normal = self.normal
         to_rotate_normal.append(0)
@@ -136,7 +135,7 @@ class Pattern:
         normalRot.pop()
         logging.debug('Normal rotated: ' + str(normalRot))
         self.normal = normalRot
-        #self.normal = GeoMath.rotateVecByVec(self.normal, axis, angle)
+        # self.normal = GeoMath.rotateVecByVec(self.normal, axis, angle)
 
     def cutPattern(self, point):
         pass
@@ -157,7 +156,7 @@ class Pattern:
         self.normal = value
     def add_noise(self, height, frequency, for_edge):
         if(GeoMath.vecModul(self.getNormal()) > 0):
-            #If normal of pattern is valid
+            # If normal of pattern is valid
             ad = Add_noise()
             self.points = ad.apply_noise(self.points, self.normal, height, for_edge, frequency)
 
@@ -175,7 +174,7 @@ class Add_noise():
         return cls.instance
     @classmethod
     def __init__(cls, geo=None):
-        #If it is the first intanciate
+        # If it is the first intanciate
         if(not cls.geo):
             if(not geo):
                 geo = hou.node('/obj')
@@ -208,18 +207,18 @@ class Add_noise():
         logging.debug("Class Add_noise, method apply_noise")
         if(not cls.curve_node):
             logging.debug("Class GlassDynamicPatternGenerator, creating new nodes")
-            #Create nodes to generate a pattern
+            # Create nodes to generate a pattern
             curve_node = cls.node_geo.createNode('curve')
             edge_divide_node = cls.node_geo.createNode('edgedivide')
             point_node = cls.node_geo.createNode('point')
             mountain_node = cls.node_geo.createNode('mountain')
 
-            #connect it
+            # connect it
             edge_divide_node.setNextInput(curve_node)
             point_node.setNextInput(edge_divide_node)
             mountain_node.setNextInput(point_node)
 
-            #The first group, if we don't put the value, it doesnt work
+            # The first group, if we don't put the value, it doesnt work
             edge_divide_node.parm('group').set('0')
 
 
@@ -231,12 +230,12 @@ class Add_noise():
         final_points = []
 
         if (for_edge):
-            #If we want a noise for each edge, we can get all edges from points
+            # If we want a noise for each edge, we can get all edges from points
             edges = GeoMath.getEdgesFromPoints(points)
-            #Delete last edge, because we are working with no closed pattern
+            # Delete last edge, because we are working with no closed pattern
             edges.pop()
         else:
-            #If not, we apply noise to all points at the same time
+            # If not, we apply noise to all points at the same time
             edges = [points]
         logging.debug("Class add noise")
         logging.debug("points" + str(points))
@@ -254,15 +253,15 @@ class Add_noise():
                 pointsString = pointsString + str(point[0]) + "," + str(point[1]) + "," + str(point[2]) + " "
             curve_node.parm('coords').set(pointsString)
 
-            #Set edge divisions, we set for a constant of 50, but it may to be any number
-            #Only if we apply noise for each edge
+            # Set edge divisions, we set for a constant of 50, but it may to be any number
+            # Only if we apply noise for each edge
             if(for_edge):
                 multiplier_number_of_points = 1
                 edge_divide_node.parm('numdivs').set(int(cls.calculate_frequency(frequency) * multiplier_number_of_points))
             else:
                 point_node.setInput(0, curve_node)
 
-            #Put the parameters
+            # Put the parameters
             point_node.parm('donml').set('on')
             point_node.parm('nx').deleteAllKeyframes()
             point_node.parm('ny').deleteAllKeyframes()
@@ -271,19 +270,19 @@ class Add_noise():
             point_node.parm('ny').set(normal[1])
             point_node.parm('nz').set(normal[2])
 
-            #Set parameters to mountain node
-            #self.sizex*50=number of points_for_iteration in the curve
+            # Set parameters to mountain node
+            # self.sizex*50=number of points_for_iteration in the curve
 
             mountain_node.parm('height').set(height)
             frequency_number = cls.calculate_frequency(frequency)
             mountain_node.parm('freq1').set(frequency_number)
             mountain_node.parm('freq2').set(frequency_number)
             mountain_node.parm('freq3').set(frequency_number)
-            #Put random offset to get random points_for_iteration
+            # Put random offset to get random points_for_iteration
             mountain_node.parm('offset1').set(random.random() * 100)
             mountain_node.parm('offset2').set(random.random() * 100)
             mountain_node.parm('offset3').set(random.random() * 100)
-            #We get the generate pattern
+            # We get the generate pattern
             pointI = points_for_iteration[0]
             pointF = points_for_iteration[len(points_for_iteration) - 1]
             mountain_node.cook()
@@ -304,7 +303,7 @@ class Add_noise():
                 last_point = generated_pattern[1]
                 del generated_pattern[1]
                 generated_pattern.append(last_point)
-            #Return initial point and final point to his original positions
+            # Return initial point and final point to his original positions
             generated_pattern[0] = pointI
             generated_pattern[len(generated_pattern) - 1] = pointF
 
@@ -318,7 +317,7 @@ class Add_noise():
             cls.mountain_node = mountain_node
 
         if(not for_edge):
-            #Back to connect the nodes as before
+            # Back to connect the nodes as before
             point_node.setInput(0, edge_divide_node)
         return final_points
 
@@ -386,13 +385,13 @@ class DynamicPatternGenerator(object):
         vertical = abs(GeoMath.vecDotProduct(pattern.getNormal(), [0, 1, 0]))
         oblique = abs(GeoMath.vecDotProduct(pattern.getNormal(), [1, 0, 0]))
         if (horizontal > vertical and horizontal > oblique):
-            #return vertical simetry
+            # return vertical simetry
             return self.simDir[1]
         if(vertical > horizontal and vertical > oblique):
-            #return horizontal simetry
+            # return horizontal simetry
             return self.simDir[0]
         if(oblique > horizontal and oblique > vertical):
-            #return oblique simetry
+            # return oblique simetry
             return self.simDir[2]
 
     def getSimNormal(self, pattern):
@@ -400,13 +399,13 @@ class DynamicPatternGenerator(object):
         vertical = abs(GeoMath.vecDotProduct(pattern.getNormal(), [0, 1, 0]))
         oblique = abs(GeoMath.vecDotProduct(pattern.getNormal(), [1, 0, 0]))
         if (horizontal > vertical and horizontal > oblique):
-            #return vertical simetry
+            # return vertical simetry
             return self.simN[1]
         if(vertical > horizontal and vertical > oblique):
-            #return horizontal simetry
+            # return horizontal simetry
             return self.simN[0]
         if(oblique > horizontal and oblique > vertical):
-            #return oblique simetry
+            # return oblique simetry
             return self.simN[2]
 
     def getSimY(self, pattern):
@@ -414,13 +413,13 @@ class DynamicPatternGenerator(object):
         vertical = abs(GeoMath.vecDotProduct(pattern.getNormal(), [0, 1, 0]))
         oblique = abs(GeoMath.vecDotProduct(pattern.getNormal(), [1, 0, 0]))
         if (horizontal > vertical and horizontal > oblique):
-            #return vertical simetry,  but how this is the y and direction... it will be false
+            # return vertical simetry,  but how this is the y and direction... it will be false
             return self.simy[1]
         if(vertical > horizontal and vertical > oblique):
-            #return horizontal, but how this is the y and normal... it will be false
+            # return horizontal, but how this is the y and normal... it will be false
             return self.simy[0]
         if(oblique > horizontal and oblique > vertical):
-            #return oblique simetry
+            # return oblique simetry
             return self.simy[2]
 
     def getSimX(self, pattern):
@@ -428,13 +427,13 @@ class DynamicPatternGenerator(object):
         vertical = abs(GeoMath.vecDotProduct(pattern.getNormal(), [0, 1, 0]))
         oblique = abs(GeoMath.vecDotProduct(pattern.getNormal(), [1, 0, 0]))
         if (horizontal > vertical and horizontal > oblique):
-            #return vertical simetry, but how this is the x and normal... it will be false
+            # return vertical simetry, but how this is the x and normal... it will be false
             return self.simx[1]
         if(vertical > horizontal and vertical > oblique):
-            #return horizontal
+            # return horizontal
             return self.simx[0]
         if(oblique > horizontal and oblique > vertical):
-            #return oblique simetry
+            # return oblique simetry
             return self.simx[2]
 
     def setGeo(self, geo):
@@ -442,7 +441,7 @@ class DynamicPatternGenerator(object):
 
 class GlassDynamicPatternGenerator(DynamicPatternGenerator):
     def __init__(self, geo=None):
-        #Properties of glass
+        # Properties of glass
         self.rotZ = 90
         self.simDir = [True, True, True]
         self.simN = [True, True, True]
@@ -460,28 +459,28 @@ class GlassDynamicPatternGenerator(DynamicPatternGenerator):
 
         add_noise = Add_noise()
 
-        #Calculate height if not get
+        # Calculate height if not get
         if(not height):
             height = self.sizey / 2
         transformed_points = add_noise.apply_noise([pointI, pointF], normal, height, True, frequency='medium')
-        #Now we add the heigth for each point, because the noise lies between [-sizey/2, sizey/2]
-        #and we want [0, sizey]
-        #So we get the direction of the noise and multiply by the heigth/2 and plus to the points
+        # Now we add the heigth for each point, because the noise lies between [-sizey/2, sizey/2]
+        # and we want [0, sizey]
+        # So we get the direction of the noise and multiply by the heigth/2 and plus to the points
         positive_points = []
-        #Calculate the sum to each point
+        # Calculate the sum to each point
         normal_with_module = GeoMath.vecScalarProduct(normal, height / 2)
         for point in transformed_points:
             positive_points.append(GeoMath.vecPlus(point, normal_with_module))
         logging.debug("Generated pattern finish: " + str(positive_points))
 
         dirWithModule = GeoMath.vecSub(pointF, pointI)
-        #normal points size wavelenght
+        # normal points size wavelenght
         pattern = GlassPatternDynamic(normal, positive_points, [dirWithModule[0], dirWithModule[1]], wavelength)
 
         return pattern
 
     def showPatterns(self, node, wavelength, numberOfPatterns):
-        #TODO: show a set of random patterns
+        # TODO: show a set of random patterns
         pass
 
     def applyJoker(self, point1, point2, vecH, vecV):
@@ -519,12 +518,12 @@ class SetPattern:
             index = random.randint(0, numOfPatt)
             return list(self.patterns[size][index])
         else:
-            #Error
+            # Error
             return None
 
     def showPatterns(self, node, wavelength):
         for patt in self.patterns[wavelength]:
-        #Show crack
+        # Show crack
             crackNode = node.createNode('curve', 'crack')
             pointsString = ""
             for point in patt.points:
@@ -548,48 +547,48 @@ class SetPattern:
         return self.rotZ
     def getSimDir(self, pattern):
         if (pattern.normal == [1, 0, 0] or pattern.normal == [-1, 0, 0]):
-            #return vertical simetry
+            # return vertical simetry
             return self.simDir[1]
         elif(pattern.normal == [0, 1, 0] or pattern.normal == [0, -1, 0]):
-            #return horizontal simetry
+            # return horizontal simetry
             return self.simDir[0]
         else:
-            #return oblique simetry
+            # return oblique simetry
             return self.simDir[2]
 
     def getSimNormal(self, pattern):
         if (pattern.normal == [1, 0, 0] or pattern.normal == [-1, 0, 0]):
-            #return vertical simetry
+            # return vertical simetry
             return self.simN[1]
         elif(pattern.normal == [0, 1, 0] or pattern.normal == [0, -1, 0]):
-            #return horizontal simetry
+            # return horizontal simetry
             return self.simN[0]
         else:
-            #return oblique simetry
+            # return oblique simetry
             return self.simN[2]
 
     def getSimY(self, pattern):
         if (pattern.normal == [1, 0, 0] or pattern.normal == [-1, 0, 0]):
-            #return vertical simetry,  but how this is the y and direction... it will be false
+            # return vertical simetry,  but how this is the y and direction... it will be false
             return self.simy[1]
         elif(pattern.normal == [0, 1, 0] or pattern.normal == [0, -1, 0]):
-            #return horizontal, but how this is the y and normal... it will be false
+            # return horizontal, but how this is the y and normal... it will be false
             return self.simy[0]
         else:
-            #return oblique simetry
+            # return oblique simetry
             return self.simy[2]
     def getSimX(self, pattern):
         if (pattern.normal == [1, 0, 0] or pattern.normal == [-1, 0, 0]):
-            #return vertical simetry, but how this is the x and normal... it will be false
+            # return vertical simetry, but how this is the x and normal... it will be false
             return self.simx[1]
         elif(pattern.normal == [0, 1, 0] or pattern.normal == [0, -1, 0]):
-            #return horizontal
+            # return horizontal
             return self.simx[0]
         else:
-            #return oblique simetry
+            # return oblique simetry
             return self.simx[2]
 
-#Set of wall patterns
+# Set of wall patterns
 class SetPatternWall(SetPattern):
     instance = None
     def __new__(cls, * args, ** kargs):
@@ -606,18 +605,18 @@ class SetPatternWall(SetPattern):
         self.simx = [True, True, True]
         self.sizex = 0.6
         self.sizey = 0.36
-        #Set of patterns
+        # Set of patterns
         self.patterns = []
         self.joker = WallPattern([])
-        #Size 1=0.30x0.09, castellian bricks
-        #Horizontal
+        # Size 1=0.30x0.09, castellian bricks
+        # Horizontal
         self.patterns.append([])
 
         self.patterns[0].append(WallPattern([0, 1, 0], [[0, 0, 0], [0.6, 0, 0]], [0.6, 0.0, 0], 0))
 
         self.patterns[0].append(WallPattern([0, 1, 0], [[0, 0, 0], [0.15, 0.0, 0.0], [0.15, 0.09, 0.0], [0.45, 0.09, 0], \
                                 [0.45, 0, 0], [0.6, 0, 0]], [0.6, 0.09, 0], 0))
-        #Vertical
+        # Vertical
 
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.36, 0], [0.0, 0.0, 0]], [0, 0.36, 0], 0))
 
@@ -628,7 +627,7 @@ class SetPatternWall(SetPattern):
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.36, 0], [0.0, 0.27, 0], [0.23, 0.27, 0], [0.23, 0.18, 0], \
                                 [0.0, 0.18, 0], [0.0, 0.09, 0], [0.13, 0.09, 0], [0.13, 0.0, 0], [0.0, 0.0, 0]], [0.23, 0.36, 0], 0))
 
-        #Oblique
+        # Oblique
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.0, 0.0], [0.30, 0.0, 0], [0.30, 0.09, 0], [0.0, 0.09, 0], \
                                 [0.0, 0.18, 0], [0.15, 0.18, 0], [0.15, 0.27, 0], [0.0, 0.27, 0], [0.0, 0.36, 0], [0.6, 0.36, 0]], [0.60, 0.36, 0], 0))
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.36, 0], [0.0, 0.27, 0], [0.23, 0.27, 0], [0.23, 0.18, 0], \
@@ -666,10 +665,10 @@ class SetPatternGlass(SetPattern):
         self.simx = [True, True, True]
         self.sizex = 0.5
         self.sizey = 0.5
-        #Set of patterns
+        # Set of patterns
         self.patterns = []
         self.joker = GlassPattern([])
-        #Horizontal
+        # Horizontal
         self.patterns.append([])
         '''
         self.patterns[0].append(GlassPattern([0, 1, 0], [[0, 0, 0], [0.065, 0.333, 0], \
@@ -683,7 +682,7 @@ class SetPatternGlass(SetPattern):
         [0.0664525,0.0303933,0], [0.0789709,0.00535654,0], [0.121891,0.0250282,0], [0.148716,0.0107215,0],\
         [0.191636,0.0393349,0], [0.191636,0.00714488,0], [0.245286,0.0339699,0], [0.304301,-0.00179683,0]],[0.304301,0.0393349],0))'''
         self.patterns[0].append(GlassPattern([0, 1, 0], [[0, 0, 0], [0.0609126, 0.109372, 0], [0.198263, 0.0872182, 0], [0.263246, 0.134479, 0], [0.304599, 0.0931258, 0], [0.286876, 0.0370041, 0], [0.406504, 0.011897, 0], [0.484779, 0.0739263, 0], [0.5, 0, 0]], [0.5, 0.134479], 0))
-        #Vertical
+        # Vertical
         '''
         self.patterns[0].append(GlassPattern([1, 0, 0], [[0, 0.36, 0], [0.03, 0.23, 0], [0.09, 0.15, 0], \
                                 [0.05, 0.10, 0], [0.08, 0.05, 0], [0, 0, 0]], [0.09, 0.36, 0], 0))
@@ -692,7 +691,7 @@ class SetPatternGlass(SetPattern):
                                 [0.13, 0.03, 0], [0.08, 0.01, 0], [0, 0, 0]], [0.2, 0.36, 0], 0))
         '''
         self.patterns[0].append(GlassPattern([1, 0, 0], [[0, 0.5, 0], [0.0638664, 0.435763, 0], [0.258815, 0.438717, 0], [0.309029, 0.361919, 0], [0.376966, 0.292505, 0], [0.193832, 0.367827, 0], [0.0756814, 0.342719, 0], [0.372535, 0.205369, 0], [0.255862, 0.147771, 0], [0.331183, 0.101987, 0], [0, 0, 0]], [0.376966, 0.5], 0))
-        #Oblique
+        # Oblique
         '''
         self.patterns[0].append(GlassPattern([0, math.cos(math.pi / 4), math.sin(math.pi / 4)], [[0, 0.36, 0], \
                                 [0.052, 0.150, 0], [0.13, 0.24, 0], [0.23, 0.20, 0], [0.31, 0.30, 0], [0.40, 0.042, 0], [0.50, 0.18, 0], \
@@ -738,16 +737,16 @@ class SetPatternWallBroken(SetPattern):
         self.simx = [True, True, True]
         self.sizex = 0.6
         self.sizey = 0.36
-        #Set of patterns
+        # Set of patterns
         self.patterns = []
         self.joker = WallPattern([])
-        #Size 1=0.30x0.09, castellian bricks
-        #Horizontal
+        # Size 1=0.30x0.09, castellian bricks
+        # Horizontal
         self.patterns.append([])
 
         self.patterns[0].append(WallPattern([0, 1, 0], [[0, 0, 0], [0.15, 0.0, 0.0], [0.15, 0.045, 0.0], [0.25, 0.09, 0.0], [0.45, 0.09, 0], \
                                 [0.45, 0, 0], [0.6, 0, 0]], [0.6, 0.09, 0], 0))
-        #Vertical
+        # Vertical
 
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.36, 0], [0.0, 0.27, 0], [0.075, 0.27, 0], [0.12, 0.21, 0.0], [0.12, 0.18, 0], \
                                 [0.0, 0.18, 0], [0, 0, 0]], [0.12, 0.36, 0], 0))
@@ -756,7 +755,7 @@ class SetPatternWallBroken(SetPattern):
         self.patterns[0].append(WallPattern([1, 0, 0], [[0.0, 0.36, 0], [0.0, 0.27, 0], [0.18, 0.27, 0], [0.18, 0.23 , 0.0], [0.23, 0.18, 0], \
                                 [0.0, 0.18, 0], [0.0, 0.09, 0], [0.05, 0.09, 0], [0.08, 0.0, 0], [0.0, 0.0, 0]], [0.23, 0.36, 0], 0))
 
-        #Oblique
+        # Oblique
         self.patterns[0].append(WallPattern([math.cos(math.pi / 4), math.sin(math.pi / 4), 0], [[0.0, 0.0, 0.0], [0.20, 0.0, 0], [0.15, 0.045, 0.0], [0.15, 0.09, 0], [0.0, 0.09, 0], \
                                 [0.0, 0.18, 0], [0.10, 0.18, 0], [0.08, 0.22, 0.0], [0.10, 0.27, 0], [0.0, 0.27, 0], [0.0, 0.36, 0], [0.6, 0.36, 0]], [0.60, 0.36, 0], 0))
         self.patterns[0].append(WallPattern([math.cos(math.pi / 4), math.sin(math.pi / 4), 0], [[0.0, 0.36, 0], [0.0, 0.27, 0], [0.10, 0.27, 0], \

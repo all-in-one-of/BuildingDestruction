@@ -4,12 +4,13 @@ Created on Sep 20, 2011
 
 @author: carlos
 '''
-from ExternalClasses import XMLParser
-from ExternalClasses import HouInterface
+from lib import XMLParser
+from lib import HouInterface
 import Data
 import Texture
 import TextureForPrim
 import logging
+
 class Model_Texture(object):
     '''
     classdocs
@@ -26,9 +27,9 @@ class Model_Texture(object):
         self.listOfInserts = listOfInserts
         self.defaultTexture = None
         self.defaultTextureXML = None
-        #FIXME: hardcoded path
+        # FIXME: hardcoded path
         self.pathToDefinitionFile = '/home/carlos/Work/University/Git_laptop/BuildingDestruction/resources/modelTexture.xml'
-        #Initialize XML parsers
+        # Initialize XML parsers
         self.XMLTextures = XMLParser.XMLParserTextures(self.pathToDefinitionFile)
         self.XMLMaterials = XMLParser.XMLParserMaterials(self.pathToDefinitionFile)
         self.assignedPrimOBJ = {}
@@ -38,7 +39,7 @@ class Model_Texture(object):
         self.materials = []
 
     def doMaterialsTexture(self):
-        #Our single material class is the material there
+        # Our single material class is the material there
         for complexMaterial in self.XMLMaterials.getAllComplexMaterials():
             dictCompMaterial = {}
             compMatName = self.XMLMaterials.getComplexMaterialName(complexMaterial)
@@ -47,12 +48,12 @@ class Model_Texture(object):
                 matName = self.XMLMaterials.getMaterialName(material)
                 matWavelentgh = int(self.XMLMaterials.getMaterialWavelenght(material))
                 for atomMaterial in self.XMLMaterials.getAtomMaterialsFromMaterial(material):
-                    atomMatName = self.XMLMaterials.getAtomMaterialName(atomMaterial) #@UnusedVariable
+                    atomMatName = self.XMLMaterials.getAtomMaterialName(atomMaterial)  # @UnusedVariable
                     atomMatClass = self.XMLMaterials.getAtomMaterialClass(atomMaterial)
                     atomMatPercent = int(self.XMLMaterials.getAtomMaterialPercent(atomMaterial))
-                    #Create single material if the class of material defined in the XML exists
-                    if(atomMatClass in Data.__dict__): #@UndefinedVariable
-                        singleMatClassObject = Data.__dict__[atomMatClass]() #@UndefinedVariable
+                    # Create single material if the class of material defined in the XML exists
+                    if(atomMatClass in Data.__dict__):  # @UndefinedVariable
+                        singleMatClassObject = Data.__dict__[atomMatClass]()  # @UndefinedVariable
                         logging.debug('singleMatClasObject ' + str(singleMatClassObject))
                         dictAtomsMaterial[singleMatClassObject] = atomMatPercent
                     else:
@@ -89,7 +90,7 @@ class Model_Texture(object):
                 t = Texture.Texture(complexMat, delimitedProportions=delimitedProportions, isDefault=defaultTex)
             else:
                 if(not prim):
-                    #All area of prim
+                    # All area of prim
                     t = Texture.Texture(complexMat, delimitedProportions=[[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], isDefault=defaultTex)
                 else:
                     t = Texture.Texture(complexMat, absolutePointsNotErasable=[list(p.point().position()) for p in prim.vertices()], isDefault=defaultTex)
@@ -114,30 +115,30 @@ class Model_Texture(object):
         prims = list(self.nodeWithPrims.geometry().prims())
         groupsOfNode = [gr for gr in self.nodeWithPrims.geometry().primGroups()]
         namedGroups = [g.name() for g in groupsOfNode]
-        #For each group in inserts
+        # For each group in inserts
         for group in groupsWithOBJ.keys():
-            #See in the node of all groups the index of one group of inserts
-            #If the group exists in the groups of prims...
+            # See in the node of all groups the index of one group of inserts
+            # If the group exists in the groups of prims...
             if(namedGroups.count(group) > 0):
                 index = namedGroups.index(group)
-                #Get the prims for this group of prims from inserts with OBJ
+                # Get the prims for this group of prims from inserts with OBJ
                 primsInGroupOfNode = groupsOfNode[index].prims()
                 for prim in primsInGroupOfNode:
-                    #For each prim in the group, add with its OBJ
+                    # For each prim in the group, add with its OBJ
                     self.assignedPrimOBJ[prim] = groupsWithOBJ[group]
-                    #Delete from the original copy group, because it has texture
+                    # Delete from the original copy group, because it has texture
                     if(prim in prims):
                         prims.remove(prim)
 
         for prim in prims:
             self.assignedPrimOBJ[prim] = None
 
-        #Now we have to connect the file of description of textures with the prims
+        # Now we have to connect the file of description of textures with the prims
         for prim in self.assignedPrimOBJ.keys():
             textureXML = self.getTextureFromOBJ(self.assignedPrimOBJ[prim])
             if(textureXML):
                 tex = self.doClassTexture(textureXML, prim)
-                #FIXME: Now only one!!! We can have more than ona texture for prim, add a "for" statement
+                # FIXME: Now only one!!! We can have more than ona texture for prim, add a "for" statement
                 if(tex):
                     self.assignedPrimTexture[prim] = TextureForPrim.TextureForPrim([tex], prim, self.getDefaultTexture(prim))
             else:
@@ -151,7 +152,7 @@ class Model_Texture(object):
             obj = obj.split('/').pop()
             obj = obj.split('.')[0]
             for group in insert.parm('filter').evalAsString().split():
-                #for each group in filter assign the .OBJ
+                # for each group in filter assign the .OBJ
                 dic[group] = obj
         return dic
 

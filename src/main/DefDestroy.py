@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
+# HOU dependant
 
-from DestructionDataAndFunctions import DesPatternControl
-from DestructionDataAndFunctions import Model_Texture
-from Structure import BuildingStructure
-import hou #@UnresolvedImport
+from lib import DesPatternControl
+from lib import  Model_Texture
+from structure import BuildingStructure
+import InitDestroyedBuilding
+import hou  # @UnresolvedImport
 import logging
-from MainFunctions.InitDestroyedBuilding import InitDestroyedBuilding
+
 class DefDestroy(object):
     def __init__(self):
         reload (DesPatternControl)
         reload(Model_Texture)
-        #Building to apply the destruction
+        # Building to apply the destruction
         self.__finalBuilding__ = None
 
-        #Type labels
+        # Type labels
         self.__labelWindow = "window"
         self.__labelWall = "facade"
         self.__labelDoor = "door"
 
-        #Nodes
+        # Nodes
         self.nodes = []
         self.patternControl = None
 
@@ -30,25 +32,25 @@ class DefDestroy(object):
         geo = initDestroyedBuildingClass.__geo__
         namePathGroup = 'path'
 
-        #Create merge node
+        # Create merge node
         mergeNode = geo.createNode('merge')
         mergeNode.setNextInput(conditionNodeInserts)
         mergeNode.setNextInput(conditionNodeGeneric)
 
-        #Connect groupNode partDes shop to condition nodes
+        # Connect groupNode partDes shop to condition nodes
         combineGroupPartDes = geo.createNode('group')
         combineGroupPartDes.setNextInput(mergeNode)
-        #rename node
+        # rename node
         combineGroupPartDes.setName('combinedGroupPartDes', True)
-        #Connect groupNode totDes shop to groupPartDes node
+        # Connect groupNode totDes shop to groupPartDes node
         combineGroupTotDes = geo.createNode('group')
         combineGroupTotDes.setNextInput(combineGroupPartDes)
-        #rename node
+        # rename node
         combineGroupTotDes.setName('combinedGroupTotDes', True)
 
         combineGroupNotDes = geo.createNode('group')
         combineGroupNotDes.setNextInput(combineGroupTotDes)
-        #rename node
+        # rename node
         combineGroupNotDes.setName('combinedGroupNotDes', True)
 
         totDesInsertName = conditionNodeInserts.evalParm(listOfParmsGroup[0])
@@ -59,7 +61,7 @@ class DefDestroy(object):
         partiDesGenericName = conditionNodeGeneric.evalParm(listOfParmsGroup[1])
         notDesGenericName = conditionNodeGeneric.evalParm(listOfParmsGroup[2])
 
-        #Inicialize combined groups
+        # Inicialize combined groups
         combineGroupPartDes.parm('crname').set('combinedPartDes')
         combineGroupPartDes.parm('grpequal').set('combinedPartDes')
         combineGroupPartDes.parm('grp1').set(partiDesInsertName)
@@ -98,7 +100,7 @@ class DefDestroy(object):
                 combinedTDgroup=group
         '''
         volume = initDestroyedBuildingClass.outside
-        #Prepare to get path and crack and texturing
+        # Prepare to get path and crack and texturing
         logging.debug('INSERTS DEFDESTROY:' + str(initDestroyedBuildingClass.__inserts__))
         modelTex = Model_Texture.Model_Texture(combineGroupNotDes,
                                                 initDestroyedBuildingClass.__inserts__)
@@ -107,8 +109,8 @@ class DefDestroy(object):
                             primsCombinedNotDesG, geo, namePathGroup,
                             primsCombinedNotDes, volume=volume, modelTex=modelTex)
         self.patternControl.doPath(geo, combineGroupNotDes)
-        #self.patternControl.doCrack()
-        #Insert color to primitives in path
+        # self.patternControl.doCrack()
+        # Insert color to primitives in path
         primitivePath = geo.createNode('primitive')
         primitivePath.setName('Color_to_path')
         primitivePath.parm('doclr').set('on')
@@ -158,7 +160,7 @@ class DefDestroy(object):
                 tube_default_put_each_z
         '''
         user_restriction_parms = {}
-        #FIXME: hardcoded window label
+        # FIXME: hardcoded window label
         user_restriction_parms['label_window'] = 'finestra'
         user_restriction_parms['floor_default_size_y'] = 0.1
         user_restriction_parms['tube_default_radius'] = 0.08

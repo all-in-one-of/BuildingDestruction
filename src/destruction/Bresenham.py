@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import DetermineVectors
 import Validator
+
 class Bresenham(object):
     @staticmethod
     def bresenham(Ipoint, point1, fPoint, xSize, ySize, prim, exception):
@@ -10,7 +11,7 @@ class Bresenham(object):
         reload (Validator)
         curPoint = point1
         dirVec = GeoMath.vecNormalize(GeoMath.vecSub(fPoint, Ipoint))
-        #Get the horizontal and vertical vectors
+        # Get the horizontal and vertical vectors
         xVec, yVec = DetermineVectors.DetermineVectors.detVec(prim, dirVec, exception)
         xSizeVec = GeoMath.vecScalarProduct(xVec, xSize)
         ySizeVec = GeoMath.vecScalarProduct(yVec, ySize)
@@ -25,7 +26,7 @@ class Bresenham(object):
             curxVec = GeoMath.vecNormalize(GeoMath.vecSub(pointx, Ipoint))
             curyVec = GeoMath.vecNormalize(GeoMath.vecSub(pointy, Ipoint))
             curxyVec = GeoMath.vecNormalize(GeoMath.vecSub(pointxy, Ipoint))
-            #We get the max dot product, the vector nearest to line
+            # We get the max dot product, the vector nearest to line
             dotx = GeoMath.vecDotProduct(curxVec, dirVec)
             doty = GeoMath.vecDotProduct(curyVec, dirVec)
             dotxy = GeoMath.vecDotProduct(curxyVec, dirVec)

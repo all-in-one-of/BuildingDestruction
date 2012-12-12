@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import logging
+
 class CalculateHeuristic(object):
     def __init__(self, curPrim, nextPrim, refPrim):
         self.curPrim = curPrim
