@@ -3,13 +3,15 @@
 import crackbuilder
 from lib import HouInterface
 TYPE = 'Bezier smooth'
+
+
 class CrackBuilderBezierSmooth(crackbuilder.CrackBuilder):
 
     _instance = None
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = super(Singleton, cls).__new__(
+            cls._instance = super(CrackBuilderBezierSmooth, cls).__new__(
                                 cls, *args, **kwargs)
         return cls._instance
 
@@ -17,7 +19,7 @@ class CrackBuilderBezierSmooth(crackbuilder.CrackBuilder):
         global TYPE
         super(CrackBuilderBezierSmooth, self).__init__(TYPE)
 
-    def make_crack(self, start_point, final_point, parameters = {}, nodes = []):
+    def make_crack(self, start_point, final_point, parameters={}, nodes=[]):
         crack_points = []
         # TODO
         return crack_points, nodes

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-class CrackStructure(object):
+
+class Crack(object):
     '''
     Base class of cracks. Specific crack types has to subclass this class and
     implement at least all methods.
@@ -15,7 +16,7 @@ class CrackStructure(object):
         self.parameters = {}
         self.update_crack(crack_builder)
 
-    def update_crack(self, crack_builder = None):
+    def update_crack(self, crack_builder=None):
         if(crack_builder):
             self.crack_builder = crack_builder
 
@@ -28,3 +29,9 @@ class CrackStructure(object):
     def tune_parameter(self, param, value):
         self.parameters[param] = value
         self.update_crack(self.crack_builder)
+
+    def display_on(self):
+        pass
+
+    def display_off(self):
+        pass

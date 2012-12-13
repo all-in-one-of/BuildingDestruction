@@ -76,11 +76,11 @@ class Crack(object):
     # defCrack
     #===========================================================================
     def defCrack(self, prim, Ipoint, Fpoint, texturePrim):
-        reload (AutoPattern)
-        reload (Bresenham)
-        reload (Data)
-        reload (GeoMath)
-        reload (HouInterface)
+        reload(AutoPattern)
+        reload(Bresenham)
+        reload(Data)
+        reload(GeoMath)
+        reload(HouInterface)
         global epsilon
         global primnumber
         # TEMP: only for debug the patterns
