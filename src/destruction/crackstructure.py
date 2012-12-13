@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Crack(object):
+class CrackStructure(object):
     '''
     Base class of cracks. Specific crack types has to subclass this class and
     implement at least all methods.
