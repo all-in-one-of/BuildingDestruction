@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-from ExternalClasses import GeoMath
+from lib import GeoMath
 import CalculateHeuristic
 import RejectionSampling
 import InfoPathPrim

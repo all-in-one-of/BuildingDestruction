@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 from lib import UIProcessStatus
 import BoolIntersection_RegionGrowing
-import Crack
+import crack
 import Data
 import DefPath
 DEBUG = True
@@ -11,7 +11,7 @@ class DesPatternControl(object):
 
         global DEBUG
         if(DEBUG):
-            reload(Crack)
+            reload(crack)
             reload(DefPath)
             reload(BoolIntersection_RegionGrowing)
             reload(Data)
@@ -43,8 +43,8 @@ class DesPatternControl(object):
         self.nodePath = groupPath
 
     def doCrack(self):
-        reload(Crack)
-        self.crack = Crack.Crack()
+        reload(crack)
+        self.crack = crack.Crack()
         self.modelTex.assignTextureForPrim()
         ui_crack_status = UIProcessStatus.UIProcessStatus('Crack', len(self.pathConf.path))
         for count in range(len(self.pathConf.path)):

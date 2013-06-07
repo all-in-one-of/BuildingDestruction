@@ -1432,7 +1432,7 @@ def boundingBox(points):
 
 def test():
     import doctest
-    from ExternalClasses import GeoMath
+    from lib import GeoMath
     doctest.testmod(GeoMath, verbose=True)
 
 if __name__ == "__main__":

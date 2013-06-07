@@ -743,7 +743,7 @@ class BoundingBox2D(BoundingBox):
 
 def test():
     import doctest
-    from DestructionDataAndFunctions import BoundingBox
+    from destruction import BoundingBox
     doctest.testmod(BoundingBox)
 
 if __name__ == "__main__":

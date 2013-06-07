@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # HOU dependant
 
-from lib import DesPatternControl
-from lib import  Model_Texture
+from destruction import DesPatternControl
+from destruction import  Model_Texture
 from structure import buildingstructurecontainer
 import InitDestroyedBuilding
 import hou  # @UnresolvedImport
@@ -142,8 +142,7 @@ class DefDestroy(object):
         primitivePath.setDisplayFlag(True)
 
     def createStructure(self, initDestroyedBuildingClass):
-        reload (BuildingStructure)
-        reload(building)
+        reload(buildingstructurecontainer)
         logging.debug("Class DefDestroy, Method createStructure")
         '''
         user_restriction_parms:

@@ -9,7 +9,7 @@ class FloorDestroyed(floor.Floor):
         self.control_points = control_points
         self.crack = crack
 
-    def move_control_point(self, contrl_point_id, new_position):
+    def move_control_point(self, control_point_id, new_position):
         self.control_points[control_point_id] = new_position
         self.update_crack()
 

@@ -22,7 +22,7 @@ def parse_parameters(parameters, default_parameters):
 
 def test():
     import doctest
-    import parseparameters
+    from lib import parseparameters
     doctest.testmod(parseparameters, verbose = True)
     
 if __name__ == "__main__":
