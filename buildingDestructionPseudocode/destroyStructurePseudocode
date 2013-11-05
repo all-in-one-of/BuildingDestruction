@@ -1,0 +1,6 @@
+destroyFloors(floors, crack):
+	affectedFloors = findAffectdFloors(floors, crack)
+	foreach (affectedFloor as afectedFloor):
+		points = findDelimiterPointsWithBolzano(afectedFloor)
+		joinPairedPointsWithBezierCurve(points)
+		applydestruction(afectedfloor, points)

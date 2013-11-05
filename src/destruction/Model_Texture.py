@@ -28,7 +28,7 @@ class Model_Texture(object):
         self.defaultTexture = None
         self.defaultTextureXML = None
         # FIXME: hardcoded path
-        self.pathToDefinitionFile = '/home/carlos/Work/University/Git_laptop/BuildingDestruction/resources/modelTexture.xml'
+        self.pathToDefinitionFile = '/home/csoriano/Work/GGG/BuildingDestruction/resources/modelTexture.xml'
         # Initialize XML parsers
         self.XMLTextures = XMLParser.XMLParserTextures(self.pathToDefinitionFile)
         self.XMLMaterials = XMLParser.XMLParserMaterials(self.pathToDefinitionFile)

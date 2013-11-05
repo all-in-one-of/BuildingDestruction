@@ -4,6 +4,7 @@ Created on 12 Apr 2011
 @author: carlos
 '''
 import hou #@UnresolvedImport
+import logging
 
 class HouInterface(object):
     def __init__(self, geo=None):
@@ -13,6 +14,7 @@ class HouInterface(object):
         self.transforms = {}
         self.tubes = {}
         self.cubes = {}
+        self.grids = {}
         
     def initGeo(self):
         isGeoCreated = True
@@ -176,7 +178,48 @@ class HouInterface(object):
             for node in cube:
                 node.destroy()
         self.cubes.clear()
-        
+
+    def showGrid(self, name='', center = [0,0,0], sizex = 1, sizey = 1, rows = 1, columns = 1, orient = 'zx'):
+        geo, isGeoCreated = self.initGeo()
+        gridNode = self.createNode('grid', geo, name)
+        name = gridNode.name()
+
+        gridNode.parm('tx').set(center[0])
+        gridNode.parm('ty').set(center[1])
+        gridNode.parm('tz').set(center[2])
+
+        logging.debug("showgrid x" + str(sizex))
+        logging.debug("showgrid y" + str(sizey))
+        logging.debug("showgrid c" + str(center))
+        logging.debug("showgrid cols" + str(rows))
+        logging.debug("showgrid crows" + str(columns))
+
+        gridNode.parm('sizex').set(sizex)
+        gridNode.parm('sizey').set(sizey)
+
+        gridNode.parm('orient').set(orient)
+
+        gridNode.parm('rows').set(rows)
+        gridNode.parm('cols').set(columns)
+
+        self.setFlags(gridNode, isGeoCreated)
+        self.grids[name] = [gridNode]
+
+        gridNode.moveToGoodPosition()
+        return name
+
+    def deleteGrid(self, tag):
+        if(self.grids.has_key(tag)):
+            for node in self.grids[tag]:
+                node.destroy()
+            del self.grids[tag]
+    
+    def deleteGrids(self):
+        for cube in self.grids.values():
+            for node in grid:
+                node.destroy()
+        self.grids.clear()
+
     def transform(self, volume, translate=[0, 0, 0], scale=[0, 0, 0], rotate=[0, 0, 0]):
         node = volume.parent().createNode('xtrans')
         node.parm('tx').set(translate[0])

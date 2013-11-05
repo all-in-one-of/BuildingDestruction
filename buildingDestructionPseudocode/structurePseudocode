@@ -1,0 +1,28 @@
+structure(userParams):
+	floors = createfloors(userParams)
+	createMetallicStructure(userParams, floors)
+
+createFloors(userParams):
+	lowestPoint = getLowestBuildingPoint(building)
+	putFirstFloor(lowestPoint)
+	nextFloor = calculateNextFloor(userParams)
+	floorIndex = 1
+	while(nextFloor)
+		putFloor(nextFloor)
+		nextFloor = calculateNextFloor(userParams, floorIndex)
+		floorIndex++
+
+calculateNextFloor(userParams):
+	if(userParams[window]):
+		position = calculatePositionBasedOnWindowSize(userParams[window]) * floorIndex
+	else:
+		position = userParams['putFloorEachY'] * floorIndex;
+
+	return createFloor(position)
+
+createMetallicStructure(userParams, floors):
+	foreach(floors as floor)
+		foreach(sizeX / userParams['putTubeEachX'] as index)
+			putTube(index)
+		foreach(sizeY / userParams['putTubeEachY'] as index)
+			putTube(index)

@@ -101,10 +101,6 @@ class BuildingStructure(object):
                                   self.get_floor_structure(),
                                   self.get_geo()))
 
-    def destroy_extra_structure(self):
-        destroystructure.DestroyStructure(self.get_floor_structure(),
-                                          self.get_metal_structure())
-
     def calculate_windows_size(self):
         global epsilon
         #=======================================================================
@@ -158,6 +154,34 @@ class BuildingStructure(object):
 
     def get_user_restriction_parms(self):
         return self.__user_restriction_parms
+
+    def destroy(self):
+        reload(floorstructure)
+        self.floor_structure.destroy()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     def get_crack(self):

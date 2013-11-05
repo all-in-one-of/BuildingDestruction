@@ -1,0 +1,19 @@
+findPath:
+while(not path and (not tried clockwise and anticlockwise)){
+        clockwise = angle(firstPrimitive, referencePointOfRotation) <  0
+        backtracking(firstPrim)
+        clockwise = !clockwise
+        
+backtracking(currentPrim):
+        connectedPrims =  currentPrim.connectedPrims
+        pathAchieved = false
+        while(not pathAchieved and connectedPrimIndex < connecterPrims.length)
+                //Reject if no point of the edge connecting both primitves are
+                //able to be inside the volume of the destruction
+                rejectionSampling(currentPrim, currentConnectedPrim, destructionVolume) ? continue
+                //Reject if the next prim don't follow clockwise rule
+                rejectClockwise(currentPrim, currentConnectedPrim) ? continue
+
+                path.addPrim(currentConnectedPrim)
+                backtracking(currentConnectedPrim) ? pathAchieved = true; break;
+        return pathAchieved

@@ -8,6 +8,7 @@ from lib import GeoMath
 import createfloors
 import floor
 import logging
+import destroyfloorstructure
 
 
 class FloorStructure(object):
@@ -126,10 +127,22 @@ class FloorStructure(object):
         else:
             # Only one floor
             destroyed_virtual_floors.append(previous_virtual_floor)
-
-        createfloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
+        # Display floors in houdini as a cubes
+        # createfloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
         self.floors = destroyed_virtual_floors
         logging.debug('END Class FloorStructure, method calculate_floors_position')
+
+    def destroy(self):
+        reload(destroyfloorstructure)
+        destroyfloorstructure.destroy_floors(self)
+
+
+
+
+
+
+
+
 
     def extract_parm_from_user_restrictions(self, parm, default=None):
         # TODO: define an get parms from building

@@ -38,10 +38,10 @@ class InitDestroyedBuilding:
         self.__nameOfGenericGroups__ = ['genericTotDestroy', 'genericPartDestroy', 'genericNotDestroy']
         self.__conditionGroupsParm__ = ['totdes', 'partides', 'notdes']
 
-        self.__rayIntersectSomePointPath__ = '$HIP/ConditionLibrary/RayIntersectSomePoint.py'
-        self.__rayIntersectAllPointsPath__ = '$HIP/ConditionLibrary/RayIntersectAllPoints.py'
-        self.__rayIntersectCenterPath__ = '$HIP/ConditionLibrary/RayIntersectCenter.py'
-        self.__secureSelectionPath__ = '$HIP/ConditionLibrary/SecureSelection.py'
+        self.__rayIntersectSomePointPath__ = '$HIP/conditonallib/RayIntersectSomePoint.py'
+        self.__rayIntersectAllPointsPath__ = '$HIP/conditionallib/RayIntersectAllPoints.py'
+        self.__rayIntersectCenterPath__ = '$HIP/conditionallib/RayIntersectCenter.py'
+        self.__secureSelectionPath__ = '$HIP/conditionallib/SecureSelection.py'
         self.__geo__ = None
 
 ###############################################################################################

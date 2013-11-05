@@ -2,16 +2,18 @@
 # HOU dependant
 
 from destruction import DesPatternControl
-from destruction import  Model_Texture
-from structure import buildingstructurecontainer
+from destruction import Model_Texture
+from structure import buildingstructure
+import hou
 import InitDestroyedBuilding
-import hou  # @UnresolvedImport
 import logging
+
 
 class DefDestroy(object):
     def __init__(self):
-        reload (DesPatternControl)
+        reload(DesPatternControl)
         reload(Model_Texture)
+        reload(buildingstructure)
         # Building to apply the destruction
         self.__finalBuilding__ = None
 
@@ -84,11 +86,11 @@ class DefDestroy(object):
         primsCombinedPartDes = combineGroupNotDes.geometry().findPrimGroup('combinedPartDes')
         primsCombinedNotDes = combineGroupNotDes.geometry().findPrimGroup('combinedNotDes')
 
-        if(primsCombinedTotDes != None):
+        if (primsCombinedTotDes != None):
             primsCombinedTotDesG = primsCombinedTotDes.prims()
-        if(primsCombinedNotDes != None):
+        if (primsCombinedNotDes != None):
             primsCombinedNotDesG = primsCombinedNotDes.prims()
-        if(primsCombinedPartDes != None):
+        if (primsCombinedPartDes != None):
             primsCombinedPartDesG = primsCombinedPartDes.prims()
 
         '''
@@ -103,11 +105,11 @@ class DefDestroy(object):
         # Prepare to get path and crack and texturing
         logging.debug('INSERTS DEFDESTROY:' + str(initDestroyedBuildingClass.__inserts__))
         modelTex = Model_Texture.Model_Texture(combineGroupNotDes,
-                                                initDestroyedBuildingClass.__inserts__)
+                                               initDestroyedBuildingClass.__inserts__)
         self.patternControl = DesPatternControl.DesPatternControl(
-                            primsCombinedPartDesG, primsCombinedTotDesG,
-                            primsCombinedNotDesG, geo, namePathGroup,
-                            primsCombinedNotDes, volume = volume, modelTex = modelTex)
+            primsCombinedPartDesG, primsCombinedTotDesG,
+            primsCombinedNotDesG, geo, namePathGroup,
+            primsCombinedNotDes, volume=volume, modelTex=modelTex)
         self.patternControl.doPath(geo, combineGroupNotDes)
         # self.patternControl.doCrack()
         # Insert color to primitives in path
@@ -115,12 +117,12 @@ class DefDestroy(object):
         primitivePath.setName('Color_to_path')
         primitivePath.parm('doclr').set('on')
         primitivePath.parm('group').set(namePathGroup)
-        expression = "this=hou.pwd().inputs()[0].geometry() \n"\
-        "for group in this.primGroups(): \n"\
-        "   if group.name()=='path': \n"\
-        "       list=group.prims() \n"\
-        "listP=[prim.number() for prim in list] \n"\
-        "return listP.index(hou.lvar('PR'))/float(len(listP)) "
+        expression = "this=hou.pwd().inputs()[0].geometry() \n" \
+                     "for group in this.primGroups(): \n" \
+                     "   if group.name()=='path': \n" \
+                     "       list=group.prims() \n" \
+                     "listP=[prim.number() for prim in list] \n" \
+                     "return listP.index(hou.lvar('PR'))/float(len(listP)) "
 
         primitivePath.parm('diffg').setExpression(expression, hou.exprLanguage.Python)
         primitivePath.parm('diffr').deleteAllKeyframes()
@@ -142,7 +144,7 @@ class DefDestroy(object):
         primitivePath.setDisplayFlag(True)
 
     def createStructure(self, initDestroyedBuildingClass):
-        reload(buildingstructurecontainer)
+        reload(buildingstructure)
         logging.debug("Class DefDestroy, Method createStructure")
         '''
         user_restriction_parms:
@@ -165,14 +167,19 @@ class DefDestroy(object):
         user_restriction_parms['floor_default_size_y'] = 0.1
         user_restriction_parms['tube_default_radius'] = 0.08
 
-        building_structure = buildingstructurecontainer.BuildingStructureContainer(
-                                            self.patternControl.crack,
-                                            self.patternControl.pathConf.path,
-                                            initDestroyedBuildingClass.__inserts__,
-                                            initDestroyedBuildingClass.__geo__,
-                                            user_restriction_parms)
-        building_structure.do()
+        building_structure = buildingstructure.BuildingStructure(
+            self.patternControl.crack,
+            self.patternControl.pathConf.path,
+            initDestroyedBuildingClass.__inserts__,
+            initDestroyedBuildingClass.__geo__,
+            user_restriction_parms)
+        building_structure.create_extra_structure()
 
+        self.building_structure = building_structure
+
+    def destroyStructure(self):
+        reload(buildingstructure)
+        self.building_structure.destroy()
 
     def deleteNodes(self):
         for node in self.nodes:

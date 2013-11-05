@@ -1,0 +1,11 @@
+Model texture has a hardcoded path for the textures, as:
+       # FIXME: hardcoded path
+        self.pathToDefinitionFile = '/home/csoriano/Work/GGG/BuildingDestruction/resources/modelTexture.xml'
+
+In huidini installation folder:
+Para modificar el path de busqueda de python, añadir un archivo con terminacion .pth a uno de los sitios donde ya este agregado al path.
+houdini/python/lib/python2.6/site-packages
+
+For make otl availabls for houdini, just in the otl folder add the otls.
+
+For the toolbar destruction, just copy the entire houdiniXX folder in home folder to yours?
