@@ -46,7 +46,7 @@ class HouInterface(object):
             node.setTemplateFlag(True)
             
     def showPoint(self, point, name='', size=0.05, color=[1, 0, 0]):
-        geo = self.initGeo()
+        geo, isGeoCreated = self.initGeo()
         sphere = self.createNode('sphere', geo, name)
         sphere.parm('radx').set(size)
         sphere.parm('rady').set(size)
@@ -179,7 +179,7 @@ class HouInterface(object):
                 node.destroy()
         self.cubes.clear()
 
-    def showGrid(self, name='', center = [0,0,0], sizex = 1, sizey = 1, rows = 1, columns = 1, orient = 'zx'):
+    def showGrid(self, name='', center = [0,0,0], sizex = 1, sizey = 1, rows = 2, columns = 2, orient = 'zx'):
         geo, isGeoCreated = self.initGeo()
         gridNode = self.createNode('grid', geo, name)
         name = gridNode.name()
@@ -191,8 +191,6 @@ class HouInterface(object):
         logging.debug("showgrid x" + str(sizex))
         logging.debug("showgrid y" + str(sizey))
         logging.debug("showgrid c" + str(center))
-        logging.debug("showgrid cols" + str(rows))
-        logging.debug("showgrid crows" + str(columns))
 
         gridNode.parm('sizex').set(sizex)
         gridNode.parm('sizey').set(sizey)

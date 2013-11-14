@@ -128,13 +128,14 @@ class FloorStructure(object):
             # Only one floor
             destroyed_virtual_floors.append(previous_virtual_floor)
         # Display floors in houdini as a cubes
-        # createfloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
+        #createfloors.CreateFloors(destroyed_virtual_floors, self.get_geo())
         self.floors = destroyed_virtual_floors
         logging.debug('END Class FloorStructure, method calculate_floors_position')
 
     def destroy(self):
         reload(destroyfloorstructure)
-        destroyfloorstructure.destroy_floors(self)
+        self.destroyedFloors = destroyfloorstructure.DestroyFloorStructure(self)
+        self.destroyedFloors.do()
 
 
 

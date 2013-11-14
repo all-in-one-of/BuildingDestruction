@@ -108,8 +108,9 @@ class MetallicStructure(object):
                 self.tubes['z'].append(tube_instance)
                 tube_center = GeoMath.vecPlus(tube_center, increment)
 
-            createmetallicstructure.CreateMetallicStructure(
-                self.tubes, self.geo)
+            #Don't create tubes for now
+            #createmetallicstructure.CreateMetallicStructure(
+            #   self.tubes, self.geo)
 
     def extract_parm_from_user_restrictions(self, parm, default=None):
         # TODO: define an get parms from building

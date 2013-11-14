@@ -46,10 +46,8 @@ class DesPatternControl(object):
         reload(crack)
         self.crack = crack.Crack()
         self.modelTex.assignTextureForPrim()
-        ui_crack_status = UIProcessStatus.UIProcessStatus('Crack', len(self.pathConf.path))
+        
         for count in range(len(self.pathConf.path)):
-            ui_crack_status.calculate_status(count, inverse=False)
-            ui_crack_status.print_status()
             previousPrim = self.pathConf.path[count - 1]
             thisPrim = self.pathConf.path[count]
             nextPrim = self.pathConf.path[(count + 1) % (len(self.pathConf.path))]

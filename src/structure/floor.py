@@ -4,7 +4,7 @@ Created on Oct 27, 2011
 
 @author: carlos
 '''
-
+import logging
 from lib import GeoMath
 from lib import HouInterface
 
@@ -45,13 +45,14 @@ class Floor(object):
     # but it is not correct, because the patterns can go between two floors
     # without passing floors
     def intersections_with_crack(self, crack, path_ordered):
+        reload(GeoMath)
         intersections = []
         edges_floor = GeoMath.getEdgesFromPoints(self.get_absolute_points())
         prev_intersection = None
         next_intersection = None
         #=======================================================================
-        # we group the intersections in doublets, because after we'll have a different
-        # destruction in the floor for each doublet of intersection
+        # we group the intersections in pairs, because after we'll have a different
+        # destruction in the floor for each pair of intersection
         #=======================================================================
 
         for infoPrim in path_ordered:
@@ -64,6 +65,16 @@ class Floor(object):
                     # We are assuming the edge is perpendicular to the floor.
                     # TEMP:
                     point_intersection = [pattern_edge_inter[0][0], floor_edge_inter[0][1], pattern_edge_inter[0][2]]
+                    logging.debug("Intersection bef" + str(point_intersection))
+                    logging.debug("fllor_edge_inter " + str(floor_edge_inter))
+                    #point2DToProjectOntoXZ = [point_intersection[0], 0, point_intersection[2]]
+                    #floorEdge2DToCalculateProjectionOntoXZ = [[floor_edge_inter[0][0],0 , floor_edge_inter[0][2]], [floor_edge_inter[1][0], 0, floor_edge_inter[1][2]]]
+
+                    #point_intersection = GeoMath.getPointProjectionOnLine(floorEdge2DToCalculateProjectionOntoXZ, point2DToProjectOntoXZ)
+                    #point_intersection = [point_intersection[0], floor_edge_inter[0][1], point_intersection[2]]
+
+                    logging.debug("Intersection " + str(point_intersection))
+                    
                     if(not prev_intersection):
                         prev_intersection = point_intersection
                         break

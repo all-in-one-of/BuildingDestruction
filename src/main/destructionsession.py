@@ -83,3 +83,4 @@ class destructionSession(object):
     def destroyStructure(self):
         logging.debug("destroyingStructure!!")
         self.__class__.destroyClass.destroyStructure()
+
